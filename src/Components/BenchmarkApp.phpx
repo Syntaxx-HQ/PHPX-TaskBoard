@@ -1,0 +1,346 @@
+<?php
+
+use Syntaxx\PHPX\Framework\Component;
+use function Syntaxx\PHPX\Framework\useState;
+
+function BenchmarkApp() {
+    [$results, $setResults] = useState([]);
+    [$isRunning, $setIsRunning] = useState(false);
+
+    $runBenchmark = function() use ($setResults, $setIsRunning) {
+        $setIsRunning(true);
+        $setResults([]);
+
+        // Get VRZNO window and document
+        $window = new \Vrzno;
+        $document = $window->document;
+
+        // Create test container
+        $container = $document->getElementById('benchmark-container');
+        if (!$container) {
+            $container = $document->createElement('div');
+            $container->id = 'benchmark-container';
+            $container->style->display = 'none';
+            $document->body->appendChild($container);
+        }
+
+        $benchmarkResults = [];
+
+        // ===================================
+        // Test 1: innerHTML set (direct vs eval)
+        // ===================================
+        $iterations = 1000;
+        $testHtml = '<div class="test"><span>Hello World</span></div>';
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $container->innerHTML = $testHtml;
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $escapedHtml = json_encode($testHtml);
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            vrzno_eval("document.getElementById('benchmark-container').innerHTML = {$escapedHtml}");
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'innerHTML Assignment',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        // ===================================
+        // Test 2: Property reads
+        // ===================================
+        $iterations = 10000;
+        $container->innerHTML = '<input id="test-input" value="test" />';
+        $input = $document->getElementById('test-input');
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $value = $input->value;
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $value = vrzno_eval("document.getElementById('test-input').value");
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'Property Read (value)',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        // ===================================
+        // Test 3: Property writes
+        // ===================================
+        $iterations = 10000;
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $input->value = "test{$i}";
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            vrzno_eval("document.getElementById('test-input').value = 'test{$i}'");
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'Property Write (value)',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        // ===================================
+        // Test 4: setAttribute
+        // ===================================
+        $iterations = 5000;
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $input->setAttribute('data-value', "test{$i}");
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            vrzno_eval("document.getElementById('test-input').setAttribute('data-value', 'test{$i}')");
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'setAttribute',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        // ===================================
+        // Test 5: classList operations
+        // ===================================
+        $iterations = 5000;
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $input->classList->add('active');
+            $input->classList->remove('active');
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            vrzno_eval("const el = document.getElementById('test-input'); el.classList.add('active'); el.classList.remove('active');");
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'classList add/remove',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        // ===================================
+        // Test 6: Complex DOM traversal
+        // ===================================
+        $iterations = 1000;
+        $container->innerHTML = '<div><div><div><span id="deep-span">text</span></div></div></div>';
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $span = $document->getElementById('deep-span');
+            $parent = $span->parentElement;
+            $grandparent = $parent->parentElement;
+            $value = $span->textContent;
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            vrzno_eval(<<<JS
+                const span = document.getElementById('deep-span');
+                const parent = span.parentElement;
+                const grandparent = parent.parentElement;
+                const value = span.textContent;
+JS
+            );
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'DOM Traversal',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        // ===================================
+        // Test 7: Multiple property updates
+        // ===================================
+        $iterations = 2000;
+
+        // Re-create input element after previous test destroyed it
+        $container->innerHTML = '<input id="test-input" value="test" />';
+        $input = $document->getElementById('test-input');
+
+        // Direct VRZNO access
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $input->value = "test{$i}";
+            $input->className = "input-{$i}";
+            $input->setAttribute('data-index', $i);
+            $input->disabled = $i % 2 === 0;
+        }
+        $directTime = (microtime(true) - $startTime) * 1000;
+
+        // vrzno_eval
+        $startTime = microtime(true);
+        for ($i = 0; $i < $iterations; $i++) {
+            $disabled = $i % 2 === 0 ? 'true' : 'false';
+            vrzno_eval(<<<JS
+                const el = document.getElementById('test-input');
+                el.value = 'test{$i}';
+                el.className = 'input-{$i}';
+                el.setAttribute('data-index', {$i});
+                el.disabled = {$disabled};
+JS
+            );
+        }
+        $evalTime = (microtime(true) - $startTime) * 1000;
+
+        $benchmarkResults[] = [
+            'test' => 'Multiple Updates',
+            'iterations' => $iterations,
+            'direct' => round($directTime, 2),
+            'eval' => round($evalTime, 2),
+            'speedup' => round($evalTime / $directTime, 2)
+        ];
+
+        $setResults($benchmarkResults);
+        $setIsRunning(false);
+    };
+
+    return (
+        <div style="padding: 20px; background: white; border-radius: 12px; max-width: 1200px; margin: 20px auto;">
+            <h1>VRZNO Performance Benchmark</h1>
+            <p>Comparing direct VRZNO object access vs vrzno_eval()</p>
+
+            <button
+                onClick={$runBenchmark}
+                className="btn btn-primary"
+                style="margin: 20px 0; padding: 12px 24px; font-size: 16px; cursor: pointer;"
+            >
+                {$isRunning ? 'Running Benchmark...' : 'Run Benchmark'}
+            </button>
+
+            {!empty($results) ? (
+                <div>
+                    <h2>Results</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                        <thead>
+                            <tr style="background: #f1f5f9; text-align: left;">
+                                <th style="padding: 12px; border: 1px solid #cbd5e1;">Test</th>
+                                <th style="padding: 12px; border: 1px solid #cbd5e1;">Iterations</th>
+                                <th style="padding: 12px; border: 1px solid #cbd5e1;">Direct VRZNO (ms)</th>
+                                <th style="padding: 12px; border: 1px solid #cbd5e1;">vrzno_eval (ms)</th>
+                                <th style="padding: 12px; border: 1px solid #cbd5e1;">Speedup</th>
+                                <th style="padding: 12px; border: 1px solid #cbd5e1;">Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {array_map(fn($result) => (
+                                <tr key={$result['test']}>
+                                    <td style="padding: 12px; border: 1px solid #cbd5e1; font-weight: 500;">
+                                        {$result['test']}
+                                    </td>
+                                    <td style="padding: 12px; border: 1px solid #cbd5e1;">
+                                        {number_format($result['iterations'])}
+                                    </td>
+                                    <td style={"padding: 12px; border: 1px solid #cbd5e1; background: " . ($result['direct'] < $result['eval'] ? '#dcfce7' : '#fff')}>
+                                        {$result['direct']} ms
+                                    </td>
+                                    <td style={"padding: 12px; border: 1px solid #cbd5e1; background: " . ($result['eval'] < $result['direct'] ? '#dcfce7' : '#fff')}>
+                                        {$result['eval']} ms
+                                    </td>
+                                    <td style="padding: 12px; border: 1px solid #cbd5e1; font-weight: 600;">
+                                        {$result['speedup']}x
+                                    </td>
+                                    <td style="padding: 12px; border: 1px solid #cbd5e1;">
+                                        {$result['direct'] < $result['eval'] ? '✅ Direct' : '⚠️ Eval'}
+                                    </td>
+                                </tr>
+                            ), $results)}
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 30px; padding: 20px; background: #f1f5f9; border-radius: 8px;">
+                        <h3>Summary</h3>
+                        {(function() use ($results) {
+                            $directWins = 0;
+                            $evalWins = 0;
+                            $totalSpeedup = 0;
+
+                            foreach ($results as $result) {
+                                if ($result['direct'] < $result['eval']) {
+                                    $directWins++;
+                                } else {
+                                    $evalWins++;
+                                }
+                                $totalSpeedup += $result['speedup'];
+                            }
+
+                            $avgSpeedup = round($totalSpeedup / count($results), 2);
+
+                            return (
+                                <div>
+                                    <p><strong>Direct VRZNO wins:</strong> {$directWins} out of {count($results)} tests</p>
+                                    <p><strong>Average speedup:</strong> {$avgSpeedup}x</p>
+                                    {$directWins > $evalWins ? (
+                                        <p style="color: #16a34a; font-weight: 600; margin-top: 10px;">
+                                            ✅ Conclusion: Direct VRZNO access is faster!
+                                        </p>
+                                    ) : (
+                                        <p style="color: #ea580c; font-weight: 600; margin-top: 10px;">
+                                            ⚠️ Conclusion: vrzno_eval is faster (unexpected!)
+                                        </p>
+                                    )}
+                                </div>
+                            );
+                        })()}
+                    </div>
+                </div>
+            ) : null}
+
+            <div id="benchmark-container" style="display: none;"></div>
+        </div>
+    );
+}

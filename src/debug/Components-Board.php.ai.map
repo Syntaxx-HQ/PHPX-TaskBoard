@@ -1,0 +1,69 @@
+{
+    "files": {
+        "source": "Board.phpx",
+        "compiled": "Board.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "declare(strict_types=1);\r",
+            "compiled_snippet": "declare (strict_types=1);"
+        },
+        {
+            "c": 3,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "namespace TaskBoard\\Components;\r",
+            "compiled_snippet": "namespace TaskBoard\\Components;"
+        },
+        {
+            "c": 24,
+            "s": 58,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "                if ($c['id'] === $cardId) {\r",
+            "compiled_snippet": "        foreach ($prev[$fromColumn] ?? [] as $c) {"
+        },
+        {
+            "c": 29,
+            "s": 64,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            if (!$card) return $prev;\r",
+            "compiled_snippet": "        }"
+        },
+        {
+            "c": 30,
+            "s": 64,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            if (!$card) return $prev;\r",
+            "compiled_snippet": "        if (!$card) {"
+        },
+        {
+            "c": 32,
+            "s": 66,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            return array_merge($prev, [\r",
+            "compiled_snippet": "        }"
+        },
+        {
+            "c": 39,
+            "s": 90,
+            "type": "jsx_element",
+            "hint": "Verify JSX element structure: check tag balance, attribute syntax, and children validity",
+            "element": "div",
+            "source_snippet": "        <div>\r",
+            "compiled_snippet": "    // Handle drop"
+        }
+    ],
+    "stats": {
+        "total": 7,
+        "jsx_elements": 1
+    }
+}

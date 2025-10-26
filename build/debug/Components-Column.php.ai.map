@@ -1,0 +1,108 @@
+{
+    "files": {
+        "source": "Column.php",
+        "compiled": "Column.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 2,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Component;",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Component;"
+        },
+        {
+            "c": 3,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;"
+        },
+        {
+            "c": 4,
+            "s": 4,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Document;",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Document;"
+        },
+        {
+            "c": 5,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;",
+            "compiled_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;"
+        },
+        {
+            "c": 6,
+            "s": 6,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "function Column($props)",
+            "compiled_snippet": "function Column($props)"
+        },
+        {
+            "c": 32,
+            "s": 33,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if ($e && $e->target) {",
+            "compiled_snippet": "        $inputElement = null;"
+        },
+        {
+            "c": 35,
+            "s": 36,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            if ($form) {",
+            "compiled_snippet": "            $form = $e->target->closest('.new-card-form');"
+        },
+        {
+            "c": 41,
+            "s": 42,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            if (!$inputElement) {",
+            "compiled_snippet": "            $inputElement = Document::document()->querySelector('input[data-testid=\"card-title-input\"]:focus');"
+        },
+        {
+            "c": 46,
+            "s": 47,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if ($inputElement) {",
+            "compiled_snippet": "        $title = '';"
+        },
+        {
+            "c": 49,
+            "s": 50,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if (empty($title)) {",
+            "compiled_snippet": "        }"
+        },
+        {
+            "c": 51,
+            "s": 52,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            return;",
+            "compiled_snippet": "            $setTitleError('Title is required');"
+        },
+        {
+            "c": 68,
+            "s": 70,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "    return Component::create(\"div\", [\"className\" => $isDragOver ? \"column drag-over\" : \"column\", \"data-testid\" => $columnTestId, \"onDragOver\" => $handleDragOver, \"onDragLeave\" => $handleDragLeave, \"on...",
+            "compiled_snippet": "    $columnTestId = \"column-\" . $id;"
+        }
+    ],
+    "stats": {
+        "total": 12,
+        "jsx_elements": 0
+    }
+}

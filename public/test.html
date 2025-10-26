@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test WASM Load</title>
+</head>
+<body>
+    <div id="status">Loading...</div>
+    <div id="error" style="color: red;"></div>
+    <div id="app"></div>
+
+    <script type="module">
+        const statusDiv = document.getElementById('status');
+        const errorDiv = document.getElementById('error');
+
+        statusDiv.textContent = 'Importing module...';
+
+        try {
+            const module = await import('./build/php-vrzno-web.mjs');
+            statusDiv.textContent = 'Module imported. Initializing PhpWeb...';
+
+            const { PhpWeb } = module;
+
+            const php = new PhpWeb({
+                dataPath: './build/php-web.data',
+                wasmPath: './build/php-vrzno-web.wasm'
+            });
+
+            php.addEventListener('ready', () => {
+                statusDiv.textContent = 'PHP Ready!';
+                console.log('PHP is ready');
+            });
+
+            php.addEventListener('error', (event) => {
+                errorDiv.textContent = 'Error: ' + JSON.stringify(event.detail);
+                console.error('PHP Error:', event.detail);
+            });
+
+            statusDiv.textContent = 'Running PHP...';
+            await php.run();
+
+        } catch (error) {
+            errorDiv.textContent = 'Failed to load: ' + error.message;
+            console.error('Failed to load:', error);
+        }
+    </script>
+</body>
+</html>

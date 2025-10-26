@@ -1,0 +1,128 @@
+<?php
+use Syntaxx\PHPX\Framework\Component;
+use Syntaxx\PHPX\Framework\Runtime;
+function Card($props)
+{
+    $card = $props['card'];
+    $onDelete = $props['onDelete'];
+    $onUpdate = $props['onUpdate'];
+    $onDragStart = $props['onDragStart'] ?? fn() => null;
+    $onDragEnd = $props['onDragEnd'] ?? fn() => null;
+    [$isEditing, $setIsEditing] = useState(false);
+    [$editTitle, $setEditTitle] = useState($card['title']);
+    [$isModalOpen, $setIsModalOpen] = useState(false);
+    [$showDeleteConfirm, $setShowDeleteConfirm] = useState(false);
+    // Handle title double-click to edit
+    $handleTitleDoubleClick = fn() => $setIsEditing(true) || $setEditTitle($card['title']) || null;
+    // Handle save edit
+    $handleSaveEdit = fn() => (function () use ($editTitle, $onUpdate, $setIsEditing) {
+        $title = trim($editTitle);
+        if (!empty($title)) {
+            $onUpdate(['title' => $title]);
+        }
+        $setIsEditing(false);
+    })();
+    // Handle cancel edit
+    $handleCancelEdit = fn() => $setEditTitle($card['title']) || $setIsEditing(false) || null;
+    // Handle card click to open modal
+    $handleCardClick = fn($e) => !$isEditing && !$e->target->closest('.delete-card-btn') ? $setIsModalOpen(true) : null;
+    // Handle delete button click
+    $handleDeleteClick = fn($e) => $e->stopPropagation() || $setShowDeleteConfirm(true) || null;
+    // Handle confirm delete
+    $handleConfirmDelete = fn() => $onDelete() || $setShowDeleteConfirm(false) || $setIsModalOpen(false) || null;
+    // Handle cancel delete
+    $handleCancelDelete = fn() => $setShowDeleteConfirm(false);
+    // Get priority class
+    $getPriorityClass = fn($priority) => match ($priority) {
+        'high' => 'priority-high',
+        'medium' => 'priority-medium',
+        'low' => 'priority-low',
+        default => '',
+    };
+    // Get priority label
+    $getPriorityLabel = fn($priority) => match ($priority) {
+        'high' => 'High',
+        'medium' => 'Medium',
+        'low' => 'Low',
+        default => 'Medium',
+    };
+    return Component::create("div", ["className" => "card", "data-testid" => $card['id'], "draggable" => "true", "onDragStart" => $onDragStart, "onDragEnd" => $onDragEnd, "onClick" => $handleCardClick], [$isEditing ? Component::create("input", ["type" => "text", "className" => "inline-edit-input", "value" => $editTitle, "onChange" => fn($e) => $setEditTitle($e->target->value), "onKeyPress" => fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null, "onKeyDown" => fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null, "onBlur" => $handleSaveEdit, "data-testid" => "inline-edit-input", "autoFocus" => true, "onClick" => fn($e) => $e->stopPropagation()], []) : Component::create("div", ["className" => "card-title", "onDoubleClick" => $handleTitleDoubleClick], [$card['title']]), Component::create("div", ["className" => "card-meta"], [Component::create("span", ["className" => "card-priority " . $getPriorityClass($card['priority'] ?? 'medium')], [$getPriorityLabel($card['priority'] ?? 'medium')])]), Component::create("button", ["className" => "delete-card-btn", "onClick" => $handleDeleteClick, "data-testid" => "delete-card-btn", "title" => "Delete card"], [" × "])]);
+    // TODO: Handle modals separately
+    /*{$showDeleteConfirm ? (
+                    <div className="confirm-dialog">
+                        <div className="confirm-content">
+                            <p>Are you sure you want to delete this card?</p>
+                            <div className="form-actions">
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={$handleCancelDelete}
+                                    data-testid="cancel-delete-btn"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={$handleConfirmDelete}
+                                    data-testid="confirm-delete-btn"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : null}
+    
+                {$isModalOpen ? (
+                    <div className="card-modal active" data-testid="card-modal">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h2 data-testid="modal-card-title">{$card['title']}</h2>
+                                <button
+                                    className="modal-close-btn"
+                                    onClick={fn() => $setIsModalOpen(false)}
+                                    data-testid="modal-close-btn"
+                                >
+                                    ×
+                                </button>
+                            </div>
+    
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label>Priority</label>
+                                    <select
+                                        value={$card['priority'] ?? 'medium'}
+                                        onChange={fn($e) => $onUpdate(['priority' => $e->target->value])}
+                                    >
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+    
+                                <div className="form-group">
+                                    <label>Description</label>
+                                    <textarea
+                                        placeholder="Add a description..."
+                                        value={$card['description'] ?? ''}
+                                        onChange={fn($e) => $onUpdate(['description' => $e->target->value])}
+                                    />
+                                </div>
+    
+                                <div className="form-group">
+                                    <label>Card ID</label>
+                                    <div className="card-id">{$card['id']}</div>
+                                </div>
+                            </div>
+    
+                            <div className="modal-footer">
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={$handleConfirmDelete}
+                                >
+                                    Delete Card
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : null}*/
+}

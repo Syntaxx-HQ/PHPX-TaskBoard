@@ -1,0 +1,70 @@
+{
+    "files": {
+        "source": "BenchmarkApp.phpx",
+        "compiled": "BenchmarkApp.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Component;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Component;"
+        },
+        {
+            "c": 3,
+            "s": 4,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;\r",
+            "compiled_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;"
+        },
+        {
+            "c": 4,
+            "s": 6,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "function BenchmarkApp() {\r",
+            "compiled_snippet": "function BenchmarkApp()"
+        },
+        {
+            "c": 16,
+            "s": 20,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if (!$container) {\r",
+            "compiled_snippet": "        if (!$container) {"
+        },
+        {
+            "c": 160,
+            "s": 253,
+            "type": "jsx_element",
+            "hint": "Verify JSX element structure: check tag balance, attribute syntax, and children validity",
+            "element": "div",
+            "source_snippet": "        <div style=\"padding: 20px; background: white; border-radius: 12px; max-width: 1200px; margin: 20px auto;\">\r",
+            "compiled_snippet": "                            const el = document.getElementById('test-input');\r"
+        },
+        {
+            "c": 165,
+            "s": 313,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "                                if ($result['direct'] < $result['eval']) {\r",
+            "compiled_snippet": "            JS);"
+        },
+        {
+            "c": 173,
+            "s": 324,
+            "type": "jsx_element",
+            "hint": "Verify JSX element structure: check tag balance, attribute syntax, and children validity",
+            "element": "div",
+            "source_snippet": "                                <div>\r",
+            "compiled_snippet": "        $directWins = 0;"
+        }
+    ],
+    "stats": {
+        "total": 7,
+        "jsx_elements": 2
+    }
+}

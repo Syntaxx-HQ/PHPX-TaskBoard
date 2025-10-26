@@ -1,0 +1,60 @@
+{
+    "files": {
+        "source": "Card.phpx",
+        "compiled": "Card.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Component;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Component;"
+        },
+        {
+            "c": 3,
+            "s": 4,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;"
+        },
+        {
+            "c": 4,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;\r",
+            "compiled_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;"
+        },
+        {
+            "c": 5,
+            "s": 7,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "function Card($props) {\r",
+            "compiled_snippet": "function Card($props)"
+        },
+        {
+            "c": 21,
+            "s": 27,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if (!empty($title)) {\r",
+            "compiled_snippet": "        if (!empty($title)) {"
+        },
+        {
+            "c": 39,
+            "s": 77,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        <div\r",
+            "compiled_snippet": "        'medium' => 'priority-medium',"
+        }
+    ],
+    "stats": {
+        "total": 6,
+        "jsx_elements": 0
+    }
+}

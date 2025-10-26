@@ -1,0 +1,52 @@
+{
+    "files": {
+        "source": "Column.phpx",
+        "compiled": "Column.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "declare(strict_types=1);\r",
+            "compiled_snippet": "declare (strict_types=1);"
+        },
+        {
+            "c": 3,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "namespace TaskBoard\\Components;\r",
+            "compiled_snippet": "namespace TaskBoard\\Components;"
+        },
+        {
+            "c": 28,
+            "s": 41,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if (empty($title)) {\r",
+            "compiled_snippet": "        $title = trim($newCardTitle);"
+        },
+        {
+            "c": 30,
+            "s": 43,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            return;\r",
+            "compiled_snippet": "            $setTitleError('Title is required');"
+        },
+        {
+            "c": 47,
+            "s": 87,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        <div\r",
+            "compiled_snippet": "    $columnTestId = \"column-\" . $id;"
+        }
+    ],
+    "stats": {
+        "total": 5,
+        "jsx_elements": 0
+    }
+}

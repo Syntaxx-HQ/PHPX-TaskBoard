@@ -1,0 +1,61 @@
+{
+    "files": {
+        "source": "App.phpx",
+        "compiled": "App.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Component;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Component;"
+        },
+        {
+            "c": 3,
+            "s": 4,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;\r",
+            "compiled_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;"
+        },
+        {
+            "c": 4,
+            "s": 6,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "require_once \"Components/Board.php\";\r",
+            "compiled_snippet": "require_once \"Components/Board.php\";"
+        },
+        {
+            "c": 5,
+            "s": 7,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "require_once \"Components/BenchmarkApp.php\";\r",
+            "compiled_snippet": "require_once \"Components/BenchmarkApp.php\";"
+        },
+        {
+            "c": 6,
+            "s": 9,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "function App() {\r",
+            "compiled_snippet": "function App()"
+        },
+        {
+            "c": 9,
+            "s": 13,
+            "type": "jsx_element",
+            "hint": "Verify JSX element structure: check tag balance, attribute syntax, and children validity",
+            "element": "div",
+            "source_snippet": "        <div>\r",
+            "compiled_snippet": "    return Component::create(\"div\", [\"data-phpx-source\" => \"App.phpx:13:1\"], [Component::create(\"div\", [\"style\" => \"padding: 20px; text-align: center; background: #f8f9fa; border-bottom: 2px solid #de..."
+        }
+    ],
+    "stats": {
+        "total": 6,
+        "jsx_elements": 1
+    }
+}

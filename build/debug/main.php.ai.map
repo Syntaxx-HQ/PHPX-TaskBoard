@@ -1,0 +1,109 @@
+{
+    "files": {
+        "source": "main.phpx",
+        "compiled": "main.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 2,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "require_once \"App.php\";\r",
+            "compiled_snippet": "require_once \"App.php\";"
+        },
+        {
+            "c": 3,
+            "s": 4,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Component;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Component;"
+        },
+        {
+            "c": 4,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;"
+        },
+        {
+            "c": 5,
+            "s": 7,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "function createRoot($root) {\r",
+            "compiled_snippet": "function createRoot($root)"
+        },
+        {
+            "c": 7,
+            "s": 8,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "    return Runtime::createRoot($root);\r",
+            "compiled_snippet": "    return Runtime::createRoot($root);"
+        },
+        {
+            "c": 10,
+            "s": 12,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "require_once \"Components/Board.php\";\r",
+            "compiled_snippet": "require_once \"Components/Board.php\";"
+        },
+        {
+            "c": 11,
+            "s": 13,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "require_once \"Components/Column.php\";\r",
+            "compiled_snippet": "require_once \"Components/Column.php\";"
+        },
+        {
+            "c": 12,
+            "s": 14,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "require_once \"Components/Card.php\";\r",
+            "compiled_snippet": "require_once \"Components/Card.php\";"
+        },
+        {
+            "c": 14,
+            "s": 17,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "$window = new Vrzno;\r",
+            "compiled_snippet": "$window = new Vrzno();"
+        },
+        {
+            "c": 15,
+            "s": 18,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "$document = $window->document;\r",
+            "compiled_snippet": "$document = $window->document;"
+        },
+        {
+            "c": 16,
+            "s": 19,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "$root = $document->getElementById(\"root\");\r",
+            "compiled_snippet": "$root = $document->getElementById(\"root\");"
+        },
+        {
+            "c": 18,
+            "s": 22,
+            "type": "jsx_element",
+            "hint": "Verify JSX element structure: check tag balance, attribute syntax, and children validity",
+            "element": "App",
+            "source_snippet": "createRoot($root)->render(<App />);",
+            "compiled_snippet": "createRoot($root)->render(Component::create(\"App\", [\"data-phpx-source\" => \"main.phpx:22:1\"], []));"
+        }
+    ],
+    "stats": {
+        "total": 12,
+        "jsx_elements": 1
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "phpx-taskboard",
+  "version": "0.1.0",
+  "description": "TaskBoard Pro - A Kanban board built with PHPX",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:codegen": "playwright codegen http://localhost:9999",
+    "serve": "php -S localhost:9999 -t public",
+    "build": "composer wasm:dev",
+    "dev": "composer wasm:watch"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

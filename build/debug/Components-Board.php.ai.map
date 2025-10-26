@@ -1,0 +1,85 @@
+{
+    "files": {
+        "source": "Board.phpx",
+        "compiled": "Board.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Component;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Component;"
+        },
+        {
+            "c": 3,
+            "s": 4,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;\r",
+            "compiled_snippet": "use Syntaxx\\PHPX\\Framework\\Runtime;"
+        },
+        {
+            "c": 4,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;\r",
+            "compiled_snippet": "use function Syntaxx\\PHPX\\Framework\\useState;"
+        },
+        {
+            "c": 5,
+            "s": 7,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "function Board() {\r",
+            "compiled_snippet": "function Board()"
+        },
+        {
+            "c": 24,
+            "s": 55,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "                if ($c['id'] === $cardId) {\r",
+            "compiled_snippet": "        foreach ($prev[$fromColumn] ?? [] as $c) {"
+        },
+        {
+            "c": 29,
+            "s": 61,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            if (!$card) return $prev;\r",
+            "compiled_snippet": "        }"
+        },
+        {
+            "c": 30,
+            "s": 61,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            if (!$card) return $prev;\r",
+            "compiled_snippet": "        if (!$card) {"
+        },
+        {
+            "c": 32,
+            "s": 63,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "            return array_merge($prev, [\r",
+            "compiled_snippet": "        }"
+        },
+        {
+            "c": 39,
+            "s": 87,
+            "type": "jsx_element",
+            "hint": "Verify JSX element structure: check tag balance, attribute syntax, and children validity",
+            "element": "div",
+            "source_snippet": "        <div>\r",
+            "compiled_snippet": "    // Handle drop"
+        }
+    ],
+    "stats": {
+        "total": 9,
+        "jsx_elements": 1
+    }
+}

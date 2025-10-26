@@ -1,0 +1,182 @@
+<?php
+
+use Syntaxx\PHPX\Framework\Component;
+use Syntaxx\PHPX\Framework\Runtime;
+use Syntaxx\PHPX\Framework\Document;
+use function Syntaxx\PHPX\Framework\useState;
+
+function Column($props) {
+    $id = $props['id'];
+    $title = $props['title'];
+    $cards = $props['cards'] ?? [];
+    $onAddCard = $props['onAddCard'];
+    $onDeleteCard = $props['onDeleteCard'];
+    $onUpdateCard = $props['onUpdateCard'];
+    $onDragStart = $props['onDragStart'] ?? fn() => null;
+    $onDragEnd = $props['onDragEnd'] ?? fn() => null;
+    $onDrop = $props['onDrop'] ?? fn() => null;
+
+    [$isAddingCard, $setIsAddingCard] = useState(false);
+    [$newCardTitle, $setNewCardTitle] = useState('');
+    [$newCardPriority, $setNewCardPriority] = useState('medium');
+    [$titleError, $setTitleError] = useState('');
+    [$isDragOver, $setIsDragOver] = useState(false);
+
+    // Handle adding a new card
+    $handleAddCard = function() use ($setIsAddingCard, $setNewCardTitle, $setNewCardPriority, $setTitleError) {
+        $setIsAddingCard(true);
+        $setNewCardTitle('');
+        $setNewCardPriority('medium');
+        $setTitleError('');
+    };
+
+    // Handle saving a new card
+    $handleSaveCard = function($e = null) use ($newCardPriority, $setTitleError, $onAddCard, $setIsAddingCard, $setNewCardTitle) {
+        // Get the input element and read its value directly
+        $inputElement = null;
+        if ($e && $e->target) {
+            // If called from Enter key, traverse to find the input
+            $form = $e->target->closest('.new-card-form');
+            if ($form) {
+                $inputElement = $form->querySelector('input[data-testid="card-title-input"]');
+            }
+        } else {
+            // If called from button click, find the input
+            $inputElement = Document::document()->querySelector('input[data-testid="card-title-input"]:focus');
+            if (!$inputElement) {
+                $inputElement = Document::document()->querySelector('input[data-testid="card-title-input"]');
+            }
+        }
+
+        $title = '';
+        if ($inputElement) {
+            $title = trim($inputElement->value);
+        }
+
+        if (empty($title)) {
+            $setTitleError('Title is required');
+            return;
+        }
+
+        $onAddCard([
+            'title' => $title,
+            'priority' => $newCardPriority
+        ]);
+
+        $setIsAddingCard(false);
+        $setNewCardTitle('');
+        $setTitleError('');
+    };
+
+    // Handle canceling add card
+    $handleCancelCard = fn() => (
+        $setIsAddingCard(false) ||
+        $setNewCardTitle('') ||
+        $setTitleError('') ||
+        null
+    );
+
+    // Handle drag over
+    $handleDragOver = fn($event) => (
+        $event->preventDefault() ||
+        $setIsDragOver(true) ||
+        null
+    );
+
+    // Handle drag leave
+    $handleDragLeave = fn() => $setIsDragOver(false);
+
+    // Handle drop
+    $handleDropInColumn = fn($event) => (
+        $event->preventDefault() ||
+        $setIsDragOver(false) ||
+        $onDrop() ||
+        null
+    );
+
+    // Column test ID for different columns
+    $columnTestId = "column-" . $id;
+    $addButtonTestId = "add-card-" . $id;
+
+    return (
+        <div
+            className={$isDragOver ? "column drag-over" : "column"}
+            data-testid={$columnTestId}
+            onDragOver={$handleDragOver}
+            onDragLeave={$handleDragLeave}
+            onDrop={$handleDropInColumn}
+        >
+            <h2>{$title}</h2>
+
+            <div className="cards-container">
+                {array_map(fn($card) =>
+                    <Card
+                        key={$card['id']}
+                        card={$card}
+                        onDelete={fn() => $onDeleteCard($card['id'])}
+                        onUpdate={fn($updates) => $onUpdateCard($card['id'], $updates)}
+                        onDragStart={fn() => $onDragStart($card)}
+                        onDragEnd={$onDragEnd}
+                    />,
+                    $cards
+                )}
+            </div>
+
+            {$isAddingCard ? (
+                <div className="new-card-form" data-testid="new-card-form">
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            placeholder="Enter card title..."
+                            onKeyPress={fn($e) => $e->key === 'Enter' ? $handleSaveCard($e) : null}
+                            data-testid="card-title-input"
+                            autoFocus
+                        />
+                        {$titleError ? (
+                            <div className="form-error" data-testid="card-title-error">
+                                {$titleError}
+                            </div>
+                        ) : null}
+                    </div>
+
+                    <div className="form-group">
+                        <select
+                            value={$newCardPriority}
+                            onChange={fn($e) => $setNewCardPriority($e->target->value)}
+                            data-testid="card-priority-select"
+                        >
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                    </div>
+
+                    <div className="form-actions">
+                        <button
+                            className="btn btn-secondary"
+                            onClick={$handleCancelCard}
+                            data-testid="cancel-card-btn"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={$handleSaveCard}
+                            data-testid="save-card-btn"
+                        >
+                            Add Card
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <button
+                    className="add-card"
+                    onClick={$handleAddCard}
+                    data-testid={$addButtonTestId}
+                >
+                    + Add a card
+                </button>
+            )}
+        </div>
+    );
+}

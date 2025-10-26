@@ -1,0 +1,44 @@
+{
+    "files": {
+        "source": "Card.phpx",
+        "compiled": "Card.php"
+    },
+    "mappings": [
+        {
+            "c": 2,
+            "s": 3,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "declare(strict_types=1);\r",
+            "compiled_snippet": "declare (strict_types=1);"
+        },
+        {
+            "c": 3,
+            "s": 5,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "namespace TaskBoard\\Components;\r",
+            "compiled_snippet": "namespace TaskBoard\\Components;"
+        },
+        {
+            "c": 22,
+            "s": 30,
+            "type": "php",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        if (!empty($title)) {\r",
+            "compiled_snippet": "        $title = trim($editTitle);"
+        },
+        {
+            "c": 40,
+            "s": 80,
+            "type": "jsx_fragment",
+            "hint": "Review syntax in the source location",
+            "source_snippet": "        <>\r",
+            "compiled_snippet": "        'high' => 'priority-high',"
+        }
+    ],
+    "stats": {
+        "total": 4,
+        "jsx_elements": 0
+    }
+}
