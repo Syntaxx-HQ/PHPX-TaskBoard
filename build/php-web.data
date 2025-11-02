@@ -770,9 +770,44 @@ function Card($props)
     [$editTitle, $setEditTitle] = useState($card['title']);
     [$isModalOpen, $setIsModalOpen] = useState(false);
     [$showDeleteConfirm, $setShowDeleteConfirm] = useState(false);
-    var_dump("ğŸŸ¡ Card render, id=" . $card['id'] . ", isModalOpen=" . ($isModalOpen ? 'TRUE' : 'FALSE'));
+    [$clickTimer, $setClickTimer] = useState(null);
+    // Handle title click - delay modal opening to allow double-click detection
+    $handleTitleClick = function ($e) use ($setIsModalOpen, $clickTimer, $setClickTimer) {
+        $e->stopPropagation();
+        // Prevent bubbling to card
+        var_dump("ğŸ”¥ Single-click on card title");
+        // Clear any existing timer
+        if ($clickTimer !== null) {
+            $window = new \Vrzno();
+            $window->clearTimeout($clickTimer);
+            var_dump("ğŸ”¥ Cleared existing click timer");
+        }
+        // Set timer to open modal after delay (300ms)
+        // This allows double-click to cancel it
+        $window = new \Vrzno();
+        $timerId = $window->setTimeout(function () use ($setIsModalOpen) {
+            var_dump("ğŸ”¥ Timer fired - opening modal");
+            $setIsModalOpen(true);
+        }, 300);
+        $setClickTimer($timerId);
+        var_dump("ğŸ”¥ Set timer ID: " . var_export($timerId, true));
+    };
     // Handle title double-click to edit
-    $handleTitleDoubleClick = fn() => $setIsEditing(true) || $setEditTitle($card['title']) || null;
+    $handleTitleDoubleClick = function ($e) use ($setIsEditing, $setEditTitle, $card, $clickTimer, $setClickTimer) {
+        var_dump("ğŸ”¥ Double-click fired on card title: {$card['title']}");
+        $e->stopPropagation();
+        // Prevent propagation to card's onClick (modal)
+        // Clear the click timer to prevent modal opening
+        if ($clickTimer !== null) {
+            $window = new \Vrzno();
+            $window->clearTimeout($clickTimer);
+            $setClickTimer(null);
+            var_dump("ğŸ”¥ Cleared click timer - modal won't open");
+        }
+        $setIsEditing(true);
+        $setEditTitle($card['title']);
+        var_dump("ğŸ”¥ State updated, isEditing should be true now");
+    };
     // Handle save edit
     $handleSaveEdit = fn() => (function () use ($editTitle, $onUpdate, $setIsEditing) {
         $title = trim($editTitle);
@@ -785,20 +820,13 @@ function Card($props)
     $handleCancelEdit = fn() => $setEditTitle($card['title']) || $setIsEditing(false) || null;
     // Handle card click to open modal
     $handleCardClick = function ($e) use ($isEditing, $setIsModalOpen) {
-        var_dump("ğŸ”µ handleCardClick called");
-        var_dump("ğŸ”µ isEditing = " . ($isEditing ? 'true' : 'false'));
         // Check if click is on delete button (check className instead of closest)
         $isDeleteBtn = false;
         if (isset($e->target->className) && is_string($e->target->className)) {
-            var_dump("ğŸ”µ target className = " . $e->target->className);
             $isDeleteBtn = str_contains($e->target->className, 'delete-card-btn');
         }
-        var_dump("ğŸ”µ isDeleteBtn = " . ($isDeleteBtn ? 'true' : 'false'));
         if (!$isEditing && !$isDeleteBtn) {
-            var_dump("ğŸ”µ OPENING MODAL - calling setIsModalOpen(true)");
             $setIsModalOpen(true);
-        } else {
-            var_dump("ğŸ”µ NOT opening modal");
         }
     };
     // Handle delete button click
@@ -821,7 +849,7 @@ function Card($props)
         'low' => 'Low',
         default => 'Medium',
     };
-    return Component::create("div", ["className" => "card-wrapper"], [Component::create("div", ["className" => "card", "data-testid" => $card['id'], "draggable" => "true", "onDragStart" => $onDragStart, "onDragEnd" => $onDragEnd, "onClick" => $handleCardClick], [$isEditing ? Component::create("input", ["type" => "text", "className" => "inline-edit-input", "value" => $editTitle, "onChange" => fn($e) => $setEditTitle($e->target->value), "onKeyPress" => fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null, "onKeyDown" => fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null, "onBlur" => $handleSaveEdit, "data-testid" => "inline-edit-input", "autoFocus" => true, "onClick" => fn($e) => $e->stopPropagation()], []) : Component::create("div", ["className" => "card-title", "onDoubleClick" => $handleTitleDoubleClick], [$card['title']]), Component::create("div", ["className" => "card-meta"], [Component::create("span", ["className" => "card-priority " . $getPriorityClass($card['priority'] ?? 'medium')], [$getPriorityLabel($card['priority'] ?? 'medium')])]), Component::create("button", ["className" => "delete-card-btn", "onClick" => $handleDeleteClick, "data-testid" => "delete-card-btn", "title" => "Delete card"], [" Ã— "])]), $showDeleteConfirm ? Component::create("div", ["className" => "confirm-dialog"], [Component::create("div", ["className" => "confirm-content"], [Component::create("p", [], ["Are you sure you want to delete this card?"]), Component::create("div", ["className" => "form-actions"], [Component::create("button", ["className" => "btn btn-secondary", "onClick" => $handleCancelDelete, "data-testid" => "cancel-delete-btn"], [" Cancel "]), Component::create("button", ["className" => "btn btn-danger", "onClick" => $handleConfirmDelete, "data-testid" => "confirm-delete-btn"], [" Delete "])])])]) : null, $isModalOpen ? Component::create("div", ["className" => "card-modal active", "data-testid" => "card-modal"], [Component::create("div", ["className" => "modal-content"], [Component::create("div", ["className" => "modal-header"], [Component::create("h2", ["data-testid" => "modal-card-title"], [$card['title']]), Component::create("button", ["className" => "modal-close-btn", "onClick" => fn() => $setIsModalOpen(false), "data-testid" => "modal-close-btn"], [" Ã— "])]), Component::create("div", ["className" => "modal-body"], [Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Priority"]), Component::create("select", ["value" => $card['priority'] ?? 'medium', "onChange" => fn($e) => $onUpdate(['priority' => $e->target->value])], [Component::create("option", ["value" => "low"], ["Low"]), Component::create("option", ["value" => "medium"], ["Medium"]), Component::create("option", ["value" => "high"], ["High"])])]), Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Description"]), Component::create("textarea", ["placeholder" => "Add a description...", "value" => $card['description'] ?? '', "onChange" => fn($e) => $onUpdate(['description' => $e->target->value])], [])]), Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Card ID"]), Component::create("div", ["className" => "card-id"], [$card['id']])])]), Component::create("div", ["className" => "modal-footer"], [Component::create("button", ["className" => "btn btn-danger", "onClick" => $handleConfirmDelete], [" Delete Card "])])])]) : null]);
+    return Component::create("div", ["className" => "card-wrapper"], [Component::create("div", ["className" => "card", "data-testid" => $card['id'], "draggable" => "true", "onDragStart" => $onDragStart, "onDragEnd" => $onDragEnd, "onClick" => $handleCardClick], [$isEditing ? Component::create("input", ["type" => "text", "className" => "inline-edit-input", "value" => $editTitle, "onChange" => fn($e) => $setEditTitle($e->target->value), "onKeyPress" => fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null, "onKeyDown" => fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null, "onBlur" => $handleSaveEdit, "data-testid" => "inline-edit-input", "autoFocus" => true, "onClick" => fn($e) => $e->stopPropagation()], []) : Component::create("div", ["className" => "card-title", "onClick" => $handleTitleClick, "onDoubleClick" => $handleTitleDoubleClick], [$card['title']]), Component::create("div", ["className" => "card-meta"], [Component::create("span", ["className" => "card-priority " . $getPriorityClass($card['priority'] ?? 'medium')], [$getPriorityLabel($card['priority'] ?? 'medium')])]), Component::create("button", ["className" => "delete-card-btn", "onClick" => $handleDeleteClick, "data-testid" => "delete-card-btn", "title" => "Delete card"], [" Ã— "])]), $showDeleteConfirm ? Component::create("div", ["className" => "confirm-dialog"], [Component::create("div", ["className" => "confirm-content"], [Component::create("p", [], ["Are you sure you want to delete this card?"]), Component::create("div", ["className" => "form-actions"], [Component::create("button", ["className" => "btn btn-secondary", "onClick" => $handleCancelDelete, "data-testid" => "cancel-delete-btn"], [" Cancel "]), Component::create("button", ["className" => "btn btn-danger", "onClick" => $handleConfirmDelete, "data-testid" => "confirm-delete-btn"], [" Delete "])])])]) : null, $isModalOpen ? Component::create("div", ["className" => "card-modal active", "data-testid" => "card-modal"], [Component::create("div", ["className" => "modal-content"], [Component::create("div", ["className" => "modal-header"], [Component::create("h2", ["data-testid" => "modal-card-title"], [$card['title']]), Component::create("button", ["className" => "modal-close-btn", "onClick" => fn() => $setIsModalOpen(false), "data-testid" => "modal-close-btn"], [" Ã— "])]), Component::create("div", ["className" => "modal-body"], [Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Priority"]), Component::create("select", ["value" => $card['priority'] ?? 'medium', "onChange" => fn($e) => $onUpdate(['priority' => $e->target->value])], [Component::create("option", ["value" => "low"], ["Low"]), Component::create("option", ["value" => "medium"], ["Medium"]), Component::create("option", ["value" => "high"], ["High"])])]), Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Description"]), Component::create("textarea", ["placeholder" => "Add a description...", "value" => $card['description'] ?? '', "onChange" => fn($e) => $onUpdate(['description' => $e->target->value])], [])]), Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Card ID"]), Component::create("div", ["className" => "card-id"], [$card['id']])])]), Component::create("div", ["className" => "modal-footer"], [Component::create("button", ["className" => "btn btn-danger", "onClick" => $handleConfirmDelete], [" Delete Card "])])])]) : null]);
 }<?php
 
 use Syntaxx\PHPX\Framework\Component;
@@ -839,13 +867,49 @@ function Card($props) {
     [$editTitle, $setEditTitle] = useState($card['title']);
     [$isModalOpen, $setIsModalOpen] = useState(false);
     [$showDeleteConfirm, $setShowDeleteConfirm] = useState(false);
+    [$clickTimer, $setClickTimer] = useState(null);
 
-    var_dump("ğŸŸ¡ Card render, id=" . $card['id'] . ", isModalOpen=" . ($isModalOpen ? 'TRUE' : 'FALSE'));
+    // Handle title click - delay modal opening to allow double-click detection
+    $handleTitleClick = function($e) use ($setIsModalOpen, $clickTimer, $setClickTimer) {
+        $e->stopPropagation(); // Prevent bubbling to card
+        var_dump("ğŸ”¥ Single-click on card title");
+
+        // Clear any existing timer
+        if ($clickTimer !== null) {
+            $window = new \Vrzno;
+            $window->clearTimeout($clickTimer);
+            var_dump("ğŸ”¥ Cleared existing click timer");
+        }
+
+        // Set timer to open modal after delay (300ms)
+        // This allows double-click to cancel it
+        $window = new \Vrzno;
+        $timerId = $window->setTimeout(function() use ($setIsModalOpen) {
+            var_dump("ğŸ”¥ Timer fired - opening modal");
+            $setIsModalOpen(true);
+        }, 300);
+
+        $setClickTimer($timerId);
+        var_dump("ğŸ”¥ Set timer ID: " . var_export($timerId, true));
+    };
 
     // Handle title double-click to edit
-    $handleTitleDoubleClick = fn() => (
-        $setIsEditing(true) || $setEditTitle($card['title']) || null
-    );
+    $handleTitleDoubleClick = function($e) use ($setIsEditing, $setEditTitle, $card, $clickTimer, $setClickTimer) {
+        var_dump("ğŸ”¥ Double-click fired on card title: {$card['title']}");
+        $e->stopPropagation(); // Prevent propagation to card's onClick (modal)
+
+        // Clear the click timer to prevent modal opening
+        if ($clickTimer !== null) {
+            $window = new \Vrzno;
+            $window->clearTimeout($clickTimer);
+            $setClickTimer(null);
+            var_dump("ğŸ”¥ Cleared click timer - modal won't open");
+        }
+
+        $setIsEditing(true);
+        $setEditTitle($card['title']);
+        var_dump("ğŸ”¥ State updated, isEditing should be true now");
+    };
 
     // Handle save edit
     $handleSaveEdit = fn() => (function() use ($editTitle, $onUpdate, $setIsEditing) {
@@ -863,22 +927,14 @@ function Card($props) {
 
     // Handle card click to open modal
     $handleCardClick = function($e) use ($isEditing, $setIsModalOpen) {
-        var_dump("ğŸ”µ handleCardClick called");
-        var_dump("ğŸ”µ isEditing = " . ($isEditing ? 'true' : 'false'));
-
         // Check if click is on delete button (check className instead of closest)
         $isDeleteBtn = false;
         if (isset($e->target->className) && is_string($e->target->className)) {
-            var_dump("ğŸ”µ target className = " . $e->target->className);
             $isDeleteBtn = str_contains($e->target->className, 'delete-card-btn');
         }
-        var_dump("ğŸ”µ isDeleteBtn = " . ($isDeleteBtn ? 'true' : 'false'));
 
         if (!$isEditing && !$isDeleteBtn) {
-            var_dump("ğŸ”µ OPENING MODAL - calling setIsModalOpen(true)");
             $setIsModalOpen(true);
-        } else {
-            var_dump("ğŸ”µ NOT opening modal");
         }
     };
 
@@ -938,7 +994,11 @@ function Card($props) {
                             onClick={fn($e) => $e->stopPropagation()}
                         />
                     ) : (
-                        <div className="card-title" onDoubleClick={$handleTitleDoubleClick}>
+                        <div
+                            className="card-title"
+                            onClick={$handleTitleClick}
+                            onDoubleClick={$handleTitleDoubleClick}
+                        >
                             {$card['title']}
                         </div>
                     )}
@@ -31679,7 +31739,7 @@ class ComposerStaticInit878e96c605cb7da5c348f931985e6944
         ),
     ),
 );
-VDOM init
+VDOM init2
 ref: refs/heads/virtual-dom
 [core]
 	repositoryformatversion = 0
@@ -32485,20 +32545,21 @@ esac
 exit 0
 DIRC      i1¢.&kZi1¢.&kZ  0 Á‘  ¤  è  è   [İ)¼HÚšéÂ>”™Õ¦%Ì‰ 
 .gitignore        i1¢.&kZi1¢.&kZ  0 Á   ¤  è  è    æâ›²ÑÖCK‹)®wZØÂäŒS‘ 	CLAUDE.md i1¢.&kZi1¢.&kZ  0 Á¢  ¤  è  è  :FÒ¹Ò?äNYKå¸Ds~QMê LICENSE   i1¢.&kZi1¢.&kZ  0 Á£  ¤  è  è    æâ›²ÑÖCK‹)®wZØÂäŒS‘ 	README.md i1¢.&kZi1¢.&kZ  0 Á¤  ¤  è  è  [mâ’Pg«ğ`ÀfË6H¬—¿¸û¯î composer.json     i1¢.&kZi1¢.&kZ  0 Á¦  ¤  è  è  e„Ä÷àvØğığp5¥=ğ–Á demo/app.php      i1¢.&kZi1¢.&kZ  0 Á§  ¤  è  è  …¥o‘Ç2?WõÅmdğzPĞ¬ŒºA phpunit.xml       ia><ia`5;  0 Áëˆ  ¤  è  è  Ï$Ñ©|ìîş.•yİ>Ò“séğ src/Commit/FocusManager.php       i1¢.&kZi1¢.&kZ  0 Á©  ¤  è  è  ‹ş; ¢ì]au”$CŞÒÍğ®Kódî src/Component.php i`æ“Âüi`æV¹ÿ  0 Á¡  ¤  è  è  E;	 &ûdÊä+¾,Å‹±öÏjĞg src/Core/VrznoContext.php iacÇãçiacMÑé  0 Áçr  ¤  è  è  	‹úÁ©½ù=”-ïÑ¡ %—7¿ˆşÿZ !src/DOM/DOMChildrenOperations.php iaQ iaQŠî   0 Áë{  ¤  è  è  ‹Iz“M#çùÀ„TqLÔaKé !src/DOM/DOMPropertyOperations.php i1¢.&kZi1¢.&kZ  0 Áª  ¤  è  è  £ó] º)Á xÁûù­HÇÄnÿéü src/Document.php  i1¢.&kZi1¢.&kZ  0 Á«  ¤  è  è  	R–,É„kŞ„F¼_²•©¼N3E src/Element.php   ia51“Éia4·Ë  0 Áçc  ¤  è  è  ?ßtŸhğHòİÓQŸ¢ô-»% src/Fiber/FiberNode.php   ia6Ü»kia6Ÿ²n  0 Á¡†  ¤  è  è  
-Û	¹QÿÅtâº1‰ö˜tÇœu src/Fiber/FiberRoot.php   i1¢.&kZi1¢.&kZ  0 Á¬  ¤  è  è  YCcKøôh5×pîÚÇ>‚›ê src/Framework.php iwÑ5ÏÆ†iwÑ5’½ˆ  0 Â¢ª  ¤  è  è  'Õ|ë”kå–o_®™F?ÔUøn1 #src/Reconciler/SimpleReconciler.php       inû8µ³Õinû8;¡Ø  0 ÂaB  ¤  è  è  5.¾ÙIXÂ7µlyxS,ú“áÙ¨ src/Runtime.php   i1¢.&kZi1¢.&kZ  0 Á®  ¤  è  è   ıaŠFÕÂX­™´Ôñ<©O	wš src/TextNode.php  i`É
+Û	¹QÿÅtâº1‰ö˜tÇœu src/Fiber/FiberRoot.php   i1¢.&kZi1¢.&kZ  0 Á¬  ¤  è  è  YCcKøôh5×pîÚÇ>‚›ê src/Framework.php i‰»/ÆW³i‰»/LEµ  0 Âó  ¤  è  è  (Ìıe	‚Šk°®ô½8©_ªÎ« #src/Reconciler/SimpleReconciler.php       iŠšã¼LiŠš¦³N  0 Ã¹  ¤  è  è  5ÙšùÏˆl£,¹Ça‰|Ì"j›— src/Runtime.php   i1¢.&kZi1¢.&kZ  0 Á®  ¤  è  è   ıaŠFÕÂX­™´Ôñ<©O	wš src/TextNode.php  i`É
 G…i`É
 
 |  0 ÁçZ  ¤  è  è  æáª{‡ëÁú#ëº.UÒkñ\@ src/VirtualDOM/VNode.php  ilÍ0M×ilÍ¶;Ô  0 Â0¬  ¤  è  è  Gñ‡å¨êşóH+õ¬UJÊUo src/VirtualDOM/VNodeBuilder.php   i`Ï9|rƒi`Ï9`ƒ  0 Á¡q  ¤  è  è  ë\ß²×õ  ììjÛ3–õø¡? src/VirtualDOM/VText.php  i1¢.&kZi1¢.&kZ  0 Á¯  ¤  è  è    æâ›²ÑÖCK‹)®wZØÂäŒS‘ src/bootstrap.php i1¢.&kZi1¢.&kZ  0 Á°  ¤  è  è   „eòN°Š³n¨ÅKÁ&:·
 ğ±ñ src/useState.php  TREE   25 2
-í)™P)$pò…3ÇÑÇÀïzsrc 18 6
->ãyğ}CHDDƒƒ~É*/ DOM 2 0
+„0Ik½§â³w6nvÀYí·’&Psrc 18 6
+‡‚ÎB¶¨gœj"™68½LÔ £DOM 2 0
 ¡äFKæC‰ús‰sşXÁ3ÌCore 1 0
 Âr»êMº€qfBf^¬QÔq'Fiber 2 0
 iË§.j±™›¼rãYªEÏCommit 1 0
 »ï„ªÄ5®ğäå¼Â5šóÂşÜh˜Reconciler 1 0
-?òí"6¤°x(:Ó´©%ø2ˆVirtualDOM 3 0
+¥niçÔ)·È”êÅP"’È#ğVirtualDOM 3 0
 qÍût ëk,¥-.Å‹é’ÉÒßÜdemo 1 0
-´VDà%»Ûêöš½˜™›–›wÔUı5²úZHoÒİ8€çF­# git ls-files --others --exclude-from=.git/info/exclude
+´VDà%»Ûêöš½˜™›–›{?à
+Ài’ âˆuN¬ì$`t# git ls-files --others --exclude-from=.git/info/exclude
 # Lines that start with '#' are comments.
 # For a project mostly in C, the following would be a good set of
 # exclude patterns (uncomment them if you want to use them):
@@ -32509,10 +32570,12 @@ qÍût ëk,¥-.Å‹é’ÉÒßÜdemo 1 0
 0000000000000000000000000000000000000000 7ead3b720a1d19d0e6229c1dc996e650d509f3de Bohuslav Å imek <bohuslav@simek.si> 1762095274 +0100	Branch: renamed refs/heads/main to refs/heads/virtual-dom
 7ead3b720a1d19d0e6229c1dc996e650d509f3de d7259c806567c866ebdf56436a882c8f208ca71e Bohuslav Å imek <bohuslav@simek.si> 1762095291 +0100	commit: VDOM init
 d7259c806567c866ebdf56436a882c8f208ca71e 27c558b4f7695c082383f2f0405f1e73db3cd84d Bohuslav Å imek <bohuslav@simek.si> 1762098361 +0100	commit: VDOM init
+27c558b4f7695c082383f2f0405f1e73db3cd84d d2f47fefc96521ea0edd8175eeb34a15c229bc51 Bohuslav Å imek <bohuslav@simek.si> 1762102354 +0100	commit: VDOM init2
 0000000000000000000000000000000000000000 7ead3b720a1d19d0e6229c1dc996e650d509f3de Bohuslav Å imek <bohuslav@simek.si> 1762013602 +0100	clone: from github.com:Syntaxx-HQ/PHPX-Framework.git
 7ead3b720a1d19d0e6229c1dc996e650d509f3de 7ead3b720a1d19d0e6229c1dc996e650d509f3de Bohuslav Å imek <bohuslav@simek.si> 1762095274 +0100	Branch: renamed refs/heads/main to refs/heads/virtual-dom
 7ead3b720a1d19d0e6229c1dc996e650d509f3de d7259c806567c866ebdf56436a882c8f208ca71e Bohuslav Å imek <bohuslav@simek.si> 1762095291 +0100	commit: VDOM init
 d7259c806567c866ebdf56436a882c8f208ca71e 27c558b4f7695c082383f2f0405f1e73db3cd84d Bohuslav Å imek <bohuslav@simek.si> 1762098361 +0100	commit: VDOM init
+27c558b4f7695c082383f2f0405f1e73db3cd84d d2f47fefc96521ea0edd8175eeb34a15c229bc51 Bohuslav Å imek <bohuslav@simek.si> 1762102354 +0100	commit: VDOM init2
 0000000000000000000000000000000000000000 7ead3b720a1d19d0e6229c1dc996e650d509f3de Bohuslav Å imek <bohuslav@simek.si> 1762013602 +0100	clone: from github.com:Syntaxx-HQ/PHPX-Framework.git
 0000000000000000000000000000000000000000 27c558b4f7695c082383f2f0405f1e73db3cd84d Bohuslav Å imek <bohuslav@simek.si> 1762098388 +0100	update by push
 x+)JMU01a040031Q+ªÊËwÎÏ+I­(Ñ+È(`°ædPû"~ê‰ö>£İ¿Ïº »lx…VßO9¾çHùæ‰%w/ÕÑtÊÑëÃQpmU!!gw–øØØ+Û{Uıß;c{$qK„ˆâÏ|óÍ73»¨ô~ıú_ŞÕËz<Rb…¶9ÂÍ³râééîêıÕç»w†Î×Ú<Ş½“4oÆ£ñèèà`<‚ğ'p­µƒiøÒ%¸%BÉ¦à"ÛyÛ¡ÄZ(t³¨MY¢‘êáÄ?BŞƒÊÀ-İjUÏPH[Wâ‹hWJ%í‹O)/üGY9ÈêTªimôƒAk'‚?KG æZå²’ÂI­ ×«ºB‡öÖÂé•ÌEEqíZÔ-x;QN}`öy4å•°6°àIøJçô©)C™ƒ^ü‡¹ƒ=Šç„ThÎ+\QŠoØ†>GGğñúË‡Køëò0<ƒÌ0›İFOŸèñÌşAH^_p
@@ -32556,13 +32619,30 @@ _á dÖÏÍÖ`¡~Tzo½.ÃÆ3ßğd9ÇºôëNØ6šMdÛhTe³Y³h$ı„ê{Ûè¿ê~‹ZóB‘ÉÆâ·ı©”äQê©à 
 úù)x8åê—œK>W`–¥_¦¹š?ç¦“[9”åè¹ö²óÍ®7Oê®6•ëï{²ìï­¨W&ña7@–E=™i+Ó•ô•jôË·§êo”r]TÜÏºYv5k<%ˆßÙ&Jb+Æ§StRĞ­é%b:eJ&ìV³”
 i–z=ôë×®í¶_ƒ–MŒ&îÄIa[èö¨4RØîµZ\ÛÆå@ªÅşvŠÛm·Ú'¨Û«¿Ü%©F,cœƒÚ‘UŸ¡Ä‚š±fGÜ’†,cëMwdŒŒ¤°TT!2KµSEâÂfŒxœ%¥`p6¬·²BÚÖD<2ÉyêºveY8©_Q~q…æ¥)–ÃgJqëAÏ \GDéø–:g¾Í–€&¡·&!ï{sÑÍ³·e6†esï¸¾+6w$pû˜KÉ>+VCÆ2¾kª¬@¤	4>L’=$lë<Òä† Ó÷å‚²½P! í#™ĞRÒ´é´²‡7šíÀz«Á“1Úª×<¹?Í‚±O­µ$ÓùœÄ$n9>œCñ¿ƒüRr¿ïX’Tú·Î0†h£ÖZ¾”Ğ%û]¼êäâLRz)g,gŠl\7DÕ.ò¿«~½ÿğÀ¿ÿF[ºx}Q]kÂ0İs¡ÿá>Õ²áË@pSÔm/SA'Â‰iÔ°˜„$ncÿ}ù(Z÷ĞBiš{î¹çœ»ab­ûÖÍcOîeqt Z"L`úÅ:–“—Ébù¤ìıQ¨åœ*“#6¿>ÄQ5Ó4 …âfäd`$2ân}e*	¦ˆÑo’ÁÜU`+‡Ã‚Âƒ5ã3¤5Ì=ƒ­Ù?ßğcö‘ù†QÛœcC‡õÚh£rlêöCùj·EƒoBÊh·Ëàd6\ÌÖ£ñ`˜ÜÂ{âzúAJn YÙŠ}yÎXÃ:uT¿Î°;Óî”B_dHğÃ½;%ä´7çÀ…~m)ÛÀáÚA4aÛ²EL®8prô¥zpZ¥ì™˜ÿ1{É6ê’šsš;b\ôõ†Â,¥XL¯™=Õw]©„Ô×¹­ ×ƒ$©Òó&³sR—ÍWIÒ…¤«å¶áSĞ¬M•ªNØæE—]âş*İ%x+)JMU04´`040031QóËOIÕ+È(`à}¸J¤ºıõÁ_rÊ¯wé…^Êşã€¬È©43'%µ¬öcûÓ¯ş}îï—ôĞşºF>ÔëTh>LmHjE	XQÌıM×¿*(¼y“ÅwÛxãW¦íp3ïx+)JMU052d01 çüÜÜÌ†İï[V1]÷áÉÓ=‡Lg}>ôïNÆC3Š‚ü¼Ô¼½‚Œ†Ö½‰M,¢â|ïÒÙë¼?§¼ƒ™T”ÊÀq¨H|÷+ß]…iNiqk¯ªC¤]ü}>éwóf|æÜù«¸³ø_ÄAYã3²P[\ò“Ksa–|ŠUØ¥y¡âàïŸk=ÉûÿòTkN*\Ù4“-Ù÷Zæºí‰ß4uåv?cWˆen™I©E<™§—ëemœ9[dOããHö¹«\ÏCq+JÌM-Ï/Ê{ÊY*ÙûÇ<¡/¦×Şİ:n×4û•Ä  Ôäü¼äÌ ionö=*œõå²°ÊÌ-|Ÿ76ì=5-¨4¯$37lÖ¾›‡Ì·æ4VVëüšüğæ
 1˜CR+JüòS ê»Ü®ŠX;s‹Ë•6+ı9YËgAìË,*)MÌXáÙß%
-¯³u–êêí~9éä¥ûüw v&åç——%€m}6÷ÑìM¯9{wk®+ºqèIOğD¨ÂÒâÔà’Äˆ­©Ÿü6tmÎ›°â¨÷Ai5«í\6~ àƒx­ZİnÛØîu€¼Ãq ¬d¯dïö¦¨²Qà(rbÔ°• ;hêÈâ†"U’r¬¾ì]/{Ùb}‡>Ï>A¡ßÌù%EIÉb…İ˜"ÏÌ™ùfÎüQ·qz+¾ÿîû?şáw?¼œOçOŸ$ÁLæó ”âj™ÁÃÃÍÅÛ‹?ße¸ÿ)Í>Ş\Ê0MÂ(–Ùó§O>YäkWöÓLŞ¼Ïşš¤ı4)äC‚ËßGY±â×ç§7ïÏÒ±Ü¼š–áÿ‹,Ë¬Xãß ˆÒ$ÿ"²ş4ŠÇ™L¾”¬ŸÎfQqs”†‹ü4H‚;­ıÁŞŞÓ'bO\E³y,…ÃF´Nß_ˆ÷2Ë!Ó.­áuÃi”üˆœ(¢I$Ç"³ˆŠb"Oã{™ãZŠh6“ã((¤˜ĞÖb¥·±œí3³ãB@ëIšÍrqäQ(4„Àˆq4™DÉ’±XÌÇà‘ó}‰Ûa$“"^2fu´(™ìByL¶ÿS1YÄ±8Šneæ‹ˆıyÀ"~$c™a#fvğôIy®ñğøŒ}ğ™gÑ=©“°V(‚,–¢1Ngdñ~BçâúŒ¸~µ¼ÇÆo¡|ğ4˜+qp ğ%ø`Ç¯E§'®yñp9ß˜*¢ä¸Ä_™®öœí{Ÿ(2©q šj9Q­6†$#Í‚(Ø2[Šyak‚ÈâbH‘Î·1×úOIH^ë n¥·?É°`\€±ÌÚZ F"?±hmñR‰ØHã±ºz!k·+îÓh,4Ö´§©xö¿Ÿş÷ŠIº]ëxâjxx9|¦Q¯ĞÉOÀØÏÄ¾°²tzn‚P«	Zâ*¸7ûjpt~9€.ÙûB˜àNænµ¤ºİ„|ç
+¯³u–êêí~9éä¥ûüw v&åç——%€m}6÷ÑìM¯9{wk®+ºqèIOğD¨ÂÒâÔà’Äˆ­©Ÿü6tmÎ›°â¨÷Ai5«í\6~ àƒx+)JMU0²°`040031QĞKÏ,ÉLÏË/Je¸«Ù+±ÇãÖ¬—‡ì¦°Í¼ºLHõL'T•³c¨‹«^n
+Ã³¹foºxÍÙ»[s]yÔCOz‚'Bùx:»ú»2¸]Úy‰Åş‰sd£÷Ó.Åu¾¯ J‚\]|	™“œŸ[_œZ¤—UœŸÇûhR@úê	ÒN›y¬™¾ÇïõïL€@!%57ŸaK‹‹ïÕİ·_}œµwÆÌÙÓfC-+È((ÍË,Ñ«ÈÍaXš?ñ¸‘½hø×£¹)ª.¬éÙå1¥¸(™¡½éœÓ6ñés²”fšYìõ¹¢° C[z’x+)JMU052d01 çüÜÜÌ†İï[V1]÷áÉÓ=‡Lg}>ôïNÆC3Š‚ü¼Ô¼½‚Œ†Ö½‰M,¢â|ïÒÙë¼?§¼ƒ™T”ÊÀq¨H|÷+ß]…iNiqk¯ªC¤]ü}>éwóf|æÜù«¸³ø_ÄAYã3²P[\ò“Ksa–|ŠUØ¥y¡âàïŸk=ÉûÿòTkN*\Ù4“-Ù÷Zæºí‰ß4uåv?cWˆen™I©E<™§—ëemœ9[dOããHö¹«\ÏCq+JÌM-Ï/Ê{ÊY*ÙûÇ<¡/¦×Şİ:n×4û•Ä  Ôäü¼äÌ iKó2Ÿó\ÑÜ~‚eÊ«£J“N(3~€šTšW’™›
+6kóÏó9Ü‹uvOì¬á9£”5{:TYHjE‰_~
+D]b—ÛÕCkgn‘b¹òÑf¥?'kù,ˆa™E%¥‰9  +<û»Dáu¶ÎR]½£İ/'¼tŸÿÔ°¤üü’â’¢Ä°­Ïæ>š½éâ5gïnÍuåQ7=é	UXZœ\’X±5õ“ß†®ÍyVõ>(­fµëÃÆ 0²Şx­ZİnÛØîu€¼Ãq ¬d¯dïö¦¨²Qà(rbÔ°• ;hêÈâ†"U’r¬¾ì]/{Ùb}‡>Ï>A¡ßÌù%EIÉb…İ˜"ÏÌ™ùfÎüQ·qz+¾ÿîû?şáw?¼œOçOŸ$ÁLæó ”âj™ÁÃÃÍÅÛ‹?ße¸ÿ)Í>Ş\Ê0MÂ(–Ùó§O>YäkWöÓLŞ¼Ïşš¤ı4)äC‚ËßGY±â×ç§7ïÏÒ±Ü¼š–áÿ‹,Ë¬Xãß ˆÒ$ÿ"²ş4ŠÇ™L¾”¬ŸÎfQqs”†‹ü4H‚;­ıÁŞŞÓ'bO\E³y,…ÃF´Nß_ˆ÷2Ë!Ó.­áuÃi”üˆœ(¢I$Ç"³ˆŠb"Oã{™ãZŠh6“ã((¤˜ĞÖb¥·±œí3³ãB@ëIšÍrqäQ(4„Àˆq4™DÉ’±XÌÇà‘ó}‰Ûa$“"^2fu´(™ìByL¶ÿS1YÄ±8Šneæ‹ˆıyÀ"~$c™a#fvğôIy®ñğøŒ}ğ™gÑ=©“°V(‚,–¢1Ngdñ~BçâúŒ¸~µ¼ÇÆo¡|ğ4˜+qp ğ%ø`Ç¯E§'®yñp9ß˜*¢ä¸Ä_™®öœí{Ÿ(2©q šj9Q­6†$#Í‚(Ø2[Šyak‚ÈâbH‘Î·1×úOIH^ë n¥·?É°`\€±ÌÚZ F"?±hmñR‰ØHã±ºz!k·+îÓh,4Ö´§©xö¿Ÿş÷ŠIº]ëxâjxx9|¦Q¯ĞÉOÀØÏÄ¾°²tzn‚P«	Zâ*¸7ûjpt~9€.ÙûB˜àNænµ¤ºİ„|ç
 ş![»UÆÊß-\8@Ïq‹&¢å¡òBãâ#RÑî8‰Š(ˆÅ,]Àrf<qnà8Ù²˜âÒÇ…¨¡`-•ôhœHDa®šËxÒíòn-‹"éIëÌÇ³Ú)É%ÇmÆ2 sF‡O9Æşş~U4¸êjh#CÏÒ{yÇæaË¹×†½çsœnÚ³HÍ¶ÓóŞ†mÇÖ­±)ÅÕBîøŠ>âŒ#ë|^‹Ù;w0¦>1A––pŒœE8-³t EY^°"Ö„w²pw=õªJ±KZ›9’İª$™òÛãèh ÖÏ«;ÖãCì=¿:KÅ„”!¥Â¶ò2õ$“ù´Š­ÍüZÇxtvÁ¥ûC^Ê¼@¡óãáÑpp)ä-J[‚%ÒµñF¡õË?ÿ¶1töQ„œ†™ĞO.|Šl§#i‹ÃŒd)'Y:yˆò%œR¥@Ÿ=“-ÊéÒ¦?t¸O;ûuæğÎû?îô¢|ˆŒÒlkwÅ÷2‰üŸ¿Xëv•Œ–ª¡¡™ç×M*èúT×%EóƒxùR4›¾#ZH†IÊ/j·¨”İ2;PJ!^%C«„O!qZ'ò\´Ò¤|ú±-pÁ¹¥-dî ys¯^Èıò‚DC®–(;6|õD‹ÆG¹¤¢¡qÄ¹a›Ù™<+òUL-"i‹fš4wÅ7ß Ğ…ğÅ %Ø3—6$CÃ¯hòkâòr*’Jj õæÿã¿âéa\¥+>‡G ‚+­Aúh\”xĞgÃ±zUÙæª(Äıu-\
 ÆiÒÑ”˜Îd„ÏœÍ‹e«¬ßª÷á¿‘¨t¨0\$Ñ_È¤¶ŠsIdãIÇc Dk£q«)ãQÉ÷ü…^.‹Ã¢È¢Û*Š&
 á ƒNç¡›ˆ§z£ã±ï¼ÄÀ™À ĞH•OHù¸ªî?s>‰déÄ'kØ=Øe… û0ëÒ(&g:1Â|T^(áˆb÷Úq&á²¹Lç¼»äb%÷ÖoğLU>£fÍŠ4N?É¬•/nñMûûïwwŸSNÕG‘ÊîÎ¤€"UuE¶´x»ÆĞ6	Ç§EëQŠŞ¶‡ã±ˆ£ñ
 ıÌùY š­8M?æğ^aÍ¦Œ#ñ1`wzÁx< ­O4;í$I]“*éõÍ]A-/¾(‡>Fªur×bN{Yçûà(WË1û’Ñ™Ï·ñ³ªê‡ú/7TÃ2'À‚ è¿»¼œG£$@†ZñIŸö(ÇIk}İVcÏ•®=$Şªî!›brDû.¨b¯)‡«ÌÚÈ†“)Ç7,ßÍjb±¿E…½ñ€-T5jÀKğªOú»Ã€Ã,ºÃhíQGõŸ›)œÕoNÎ_\]7G#š÷Œ.ÏÏ‡£QóÃv‘kÉ;=%Gke•Mçgğ2ŞeD^¢ò5¦ëõÅ®¿RaüË¿ş.ŒéÏÎ‡%G¢B ªÅ}µ§­š;}îkÄ{!Õt¢u3xåœSfcµğ9)9Ya¬c›s¨[oÙé¡÷8•y1·È>s]#Óc5Åykpé|…‚´ÄpIÍÖ"Zò!Œœ#Rî×Y\"ñPg4‰â™Âq%ÉL9ÂKÛåg“„óÉ.×\T{í }or{'jRAÅ%ßÆóf…şğòòğÇÑÑñ	Z€Ñ»«ÁèOƒİ¾îè.Væ†> PˆcıZÛ Í¯Ô¤ª¬7"ºÍ\ÚÕå—YÂ‰—¿¬„şß~Hk¢’*òÕ}_|òK+ ½aís)Y\×ÿ&Kéãh—ø­Ìk4§ƒ'nšmGÓÖ w4A¦9K¼Ô˜ì™¿¢y<<îtĞæhÂdFãNjØ¨‘A9•‰ ‚õ€¼`FghÇĞoé‹¸s64=U¬™ŸUÆg5s3şT†b$IÅòè†rìMÔ¶äjÆnk{suoÅØ«¡ aˆQE¦'¯(+êyO·`ï ®ê!f&à›—HT.Öœ¹ó3=<|Â±«’)gğB²õbJÁï cv:˜ÃãÔ8©+àll@	4”
 kË•Æ&Ôî“êå=èIR‚ÉĞ,:=>«µª§“Ã¹¥n!wÚ£!3¡¸Dv§/+çí´CÂ'\ï[-*Òu¢¢O}’fİ&±‹ZØêŒAlHºêŞiÓŠÂ•ÍI&»´-–:Ñˆ/Ñó´rr MÈç¢ejïœfßKMûÇ^amL2ZÀğÖõpUïe›X.õ†€BºX™ôq!Ü"±}& H•_üF³ÃÒ•"tú7tbeÓrúK65jûU-!ÍÓ‰ŠZÏ½[«û87 £Ouµ¾AM°»¹é	Ã‘ÌfÆœëëÏ’ŒZœ_mÑÆ•„–£ÖÌæ_×´^šëW!fv£¿¥J7ÖÔ$êÍD][æL ‚›Ó¬‚9ŸV:eÃÀ(œ±MR~ª§¬Ù×oDı`Î”¡V»Vnú'PûŠUo¥r0œT•haÛ¼³$¡Éïó uaœØ6ï!°ÑÃŞJæ^M§3Ñ§‘ŒªG;_3‚»²ÒgíyBc<˜•¸ä¿+ôø²l(é
-n3‚ RÈàäìE–7šPàIŒ^)ØjXLÊPsÓjD ûî¹Àß„’¾ûíÊñ``È'ÈÛ=H®O{é}£§3¹0#dH<l6‘hs«VH´Éº·f³-h9À}•âu¶|À¸F¿¢´4+sµœµÌh•;4|XXuÍ¥•§‚Q×çrzB{5M€=IiÌMoĞÚ£K:Å]†÷óôfŞ”ÖŠÎşK¶z½¶Ld}¯¶t¸ğÉı.¢Û-½¬±ş¥Ö;Õq¬d­öŠív¬×Ôâ<Î7Bv+Ìİd¥$ù¥Ê¿ºn;ö¬|‘cÃĞJ7õŠ¶F;Fl«O®QFqe«{±¶³ë<´|0<CnŠîæ§#Äï^¶Ev¿;1Ç‡º¼ÓÑ¿…€OÓºø­’Â‡¦BÏyèµT%P1œjÅŠÃ­‘SBQ¹¿’ÒììŸ‚MHQ¨'”ØğvT´ğÌDã¾²JÌ7 Ù£	˜Ôïj>;Cª mæı¼†KAŠpW`™èœ¯8GÒ#Æxf®‡*#µ˜Ÿ¸Çx+Ëä®˜6W+ºšää;=E·&M9(kğ{ Ÿ6*äyÏ·Q”]ÚédÆ ÌõáÀrµÆ¯fÈŠŞt‘NìC3ü;ºWûöw?8™:ŒøR[Ö3£P/êôX‚>GGg$­"Äş?÷w!Òx+)JMU0±`040031QÎÌ-ÈIJMÎÏKÎÌI-Ò+È(`èm¬y=%ûé´üøu3İØí¯„şÈ3 eÂx+)JMU040c040031Qpñ÷uÎÈÌI)JÍó/H-J,ÉÌÏ+Ö+È(`øupåŞŸ¶Stß_\È :İ|Ç¿ÿQMEù@å%•hš<û«&³ø*?ÿy %„·ĞGîJ¢÷K Ä”-´x+)JMU01a040031QpËO.-öMÌKLO-Ò+È(`P¹¸²æÍ»z,S+ï²Û]š\,üò ÏÑxí[ÍnÉÎYOÑˆ‚%yÿ²Ú–¡¥$K€,’¬b4l‘g˜ù‘åxÌ-Çä)òBûy„|Uı3==C®ï&AÂ †=İõ_ÕUÕíë8½_~ıí—ßüâÅ«ùt¾¶–3™ÏƒPŠóIÜßß¾ıÍğ Ãø‡4»}¾¶ÆA‹³2)¢™\{XøÌ³è.(¤èdiZìÇr&“âyíM^EŠı•‡iz›‹—âê}û¤)Ş%cy9_´O	Ë,’3àÃ¤¤Œã•óél&X°z²™u&'Q^dWĞš¹çÄÑ*n4©–„£ñj"gvúA™„E”&+MƒdËìM0ŸGÉÄP£4P^Ç¼VÀft“üz©4¶Ñ¹ŒoxÕ“nŸ=GITDA}/ÅåÙoONE˜&…¼/ìœa»µi&‡—Ù÷I:P+úıÈÂêmÀš}q¿ßñÔ*?ğ‹ŠB¥dZĞy}|úİîñùUw4"^ŒFİ÷SXµ.“E™%K§,IÆ ­¸F#ğ“(CG^¤:Å4Ê·v -F¸Š¼ñŠy&ï¢´Ì/OÒ±´Šfğs¥>K¬~,³^ÇÚß†GEykFDŠ]S‰£!ÆÁé›·§'û'F–m‹4Šº›’¡œÉ\‚ÆEÄş{“f"ÕK´midÏÈçñ(½ş‹Ñ4È§.§½ÈpšŠõ¿ÿõOgû'{ûgâüb÷ìBl	Mç²/ÖÅ¶èE¹†é‚¯ÄD#hµñ>ÓjwÔµV°zğîøX\]¼Û={§o4G'¯-—@ì/2Z‡êïÊ(ÃW…Òy‘I¹½½½î°H€ˆ':³ÄM–Îà: Õàw kcCË|ò2ÊŠ2ˆAò§2|™õû×D‘Ë±G‹C¼ÂAŠ>‹ù%IÙbßÚ!áad}S„S@…úyF˜bÛè9óÌ[W¸ _³‚•I¸`Åv’4iÖ™#Å‡¨˜b_R~¥ÅWæ,p% RZMxËfafÃóh6e5Ğï¢d¯‹xh†ƒÍæ£°æ+íd†ymı
+n3‚ RÈàäìE–7šPàIŒ^)ØjXLÊPsÓjD ûî¹Àß„’¾ûíÊñ``È'ÈÛ=H®O{é}£§3¹0#dH<l6‘hs«VH´Éº·f³-h9À}•âu¶|À¸F¿¢´4+sµœµÌh•;4|XXuÍ¥•§‚Q×çrzB{5M€=IiÌMoĞÚ£K:Å]†÷óôfŞ”ÖŠÎşK¶z½¶Ld}¯¶t¸ğÉı.¢Û-½¬±ş¥Ö;Õq¬d­öŠív¬×Ôâ<Î7Bv+Ìİd¥$ù¥Ê¿ºn;ö¬|‘cÃĞJ7õŠ¶F;Fl«O®QFqe«{±¶³ë<´|0<CnŠîæ§#Äï^¶Ev¿;1Ç‡º¼ÓÑ¿…€OÓºø­’Â‡¦BÏyèµT%P1œjÅŠÃ­‘SBQ¹¿’ÒììŸ‚MHQ¨'”ØğvT´ğÌDã¾²JÌ7 Ù£	˜Ôïj>;Cª mæı¼†KAŠpW`™èœ¯8GÒ#Æxf®‡*#µ˜Ÿ¸Çx+Ëä®˜6W+ºšää;=E·&M9(kğ{ Ÿ6*äyÏ·Q”]ÚédÆ ÌõáÀrµÆ¯fÈŠŞt‘NìC3ü;ºWûöw?8™:ŒøR[Ö3£P/êôX‚>GGg$­"Äş?÷w!Òx+)JMU0±`040031QÎÌ-ÈIJMÎÏKÎÌI-Ò+È(`èm¬y=%ûé´üøu3İØí¯„şÈ3 eÂxí[ÛnÇîµb,!KvM[Ğ–…–m²dP²ÒV4ˆÕrDn¼Üe÷ ËxÙ»^ö²E.ú}¡<A¡ßÿÏagg—Œ\'mÑ–0(r9óŸÏ3¾ŒÓKñÙ¿şÍ—¿xüd1[ll$Á\æ‹ ”âô}R77£W/^ıvô,ÃówiööÑÆFy.†eRDs¹q»!ğZdÑuPHÑÉÒ´8ˆå\&Å£Ú/yQ(:ôW¾HÓ·¹ØoÚÍğûa2‘7Xóiû’°Ì2 %e¯]7Hç‹4Á†õ‹Íª¡œFy‘½_CchÖGë¸Ñ¤Z'ë‰PœÙåÏÊ$,¢4Y»i$“Xf/ƒÅ"J¦†¥ò2†äµ®´0“ ›ä×ëH¥±­¾Èe|Å»nùtûğ¡8L¢"
+âè[)Î‡¿?>ašò¦°kFíÖ2¤™gß&é@íè÷#«·k"ô"Äı~ÇS«|Ç?T*%Ó†Îó£“¯öN/ºã1Ùèxxrr6wß@NM`Õ¾Le–¬\²T$ƒ¶âÁ3L¢yy’ê³(ßÙs| ´á*
+<ğÆ+™¼Ò2??N'Ò*šÁ/”ú,!°ú‰Ìzk[uæ­)vO%†'/_Y¶mÒ(ênJ†2”¹,=ûïUš‰ZTT¯Ğ¶¥‘=#_ÄãôòãYÏ\N{‘á,›?|÷ç¿‹áÁñÓƒ¡8=Û‰a¡‰âıBöÅ¦x zQ®aºàÄ1•Å˜ZíyŸÓn÷©k­`õÙë£#q~8<{½$¼Ôd?·\R ¹µßÈhª¿*£x_JçE&åƒ6iñBg•¸ÊÒ9<P´üdmlh•OGYQ1HñR†/³~ÿ’(r9öhqˆW8hCÑg1ï’”-ö=ln‹p¨P?¯S¤³Îüê
+×âkV 2	£8B&I“vaõ)ŞEÅyIù•_™³À• Hi5á­˜…™N£ù"–Õƒ~ß%{5XÄC3l7×…5ÒNfX`‘×ö¯‘™¡P‰Š%–…¼×b^§b´P~zSøJ|´BÑÄŞj&ßÿåÆ1)¢œÀ7µí±¿œ¾NO‰&ÂB¯¥ƒ"œ‰Şèà&”Îz¹ÕêDßÿõO5pÃáÉPy{GîìÁ_Ê<¦’ÒŒ¯Ş•ÓvXVøVÊÚÆ3z²ŸŸÌÅß^Ì²ô¢ú#ïvÔ÷"…˜$‚¥Æ<¥E¹äO^Ü·ÑüaòàuÉ•ÀóÎ)Ô`‘âXè<+ãE°£ÿN4±;	’Èê(éi–TŒõûı©·µ³÷‡RfïO-„ò÷ã¸×½ğ€½éºÖ#®3)b™LáXé£tE˜*Üúw2ıÛÎzæ˜	à2£Š‘ÄWNgíĞÈ*{||úHàïcÑÑ°ğíş}ß0Lªeã´Ø£BÎÄ³‚§³‘Íf¿€Ş/ËBöºPH&®%uÈ3å}‡=ZãˆLcsUœ	ØÊÎ˜Í£D
+IÊçZ]QÎB2íiïÓ@LwQÑÿfË—áïl¶Z¡ÎogºÎ(Šƒ?ë¢kŸ¢ÌzòDtCT–o»ë´ì¸ÀçÅ¦‘D1
+Ø0,úRRXç•Wp¯X xôª´L”ÓéÉ„ª!KØ¶0¾¥n‰2—°"ûp²&zkaY­¸š‚h)½>ZQ
+ÌG+Ì‚12vÕ¦ŸuÑnµ2A››ÅŠişB272„g°·Dœh)4(«Òm%fta4Ô4?ƒ’şí³4CGÀ0vVØ†»¡RI£¸5=B«Ë¸0èóÊİ(ñuî÷ µâÙ‹>x•ü§ôıniĞßydãI9_ô6²S²®¨àÑšê£óSãÛék>]z0ªêÓªÔ§dh«õ³TçÛªá ~”s0[Ó­µ)¥à±úÍ-X}ŸÖ½Ş¬˜ÇùB†haÃYåî–Êö4$VBP‘¬>-	%’%×G+}*/Ëi_¥Sö[¡#È‘Y¢"‘U¢&TVz{¥VĞb»™•f¿©ÂÚ¸ÂÒGè¹¿›zÛ­X9b0“¨Š Êjÿ–y±ºç°ÔcHDéÂ>PäV"&>ºgQ†J%TH©|2ƒšLÏ`j*ßÖyÑ®7#›‹
+=ÑÓ¡-U÷RÜÒ3µI!5ÔD¼AºzDcV6V‘U
+ÁvÕø}ÒÄ!u¥G]¥Ä¢§O‚Õ ]Ò¥‚#3éÀG—FåeDI™»&˜¬>ŒKîPM“Ö€Úa{ú{ºËóÔÏ¿7Ymî»è$<À©t¸³g~h“HäÿÉÀÈÈï*ş^“„1BjƒX™òg¥tG+a&ÕÀ’Ôe^Í ’É¼Œ*·­¡Û§¡×‚*¡*¡y‚Åöã	®…u:MËùÎÂ¬bõz@U* kô‚Õ³™„¿Çß_,„>×–vP7[Ô:Æll·®&Ô£§rF·•åĞÊ¥Ó\	>Œ<Æòå#’¾µ8 ½?SÄhàoº«Ø–ĞPë·ÁRfMÄ$pø2x+©\FcŒ"/¸¢8¸Œ¹­å@i¤]UFÆ÷|!¯Ò—A¶Ù*t'¯ô§=—pÔşÈº„%Ÿš3ŸqIX?Ï}vc6F#}¦Ñïª<(ÄÒo‰Âº•Ó“6ÙêğkSùóOğmXòÿ£¬›ş=QÖ–sÖòTÜ£YÕçA\ù²èaî!ò·ÑB¼8{ydçMj&E–M¯ÕÓúOšº3àL¢»-ºW8ORŸæA”Ğ“$¸¦?9fM˜ÚÒGç†±äy4át–ˆÇQù½Ú
+!JeAû1 šÓßI¤,…-èmö¿Îï_à}-†Ù/yİ—üş+z/czOù=èsA‘?0ÃÅ„?Ïè=šO»Í9®ËÂ5ØMii€ÊŠ?„Aräô(¿ÆnŒ¿„Q¦%…)IAı»­=›Ù:òß–øäq/JÆA–ï{è˜Š4NßÕÎx:CW«­ÑøgL5¢ëLÃ5®éHù_ˆ§5±ügÓAø•„›cæDSBêƒ¼èˆÉv¬èæL‘Âa½³BÌËÅBfaWÃy²%ª	C:¯óïNãOqñé›ŸÚ‰…¸¼pÅ­Åİ˜oEÄj0tbù,-ã	HÑ›5GpÚ'Ğl–1Ú7x×¶t3Ü¦ÀİÅä–vš—š¢¾Ğ'X`îg˜¤Ğ:2ÚÙã”Òy+qabOtP±qÍUN0HÔˆA‹U7#Ú!o‰İ]øıŠÁi£Nm„œó‰UŒ25t†»h`#u–.+]P$Ö¹w>§¡2—À¢L"œ–ˆÃ§ŒÇœê²D;:=jãSÚMz]ılÜV;R·º7˜'fhÌ\Ñ[ÀÛbj·ÄÊÒ¬â%Jì+™ªÚËHpÓ¯ÄK~ĞÎ™°S—]å‘¼¼Ä7­ÎÏ·¶øX,Mt0 vöŸlc´? Ö©äGü©‹nß5m‡d•­[I’FÔİÊWçã.®ZjL›óš]Vj§ıÚJ”—°‰Fz¹nø`7¼ƒ¦İÑæ­’N–#½€qíÜV‡ËÆB¯ß%dK”q8¹m%Ş…›9×2ÃîuQÈ£*uÉ‹bIëVf‚×ÃŸØõáÆ8ÒPº¸]¡¾uEŸ´[fC·°bÍ2hc­F˜;fpôå*ÌÆv­ÁÌìáxÆ_ÚâÅ1şN³aÒ½ ì§xÏfƒ)<Ià4@«}ÃrµÖ2MB˜×”r‘¾KÔöš&˜˜á„¹‡‘ıØ$G1ÛÔ‘2âwhT©`·ÖˆšÍœC/çá•öäƒéœÑÑşuŒ³Åz{a8pôÃ²¡£ÇMô½M/f+ëÇYûAZ2@>X‚Â–VÏ€]ëfQ7çµ#Ê£Hz[5‘4µg 6gôKóéZê>€ª•ÖT3VÏcu-¹ùØ™â©#„¥
+
+|,Ÿ/÷ğ»6(²îåã‡Í{N¸pĞh&è_ô;ÔŠtGÕ6Ê¸C2X1éo\ÓĞ€ÍüyÅ6¥ õXqè¿kÇĞæßù¼Tò˜­w¡Á8WS´ÅÙÓ[:IWnîà¼î:ÕQn­¢ï”Óˆ!ÎÖÑ–²ÙKÓxlYÍ‚×RfC,ÊgL„³÷Äu¢ıí.„­²$*yTT=3wqÍ¹ÅZƒSÛRx»×ãGDu3‰n_šÉ¦½UÕÛ4´Š9Îö¨Ë  œ	Q-ˆÉÓsl:ÁÌñ$jÁíUŞ*qQÃ…¼47jÔdM	¯]k±òå‘s~Ñäªy€glİ4E«·R±è”`õ«ëåÆ:ÍóJÊ–ê:§?9Š–áÓ€ 7wçŞ3.ë\PaéİåhàWğ\áè‹>ˆ[¬	?íÜ·)Î©'R…Ô%PÕ(Âİ–Ò¸fR¬%ß®«ó¾ûîovä~4eÊÛÈúĞñî­‚²$;¶$‘‘^a¦¸1Ë´ñI·!ÏÊ›#bV~™4
+#BI1ÇaË'›PòI-	ûÙ\ñºƒ/E8.I`íÒW0öz–B*g¬ÑûáJ'£2Bª€ğxŠPÚ/3rCíZ>î@= ¥ocãKoåıš-j~wpJC÷ø¤‹®²¡¹³,šNÑü·_	RZY¤M?Gh•&Nêª
+İ8öORXÉÆ?wMheæÑöõşğ—Íûœ)ê‚ï{>¥U©·t„éG¿û÷+ëŠæBÍJøÖœò/QµÑ­¨TÏ&¡l‘ÎÒà€ÃñÇ/`š©}ÿ§µz_ek3œ2Gş¿¸m¨â½‰b’â¿ìØå
+«”õ-¥&AäÌM%5»‰2Î¦ªAş¿J˜Ç×ŸLó™«/£ÍÖ ê?U*2ËåÆ? ûe ßx+)JMU040c040031Qpñ÷uÎÈÌI)JÍó/H-J,ÉÌÏ+Ö+È(`øupåŞŸ¶Stß_\È :İ|Ç¿ÿQMEù@å%•hš<û«&³ø*?ÿy %„·ĞGîJ¢÷K Ä”-´x+)JMU0±`040031QÎÌ-ÈIJMÎÏKÎÌI-Ò+È(`ø›ÊÙÔ•½aİ—½²¬Ò}+ãW[ ³‘x+)JMU01a040031QpËO.-öMÌKLO-Ò+È(`P¹¸²æÍ»z,S+ï²Û]š\,üò ÏÑxí[ÍnÉÎYOÑˆ‚%yÿ²Ú–¡¥$K€,’¬b4l‘g˜ù‘åxÌ-Çä)òBûy„|Uı3==C®ï&AÂ †=İõ_ÕUÕíë8½_~ıí—ßüâÅ«ùt¾¶–3™ÏƒPŠóIÜßß¾ıÍğ Ãø‡4»}¾¶ÆA‹³2)¢™\{XøÌ³è.(¤èdiZìÇr&“âyíM^EŠı•‡iz›‹—âê}û¤)Ş%cy9_´O	Ë,’3àÃ¤¤Œã•óél&X°z²™u&'Q^dWĞš¹çÄÑ*n4©–„£ñj"gvúA™„E”&+MƒdËìM0ŸGÉÄP£4P^Ç¼VÀft“üz©4¶Ñ¹ŒoxÕ“nŸ=GITDA}/ÅåÙoONE˜&…¼/ìœa»µi&‡—Ù÷I:P+úıÈÂêmÀš}q¿ßñÔ*?ğ‹ŠB¥dZĞy}|úİîñùUw4"^ŒFİ÷SXµ.“E™%K§,IÆ ­¸F#ğ“(CG^¤:Å4Ê·v -F¸Š¼ñŠy&ï¢´Ì/OÒ±´Šfğs¥>K¬~,³^ÇÚß†GEykFDŠ]S‰£!ÆÁé›·§'û'F–m‹4Šº›’¡œÉ\‚ÆEÄş{“f"ÕK´midÏÈçñ(½ş‹Ñ4È§.§½ÈpšŠõ¿ÿõOgû'{ûgâüb÷ìBl	Mç²/ÖÅ¶èE¹†é‚¯ÄD#hµñ>ÓjwÔµV°zğîøX\]¼Û={§o4G'¯-—@ì/2Z‡êïÊ(ÃW…Òy‘I¹½½½î°H€ˆ':³ÄM–Îà: Õàw kcCË|ò2ÊŠ2ˆAò§2|™õû×D‘Ë±G‹C¼ÂAŠ>‹ù%IÙbßÚ!áad}S„S@…úyF˜bÛè9óÌ[W¸ _³‚•I¸`Åv’4iÖ™#Å‡¨˜b_R~¥ÅWæ,p% RZMxËfafÃóh6e5Ğï¢d¯‹xh†ƒÍæ£°æ+íd†ymı
 ™
 •¨ØXbYÈ'-æu^ Få§÷…ï¨ÄG!Mé­fòÃŸÿ`“"ÊñşÅ>|SÛûËù»Á`ÿüœh",ôYˆ0(Â©è÷ïC9ç]¯#7Zè‡¿ü±nÿììôLy{GníÀßÈ<&’¶^}+3¦å°¬ğVÒÚÂÙÍÏ‹æâ//¦YúQı¹Šw[êw‘BLA¶Æ<¥E¹à'/îÛh~0¹‡¼äPmàyÏçj0Iq,ô>+ãE°¥7ş­hl1vl"ÇÈ_ ¤½4,)ë÷Çú©·±µóûRfÏ-„òwã¸×½ò€½ïºÖ^#®S)b™LàXéÿ¢íŠ0U¸õ{2ınkG9fxG…Ì(c$ñ•“i;4²Ê^'_<øûBt4,üzúÔ7³Õ²qZìQ!g âYAG·³Íf·€Ş¯ËBöºPH&®%uÈ3íû{4Ç™Æ$f*9°•1œ1›E‰’”Ï!´:º¡=›iO{Ÿb¼«Šş÷¾Ç`³ÙĞ
 u¶x9ÓuAQüiXW];Š4ëÕ+Ñ‘YŞv=Öi=Øp‚)Şÿ›FÅ4(`Ã°èkIagr\Àı½dàÑ§ÒR0VNC¦'Ê†,a›Âø–Üe.aE÷ÑxEôÖ&4Â²\q5ÑTú|¶¢˜ÏV˜cdìªMuQnµ2A‹›ÉŠişB2û÷2„g°·D¼ÑRhP:V©ÛR4ÌèÂh¨i~%ıÚƒ4CEÀ0¶–Ø†» RI#¹55B«Ë¸0èyéj¤ø:	÷kZòìE¼ÚüQúı¸mĞ_yd£q9›÷Ö÷³S²®(áÑšê#ó·Æ4¶Ó×]x0ªêiÙÖ§dh³õ‹Tï·UÁAõ(ïÁlMÖ¦”‚Gê›°ú>­k½i1‹ó¹QÂ†Ó Ëİ%•íi:I¬„ "»:ê´$”Øô,¹>*Xé¼.'}qœNØ?l† GZ˜giˆŒDV5¡zö¬ÒÛ[5ƒ&ÛÅ¬4ûK%ÖÀ]–>B7ÏıÕ<è-·bUäˆÁT"+‚hWøˆ°Ì‹å5‡¥îM"Ú.ì€"·1ağÑD2•P!¥ôÉ4j2İƒ©-¨|[ï‹v¾iÙ\Uè‰öİÚRy/Å-İspP›-¤†šˆ7H—·hÌÃÆ2²êB!Ø®P'‚WqÔUJ,zú$XÂÁğQÑ%]*82“|Ti”^F´)sÕÓÕ‡qÉª)ÒP;lO¿Æš®ò<õóû&«ÍuW]ƒ„8•·vÌ‹0‰Äş?YùcÅßk’Ğ"FHmË Sş¬”îhå3Ì¤jX’ºÌ§D2™—qAé¶5t›à4ÔáZP%C%4O°Ø~<Áµ°®C§©ay¿³0«X½Pµ‡5zÁêÅTÂßãïÎçÂvŸkS;È›-jcÖ‡¶ZWêáœ¥ÃáCe94sá—D…#‘¼GúˆÍÀßš€ŞŸ)b4ğ7İUlKh¨‰õÛ`©	³&b’8|ÜJJ—Q#Éî‚(®c.k9PGC iW•‘ñ_ÈËôe­·
@@ -32578,7 +32658,8 @@ n3‚ RÈàäìE–7šPàIŒ^)ØjXLÊPsÓjD ûî¹Àß„’¾ûíÊñ``È'ÈÛ=H®O{é}£§3¹0#dH<l6‘h
 HåD5z?]YdFH•âO0:”u—L…7­º§ Ô¬&¹.¶"@]jŸ\²*¡RC’'
 ™¸È¢ÉÅ}û•
 $*,½¤Óš.ıÏ]é©ò§…s³Ê)OŸVâ×iÂ•j@@Æ5t˜Ò±$!Qu1‹_
-P!;µŸ4ã-ë—ÿû5IßŞWnJõ|ÁWøT}PD,Ä8Åÿƒ±a¿¾oİÑÇêYK©IÙ-sSIÍ."†Œ'¨‹ÿšÜõÑÙ|æêÓh±Õ|ıU¡"C©{±¶XûøÆl:xA
+P!;µŸ4ã-ë—ÿû5IßŞWnJõ|ÁWøT}PD,Ä8Åÿƒ±a¿¾oİÑÇêYK©IÙ-sSIÍ."†Œ'¨‹ÿšÜõÑÙ|æêÓh±Õ|ıU¡"C©{±¶XûøÆl:xK
+Â0 ]çÙòòòy	ˆˆ¸wî›äƒ¶•6õ<^Æ{ùÁ¸œIC×•*Ã¢ÌÒ&¸sCŒQiç˜\”ç) :âÖŒÜ¿CJÖúhZrÁ&ğ¨½n±¶UL:G²7Y4s=£Üçyº6wù|”/rb;}x5•TäPjkä€HßÉÊæâ´?déKEñÂH´xA
 Â0 =ç{d³I³.ˆˆxoŞÓdÅ m¥¾ÇÏø/Q|Ç˜4t]©@´œÕQ4a[ŸÇ‘,‹²OÂÑ‘„eòŠ­cbs‹£öXcv-F›­dÔ@$Éæ$44˜”“Ëjâ½‡¶Ãù>]ã^ÏÒéVíOl¦/¦²ËPs´ˆ&}'«ş™›ãî°‡Ò—jŞKAI©x½XÿOÛFßÏHü¯(*	"cİÖjK(aE£!ƒ´›ÖVÈ±/ÄÃ±-ÛáË€ıíû¼wgûœ8-İ¤E•hîŞûÜç}½wÑ˜ÿøüÙW?íÇÓx}-tf*WÑÙm˜977†¯‡¿8L°~%—ı±J^®¯­¯ÍÓ•Bïü$›;ÁÁÉ›ï‘§D~gkk}¶Hˆ—©MoC?£hBŒM~H‰r£ĞõßÉü(dyÑyå¤Ê£(¤Så¸™pwêgÊÍæ‰úZÄú;Õ›Ÿ¨8Q©
 ³ªŠT fø²ãF³ßÃŒÌ¦Š²Di aeÂVÊ:ÁÌ”
 üğRyíÀO3J³d.§Ò$JHM&¾ë3\–8W*I #@mXna‡b'á}A5[ x,% ”/f#õÇ8ë¢C¡ºÁQúïí¬¯¹“¦–wXÇgg‡vwwi3è¬àÖÔ”Á<ÍZ, …ã9ğ]Ú—0ˆ›š&íR8‚—Œ(˜Ã*k,Öè
@@ -32605,7 +32686,24 @@ BjyJ(MA rS¸¨´©c‹Ë²¶ÖvHŠø÷Îì%vB ÁO¶w.gæœÙ‹t¶¶>¾û¼›İfÍ†î1Ï‚á|&‹`:œ}í+ú
 *êİ&¹¦Ö]w``h‚ŒİËõêÛ£f¨‡@–B<Wi!]2ºT‹Ó4’\‹áÅ=
 Úlş»F—µ³ñZÙğ!_âh®oÙ·HD¯ 4Úuíz³DêA¬ ^“ô3ÁUóeûñ%+ãbpV-\Büü@âƒö©©Âù¤ÂŒ¬qZ¡ˆ97É½yHğ\ÇóJ~.³ˆw!oyı¯;½¥väd7ï Û›§KKSñNğ8øª
 æWTmÑ=§í_ch 0Pa8¢Ù]—&Ö"İíºéä6‡l4µ
-c5MÕÁÅñlµ*tÔÔ?À ÿtOc                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   
+c5MÕÁÅñlµ*tÔÔ?À xµZÍnÉÎÙ€ß¡%KJ+ÊÀ'îJ†LS^aeIhm6’AŒ†MqÖÃbf(‰1tKn9æ˜` y‡<Ï>A!_UÿÎ%­ãlq8ÓU]õUuıtó*N¯Äï¿yùòåï¾{5ŸÎŸ?K‚™ÌçA(ÅÙ2)‚»»Ë“ïOşp¹Ÿáùmš}¼<•aš„Q,³oŸ?{şl‘¯ÙO3yyı)IûiRÈ»?²bÄoß]¥cùğh†ÿ'Y:—Y±<Æß ˆÒ$YÅãL&O%ë§³YT\î§á"$ÁµÖşÅææógbSœE³y,…ÃFtŞŸˆs™åiƒÆğ¸á4Êş"'ŠhÉ±È,¢¢˜…ÈÓøFæ¸—"šÍä8
+
+)&4µ˜géU,gÛÌì Ğz’f³\\y
+¡ 0bM&Qr-‚d,ó1xäü\âqÉ¤ˆ—Ì†Yí/ŠE&{P`“ío£b*&‹8ûÑ•Ì|1Ÿ XdÀ¯À›d,3LÄÌ^<ÆAk@<<>a\ó,º!uòÖ
+EeÁR´ÆéŒ,ŞBè¼#.>Àˆj¼˜(7º‚ıC™Ô’B_5œaV£Ôã,ˆi³¥˜§¤&%¬ä†Âé|qC4-ád‘„äW‚Nzõ³Ñ
+ËlKÔJä-‹¶%^)[i<Vw;"œ=q“Fc¡Ñ éd8MÅú~ùåŸ5Ğz=ëâl¸w:\.DC—Gw$o$Ë9¬¸.¶…•¥»[à¡”H_¼gÁñ©×ƒıãÓüdÉşNƒäZæn"ßé{½„üä”*ãå‘.8/ĞsÜ¢‰èx¨ìh\|D*Ú$Q±˜¥X®+ÂL‚'<[ŞÈlYLqëã¢l¤’‰(ŒÂûrOz=­cQ$=iœ¹<ôß‘\r¼%ÂX´hy(ÇØŞŞ®ŠW­2ô,½‘{ql^vœ{=0÷Ş|õGséçL0=ÏéM¸eáxtjLJ‘¯k¾¢÷BÆÈŸVböŒ©£”OLÃCKC8ŠÍƒ"œ–Y:ö£,/XkÂkY¸§zU¥Ø%­ÍÉFU’Ly‰íqt4€ÎëçÕ›ñ!ö_¥bBJ‰’Õ–ò2õ$“ù´ŠÿV'&šşø[ãŞÙ·îy*ó•€Î`{ûÃÁ©Y(I=l (‘®Œ7
+­_ÿş—CgeÂá`80YıäÂ«XÀv:’v8ÌH–r’¥3‘‡(0Â)årº6M¶('4›.TüĞYà&AvCì×™Ã[ì{üº»åCI”;5ßË$2t"ürª×S2Zª–f„*a_´©äêSå•íâÕ+Ñnûha uZeåóÆ)êmÇÌ@)…x•ı=JAËàƒ,‚/Y.:iÒG>ı¸%pÃ¹eKÈ"Ü6@òäD¢ÈA¡ ‹.äj‰Â iÃWO¹h}”K±³+Z7A¼5ÈÛ¼ÈFÈäY‘¨¦éÉ–h§I{C|õJ±Q_PT=s©±!Z¬”‘ğ‚¸|€œŠ¤’h¼YÆû·ØGz—Aé‰OÄáˆàNkEŞ%t=°¬^GU¶¹XäÈüT¢<ºNØ¬°Bh¬ ]Í
+XªıÓƒáAï°'ÎOÿxtÜF¡:È8‡Q?’YgCŒS™'íBP7 
+EtH~i2_+¹Ä{dq„*¥jƒTQ®Á¸gİ¯»«å¸““ÁºH¢'ÙtMÎæÅ²S¶I}Åx6 ¬*ŒBJ×Ub<_w.{Mâ’qœ$dçš%ÿ(ù¦^¸Õ‰AµG‘iœŞhòo)ê$º»¸e+Vå Y<uÏdÁÒ'‘áï”jt¼²nÄ“¿¼~ÿ¶'úS~DVWA‚|µ>ú&ÈFãÅlŞY×Dz8*Ğàúı#ŒJ øŠ{AÁéıÑGÇ?µ7ü ERĞUçM^i4ãª®ëOâ¢#H!-ªúÖiÃ•ãœ‡¡q«åÍjïÄÑG)†QØøŸ">ŞT2yñÏãùcÌ#RMWdÑ5šM”Ó]Õ¯Ôawh–ÍMKH7/Úİ7 $à×š¡Va·5(6º(Éf]ë_‚ƒÕ%è[ıeB!­Ä¬ÊŒ’5K$y4–Fi„%ÎMá7îAÌ©»ó2«™Ï|Â—w2\ ùLj” ¥Ğ@Ô15D*`-˜ô‰†›ËPP$‹ò\"½=<~½wxvÑh³etz|<Úê1Í›OÏ2zj
+sÖYúCi>WNŞİUWê©ã£Á‘’±!ûŞ^ö2èó^„TI‰Îåà.”sî®[õôí“(=ıÇ_Å ËĞ»K¶$éªM¨›^ÙİÅú}'ó[4Üœú\üûš:YÆİ[œ¯ÓúhŠ"Ä¦AµûFçp!›AÑd)"dNÔ.0|İíjBíM
+,~—Ç±:Lè¬®·ÆfG—gmyêàÖ	é‘LLŞˆ°…Ô‘wa¼àlªª6@îÅ³Öœ
+PÄŞŞM¢ZtWĞ”=<t«ü™Ÿ³×vHƒbÛmnƒà“m*Üè½zŒ›v…~ïôtï§ÑşÁ!ZÑû³Áè‡ÁOnß¤èALôs[ØäZqıZÛŒ—`Ë9(©öÁˆè&s‚.óÌ®øK-ì¶øñô•Í5¼²àÒÀi7€ô†µBÉâºÏ0IEOf‡ø-Ó4Á\ÜœÛÎiKï6rç„aš‘³ÄKÉ¦ùôŠMŞª›£x”m|RcHS.n§2a¿~AæQÔ0õåcıwèf§Nï/6ìÓU¶éöç`\Uü `“Tj©zìMáÜ¶şjÏıÓî¨g5cƒıŠÍ["™ŞƒE}ƒ4Ësºixé kx5ŠU1{¾y‰DíZhÎÜaš½ø„cW%SÎà9œõbJÁª:NÕ]cvZè>°jœÔplt	4®
+kË•¶g ˆ §ô$)ÁdhÊİ]^«°§“Ã¹Ù²}„ÜiGŒ†Ì„ÂÙ¾ÔÎÓi‡„O¸¶4ZT¤êDEWóÎ0èÒœ]ÔÂÖdbCÒè íy(ãU™œd²C+Ğb¨øB½oWN¥ZÑËgej,íœwù4-¡ÿ…:}bWN–´Æ>¿-#~¶Jû³B‡ê–>ÍÕsbD—ƒXw©;lbÕ8û×¬ôînM¯ıo„Põã÷Xl&±~‰˜>RÌÓµùâUæôpÕEò?WÛÄüÿY/o­ÓWÿúŒº™È¿|í¼BF*€}yé¾2_ËcV`êÀ’ÂJ%ãÄğJºTæâĞT.Çh^¬.O¸ŞAÑXÕmâ÷õA°?r†ZÍÊµBw×<ô“¥VÓªW+“‘*‰Mj|Jc%4ÅÌ<€>
+€-s|
+Í(û(™gEõ>Ÿ§í˜1‰¯Á]é³öLŞšwf$n¹âï
+=¾-
+Fz‹îÂ%Sİgprö"ËMl¹ƒ&Ï«{;-‹Iy$TeÈ¾ùVàó;a…¤ï_]jù„ÎÆfæ‹VÄ[ètˆëéL®Æ›‡HŒN4‹¹‡U+$šÇ”,÷@f²š4à¾NqŠ/ï°u«OÚè7³2WËÙˆÑÈŒF¹EÃ‹…ÅPkĞÜZy*usáBoè‚°gÓtØ“”ÎèXrK\-Ì9‚¸Îğ³úA‚é#ıKv{³²&f}¯¶t¸ñÉïK'`Ö¿”Âz¦&Õ€§NBk¶[³^Óˆ7ğ8ÂQTÈn…=xéuFöÏTùË©«MJº­¹uCÍ¹u„¦9èvC+İÔ¹wƒvŒØ£>¹BÅ•­îÅØÎ2lòĞòÂğùPt7¿˜$~«öXd÷[1Øµf8(Ó?0OÓƒ¦ø­’Â‡¦B·Âyè¬¯¨N5¢æp+Aäß•PTî¯¤43û«à!¤(ÔJlx;Úá"ûcUb¾É.MÀ¤~NôÉRíwĞd•CEõ‚¡}*—?tzW/Œ#É*¨1pwS‡8Ôb³È½ÆQc,“ëbŠSêZhHN°»«èV¤)ŠV·>Šôi£BÎ÷|ËEÙ¥NfÏ‡Y ,½80\ñ«²¢÷³‘Nì~fø;ºßKØSae 0â+mYÏŒF@=¨»Ëô9::#i!öwÍi
+ÿtOc                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   
    
    
    
@@ -32650,7 +32748,7 @@ Gl'	‰½°r:“Âšnùüğ!Ã›ÕZ‘şpı~¶Í}dË]Ì€¶CL‘p	‚ã²J©Õf‡«Ã!YÆáF|C4¢Ñìƒºá‘eD
 g'9	%¡,¹’–Œã”ú#dõzÈ>˜ „ja'ËàÃâIÿ[!…Ai6…7vÄ3HÎÈ1ö‡ëá	gKô´xœ³±/È(àåâåÊKÌM-.HLNU®Ì+I¬¨ˆ	ğˆˆq+Š—çe[ƒ¥•æ%—dæç)”§—$–¤j¨dæe–d&æ„%æ”¦jòrUór) AQjIiQBPi^Ifnª•õ@Cky¹ }+Îß×|f%şúª÷J	»v'’ú# pack-refs with: peeled fully-peeled sorted 
 7ead3b720a1d19d0e6229c1dc996e650d509f3de refs/remotes/origin/main
 7ead3b720a1d19d0e6229c1dc996e650d509f3de refs/tags/v0.1.0
-27c558b4f7695c082383f2f0405f1e73db3cd84d
+d2f47fefc96521ea0edd8175eeb34a15c229bc51
 ref: refs/remotes/origin/main
 27c558b4f7695c082383f2f0405f1e73db3cd84d
 <?php
@@ -33952,7 +34050,12 @@ class SimpleReconciler {
             echo "ğŸ”¸ Binding " . count($eventHandlers) . " handlers via property assignment";
 
             foreach ($eventHandlers as $key => $handler) {
+                // Map JSX event names to DOM property names
+                // CRITICAL: onDoubleClick must map to ondblclick (NOT ondoubleclick)!
                 $eventProperty = strtolower($key); // onClick -> onclick
+                if ($eventProperty === 'ondoubleclick') {
+                    $eventProperty = 'ondblclick'; // Fix for double-click events
+                }
 
                 echo "ğŸ”¸ Setting {$eventProperty} property on {$vnode->type}";
 
@@ -34034,7 +34137,12 @@ class SimpleReconciler {
             // Update event handlers via property assignment
             foreach ($newProps as $key => $value) {
                 if (str_starts_with($key, 'on') && is_callable($value)) {
+                    // Map JSX event names to DOM property names
+                    // CRITICAL: onDoubleClick must map to ondblclick (NOT ondoubleclick)!
                     $eventProperty = strtolower($key); // onClick -> onclick
+                    if ($eventProperty === 'ondoubleclick') {
+                        $eventProperty = 'ondblclick'; // Fix for double-click events
+                    }
 
                     echo "ğŸ”„ Updating event handler: {$eventProperty}";
 
