@@ -1,4 +1,34 @@
 {
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../PHPX-Framework",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../PHPX-BuildTools",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../PHPX-WebAssemblyPacker",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../PHPX-Compiler",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "name": "syntaxx/phpx-sample-task-board",
     "description": "PHPX task board",
     "license": "MIT",
@@ -11,12 +41,12 @@
     ],
     "require": {
         "syntaxx/wasm-php-runtime-vrzno": "8.3.0",
-        "syntaxx/phpx-framework": "^0.1.0"
+        "syntaxx/phpx-framework": "*"
     },
     "require-dev": {
-        "syntaxx/phpx-build-tools": "^0.1.0",
-        "syntaxx/webassembly-packer": "^0.1.3",
-        "syntaxx/phpx-compiler": "^0.1.0"
+        "syntaxx/phpx-build-tools": "*",
+        "syntaxx/webassembly-packer": "*",
+        "syntaxx/phpx-compiler": "*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -52,7 +82,7 @@
     },
     "extra": {
         "php-wasm": {
-          "target-dir": "build"
+            "target-dir": "build"
         }
     }
 }

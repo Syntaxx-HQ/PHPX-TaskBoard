@@ -36,10 +36,17 @@ function Card($props) {
     );
 
     // Handle card click to open modal
-    $handleCardClick = fn($e) =>
-        (!$isEditing && !$e->target->closest('.delete-card-btn'))
-            ? $setIsModalOpen(true)
-            : null;
+    $handleCardClick = function($e) use ($isEditing, $setIsModalOpen) {
+        // Check if click is on delete button (check className instead of closest)
+        $isDeleteBtn = false;
+        if (isset($e->target->className) && is_string($e->target->className)) {
+            $isDeleteBtn = str_contains($e->target->className, 'delete-card-btn');
+        }
+
+        if (!$isEditing && !$isDeleteBtn) {
+            $setIsModalOpen(true);
+        }
+    };
 
     // Handle delete button click
     $handleDeleteClick = fn($e) => (
@@ -74,52 +81,51 @@ function Card($props) {
     };
 
     return (
-        <div
-            className="card"
-                data-testid={$card['id']}
-                draggable="true"
-                onDragStart={$onDragStart}
-                onDragEnd={$onDragEnd}
-                onClick={$handleCardClick}
-            >
-                {$isEditing ? (
-                    <input
-                        type="text"
-                        className="inline-edit-input"
-                        value={$editTitle}
-                        onChange={fn($e) => $setEditTitle($e->target->value)}
-                        onKeyPress={fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null}
-                        onKeyDown={fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null}
-                        onBlur={$handleSaveEdit}
-                        data-testid="inline-edit-input"
-                        autoFocus
-                        onClick={fn($e) => $e->stopPropagation()}
-                    />
-                ) : (
-                    <div className="card-title" onDoubleClick={$handleTitleDoubleClick}>
-                        {$card['title']}
-                    </div>
-                )}
-
-                <div className="card-meta">
-                    <span className={"card-priority " . $getPriorityClass($card['priority'] ?? 'medium')}>
-                        {$getPriorityLabel($card['priority'] ?? 'medium')}
-                    </span>
-                </div>
-
-                <button
-                    className="delete-card-btn"
-                    onClick={$handleDeleteClick}
-                    data-testid="delete-card-btn"
-                    title="Delete card"
+        <div className="card-wrapper">
+            <div
+                className="card"
+                    data-testid={$card['id']}
+                    draggable="true"
+                    onDragStart={$onDragStart}
+                    onDragEnd={$onDragEnd}
+                    onClick={$handleCardClick}
                 >
-                    ×
-                </button>
-        </div>
-    );
+                    {$isEditing ? (
+                        <input
+                            type="text"
+                            className="inline-edit-input"
+                            value={$editTitle}
+                            onChange={fn($e) => $setEditTitle($e->target->value)}
+                            onKeyPress={fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null}
+                            onKeyDown={fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null}
+                            onBlur={$handleSaveEdit}
+                            data-testid="inline-edit-input"
+                            autoFocus
+                            onClick={fn($e) => $e->stopPropagation()}
+                        />
+                    ) : (
+                        <div className="card-title" onDoubleClick={$handleTitleDoubleClick}>
+                            {$card['title']}
+                        </div>
+                    )}
 
-    // TODO: Handle modals separately
-    /*{$showDeleteConfirm ? (
+                    <div className="card-meta">
+                        <span className={"card-priority " . $getPriorityClass($card['priority'] ?? 'medium')}>
+                            {$getPriorityLabel($card['priority'] ?? 'medium')}
+                        </span>
+                    </div>
+
+                    <button
+                        className="delete-card-btn"
+                        onClick={$handleDeleteClick}
+                        data-testid="delete-card-btn"
+                        title="Delete card"
+                    >
+                        ×
+                    </button>
+            </div>
+
+            {$showDeleteConfirm ? (
                 <div className="confirm-dialog">
                     <div className="confirm-content">
                         <p>Are you sure you want to delete this card?</p>
@@ -195,5 +201,7 @@ function Card($props) {
                         </div>
                     </div>
                 </div>
-            ) : null}*/
+            ) : null}
+        </div>
+    );
 }

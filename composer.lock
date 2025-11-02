@@ -4,44 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2bfece6a1e2d3f67cee2e8a9ebf31c72",
+    "content-hash": "878e96c605cb7da5c348f931985e6944",
     "packages": [
         {
             "name": "syntaxx/phpx-framework",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Syntaxx-HQ/PHPX-Framework.git",
-                "reference": "7ead3b720a1d19d0e6229c1dc996e650d509f3de"
-            },
+            "version": "dev-main",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Syntaxx-HQ/PHPX-Framework/zipball/7ead3b720a1d19d0e6229c1dc996e650d509f3de",
-                "reference": "7ead3b720a1d19d0e6229c1dc996e650d509f3de",
-                "shasum": ""
+                "type": "path",
+                "url": "../PHPX-Framework",
+                "reference": "7ead3b720a1d19d0e6229c1dc996e650d509f3de"
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.0"
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "src/useState.php"
-                ],
                 "psr-4": {
                     "Syntaxx\\PHPX\\Framework\\": "src/"
+                },
+                "files": [
+                    "src/useState.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Syntaxx\\PHPX\\Framework\\Tests\\": "tests/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "PHPX Framework - A modern PHP framework with JSX-like syntax support",
-            "support": {
-                "issues": "https://github.com/Syntaxx-HQ/PHPX-Framework/issues",
-                "source": "https://github.com/Syntaxx-HQ/PHPX-Framework/tree/v0.1.0"
-            },
-            "time": "2025-10-26T21:14:28+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "syntaxx/wasm-php-runtime-vrzno",
@@ -128,22 +125,16 @@
         },
         {
             "name": "syntaxx/phpx-build-tools",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Syntaxx-HQ/PHPX-BuildTools.git",
-                "reference": "04bcc10cf184e1cff6d8b9dc85d6bdfeb56558bf"
-            },
+            "version": "dev-add-serve-command",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Syntaxx-HQ/PHPX-BuildTools/zipball/04bcc10cf184e1cff6d8b9dc85d6bdfeb56558bf",
-                "reference": "04bcc10cf184e1cff6d8b9dc85d6bdfeb56558bf",
-                "shasum": ""
+                "type": "path",
+                "url": "../PHPX-BuildTools",
+                "reference": "21ddad6166f4a57e0f9bf15c16b3738fd358634d"
             },
             "require": {
                 "php": ">=8.3",
-                "syntaxx/phpx-compiler": "^0.1",
-                "syntaxx/webassembly-packer": "^0.1.3"
+                "syntaxx/phpx-compiler": "*",
+                "syntaxx/webassembly-packer": "*"
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.0"
@@ -157,7 +148,6 @@
                     "Syntaxx\\PHPX\\BuildTools\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -175,28 +165,21 @@
                 "wasm",
                 "webassembly"
             ],
-            "support": {
-                "issues": "https://github.com/Syntaxx-HQ/PHPX-BuildTools/issues",
-                "source": "https://github.com/Syntaxx-HQ/PHPX-BuildTools/tree/v0.1.0"
-            },
-            "time": "2025-10-26T21:20:42+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "syntaxx/phpx-compiler",
-            "version": "v0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Syntaxx-HQ/PHPX-Compiler.git",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../PHPX-Compiler",
                 "reference": "033be501a36b34d8af87b92a0e8398a27cfbbe09"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Syntaxx-HQ/PHPX-Compiler/zipball/033be501a36b34d8af87b92a0e8398a27cfbbe09",
-                "reference": "033be501a36b34d8af87b92a0e8398a27cfbbe09",
-                "shasum": ""
-            },
             "require": {
-                "syntaxx/phpx-parser": "^5.4.2"
+                "syntaxx/phpx-parser": "*"
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.0"
@@ -207,16 +190,19 @@
                     "Syntaxx\\PHPX\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Syntaxx\\PHPX\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
             "description": "JSX-like syntax for PHP with WebAssembly and SSR support",
-            "support": {
-                "issues": "https://github.com/Syntaxx-HQ/PHPX-Compiler/issues",
-                "source": "https://github.com/Syntaxx-HQ/PHPX-Compiler/tree/v0.1.0"
-            },
-            "time": "2025-10-26T21:06:25+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "syntaxx/phpx-parser",
@@ -277,21 +263,15 @@
         },
         {
             "name": "syntaxx/webassembly-packer",
-            "version": "v0.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Syntaxx-HQ/PHPX-WebAssemblyPacker.git",
-                "reference": "73b981bdfe102084892104200390c135c2eb13f6"
-            },
+            "version": "dev-main",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Syntaxx-HQ/PHPX-WebAssemblyPacker/zipball/73b981bdfe102084892104200390c135c2eb13f6",
-                "reference": "73b981bdfe102084892104200390c135c2eb13f6",
-                "shasum": ""
+                "type": "path",
+                "url": "../PHPX-WebAssemblyPacker",
+                "reference": "73b981bdfe102084892104200390c135c2eb13f6"
             },
             "require": {
                 "php": ">=8.1",
-                "syntaxx/lz4": "0.1.0"
+                "syntaxx/lz4": "*"
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.0",
@@ -307,16 +287,25 @@
                     "Syntaxx\\WebAssemblyPacker\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "test:unit": [
+                    "phpunit --testsuite 'Unit Tests'"
+                ],
+                "test:e2e": [
+                    "phpunit --testsuite 'E2E Tests'"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "description": "WebAssembly file packager with LZ4 compression support",
-            "support": {
-                "issues": "https://github.com/Syntaxx-HQ/PHPX-WebAssemblyPacker/issues",
-                "source": "https://github.com/Syntaxx-HQ/PHPX-WebAssemblyPacker/tree/v0.1.3"
-            },
-            "time": "2025-10-26T20:20:47+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         }
     ],
     "aliases": [],
