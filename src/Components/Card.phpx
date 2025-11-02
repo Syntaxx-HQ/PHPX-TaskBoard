@@ -15,54 +15,23 @@ function Card($props) {
     [$editTitle, $setEditTitle] = useState($card['title']);
     [$isModalOpen, $setIsModalOpen] = useState(false);
     [$showDeleteConfirm, $setShowDeleteConfirm] = useState(false);
-    [$clickTimer, $setClickTimer] = useState(null);
-
-    // Handle title click - delay modal opening to allow double-click detection
-    $handleTitleClick = function($e) use ($setIsModalOpen, $clickTimer, $setClickTimer) {
-        $e->stopPropagation(); // Prevent bubbling to card
-        var_dump("🔥 Single-click on card title");
-
-        // Clear any existing timer
-        if ($clickTimer !== null) {
-            $window = new \Vrzno;
-            $window->clearTimeout($clickTimer);
-            var_dump("🔥 Cleared existing click timer");
-        }
-
-        // Set timer to open modal after delay (300ms)
-        // This allows double-click to cancel it
-        $window = new \Vrzno;
-        $timerId = $window->setTimeout(function() use ($setIsModalOpen) {
-            var_dump("🔥 Timer fired - opening modal");
-            $setIsModalOpen(true);
-        }, 300);
-
-        $setClickTimer($timerId);
-        var_dump("🔥 Set timer ID: " . var_export($timerId, true));
-    };
 
     // Handle title double-click to edit
-    $handleTitleDoubleClick = function($e) use ($setIsEditing, $setEditTitle, $card, $clickTimer, $setClickTimer) {
-        var_dump("🔥 Double-click fired on card title: {$card['title']}");
+    $handleTitleDoubleClick = function($e) use ($setIsEditing, $setEditTitle, $card) {
         $e->stopPropagation(); // Prevent propagation to card's onClick (modal)
-
-        // Clear the click timer to prevent modal opening
-        if ($clickTimer !== null) {
-            $window = new \Vrzno;
-            $window->clearTimeout($clickTimer);
-            $setClickTimer(null);
-            var_dump("🔥 Cleared click timer - modal won't open");
-        }
-
         $setIsEditing(true);
         $setEditTitle($card['title']);
-        var_dump("🔥 State updated, isEditing should be true now");
     };
 
     // Handle save edit
-    $handleSaveEdit = fn() => (function() use ($editTitle, $onUpdate, $setIsEditing) {
-        $title = trim($editTitle);
-        if (!empty($title)) {
+    $handleSaveEdit = fn() => (function() use ($onUpdate, $setIsEditing, $card) {
+        // Read value directly from DOM input (state may not be updated yet)
+        $window = new \Vrzno;
+        $document = $window->document;
+        $input = $document->querySelector('[data-testid="inline-edit-input"]');
+        $title = $input ? trim($input->value) : '';
+
+        if (!empty($title) && $title !== $card['title']) {
             $onUpdate(['title' => $title]);
         }
         $setIsEditing(false);
@@ -134,8 +103,13 @@ function Card($props) {
                             className="inline-edit-input"
                             value={$editTitle}
                             onChange={fn($e) => $setEditTitle($e->target->value)}
-                            onKeyPress={fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null}
-                            onKeyDown={fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null}
+                            onKeyDown={function($e) use ($handleSaveEdit, $handleCancelEdit) {
+                                if ($e->key === 'Enter') {
+                                    $handleSaveEdit();
+                                } elseif ($e->key === 'Escape') {
+                                    $handleCancelEdit();
+                                }
+                            }}
                             onBlur={$handleSaveEdit}
                             data-testid="inline-edit-input"
                             autoFocus
@@ -144,7 +118,7 @@ function Card($props) {
                     ) : (
                         <div
                             className="card-title"
-                            onClick={$handleTitleClick}
+                            onClick={fn($e) => $e->stopPropagation()}
                             onDoubleClick={$handleTitleDoubleClick}
                         >
                             {$card['title']}
