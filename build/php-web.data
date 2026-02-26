@@ -43871,7 +43871,1695 @@ class Transformer extends NodeVisitorAbstract
             )
         ];
     }
-} <?php
+} {"version":2,"defects":{"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testBasicElementAndAttributeOrderAndEscaping":8,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testVoidElementsSelfClose":8,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testNestedChildrenHaveNoInsignificantWhitespace":8,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testEventHandlerEmitsServerPhpxId":8,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testDangerouslySetInnerHtmlIsRaw":8,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testUseStateSeededFromServerState":8,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testEffectsDoNotRunOnServer":8},"times":{"Syntaxx\\PHPX\\Framework\\Tests\\HooksTest::testPerInstanceStateIsolation":0.009,"Syntaxx\\PHPX\\Framework\\Tests\\HooksTest::testStateBailOutOnEqualValue":0,"Syntaxx\\PHPX\\Framework\\Tests\\HooksTest::testUseEffectRunsOnMountDepsAndCleanup":0,"Syntaxx\\PHPX\\Framework\\Tests\\HooksTest::testUseRefIsStableAcrossRenders":0.001,"Syntaxx\\PHPX\\Framework\\Tests\\HooksTest::testUseMemoRecomputesOnDepChange":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testBasicMount":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testNestedAndMixedChildren":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testUpdatePreservesNodeIdentityAndPatchesMinimally":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testPropAddAndRemove":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testKeyedReorderReusesNodes":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testKeyedInsertAndRemove":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testTypeChangeReplacesNode":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testComponentRendering":0,"Syntaxx\\PHPX\\Framework\\Tests\\ReconcilerTest::testUncontrolledSubtreeIsNotDiffed":0,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testBasicElementAndAttributeOrderAndEscaping":0.001,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testVoidElementsSelfClose":0,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testNestedChildrenHaveNoInsignificantWhitespace":0,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testEventHandlerEmitsServerPhpxId":0,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testDangerouslySetInnerHtmlIsRaw":0,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testUseStateSeededFromServerState":0,"Syntaxx\\PHPX\\Framework\\Tests\\SsrTest::testEffectsDoNotRunOnServer":0,"Syntaxx\\PHPX\\Framework\\Tests\\HydrationTest::testAdoptionReusesNodesWithoutCreatingOrMoving":0,"Syntaxx\\PHPX\\Framework\\Tests\\HydrationTest::testTextDivergenceIsRepairedOnAdoptedNode":0.001,"Syntaxx\\PHPX\\Framework\\Tests\\HydrationTest::testSelfHealCreatesMissingNode":0,"Syntaxx\\PHPX\\Framework\\Tests\\HydrationTest::testPostHydrateRenderIsNormalSurgicalUpdate":0,"Syntaxx\\PHPX\\Framework\\Tests\\HydrationTest::testHydrationSeedsUseStateFromServerState":0.001,"Syntaxx\\PHPX\\Framework\\Tests\\UseDataTest::testServerFetchesAndRecordsIntoState":0,"Syntaxx\\PHPX\\Framework\\Tests\\UseDataTest::testClientUsesSeedWithoutRefetching":0,"Syntaxx\\PHPX\\Framework\\Tests\\UseDataTest::testClientFetchesWhenNotSeeded":0,"Syntaxx\\PHPX\\Framework\\Tests\\UseDataTest::testClientResolvesAThenableFetcher":0,"Syntaxx\\PHPX\\Framework\\Tests\\SuspenseTest::testShowsFallbackWhilePendingThenContentOnResolve":0,"Syntaxx\\PHPX\\Framework\\Tests\\SuspenseTest::testSyncDataNeverShowsFallback":0,"Syntaxx\\PHPX\\Framework\\Tests\\SuspenseTest::testServerRendersContentNotFallback":0,"Syntaxx\\PHPX\\Framework\\Tests\\SuspenseTest::testStreamingYieldsShellThenBoundaryThenState":0.001}}{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "6615e1735d52f5cbe778dc00ed97500d",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "myclabs/deep-copy",
+            "version": "1.13.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "07d290f0c47959fd5eed98c95ee5602db07e0b6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/07d290f0c47959fd5eed98c95ee5602db07e0b6a",
+                "reference": "07d290f0c47959fd5eed98c95ee5602db07e0b6a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "doctrine/collections": "<1.6.8",
+                "doctrine/common": "<2.13.3 || >=3 <3.2.2"
+            },
+            "require-dev": {
+                "doctrine/collections": "^1.6.8",
+                "doctrine/common": "^2.13.3 || ^3.2.2",
+                "phpspec/prophecy": "^1.10",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.23 || ^9.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ],
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Create deep copies (clones) of your objects",
+            "keywords": [
+                "clone",
+                "copy",
+                "duplicate",
+                "object",
+                "object graph"
+            ],
+            "support": {
+                "issues": "https://github.com/myclabs/DeepCopy/issues",
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.4"
+            },
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-08-01T08:46:24+00:00"
+        },
+        {
+            "name": "nikic/php-parser",
+            "version": "v5.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "ircmaxell/php-yacc": "^0.0.7",
+                "phpunit/phpunit": "^9.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/nikic/PHP-Parser/issues",
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.7.0"
+            },
+            "time": "2025-12-06T11:56:16+00:00"
+        },
+        {
+            "name": "phar-io/manifest",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phar-io/manifest.git",
+                "reference": "54750ef60c58e43759730615a392c31c80e23176"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phar-io/manifest/zipball/54750ef60c58e43759730615a392c31c80e23176",
+                "reference": "54750ef60c58e43759730615a392c31c80e23176",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "ext-phar": "*",
+                "ext-xmlwriter": "*",
+                "phar-io/version": "^3.0.1",
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Heuer",
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
+            "support": {
+                "issues": "https://github.com/phar-io/manifest/issues",
+                "source": "https://github.com/phar-io/manifest/tree/2.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/theseer",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-03T12:33:53+00:00"
+        },
+        {
+            "name": "phar-io/version",
+            "version": "3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phar-io/version.git",
+                "reference": "4f7fd7836c6f332bb2933569e566a0d6c4cbed74"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/4f7fd7836c6f332bb2933569e566a0d6c4cbed74",
+                "reference": "4f7fd7836c6f332bb2933569e566a0d6c4cbed74",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Heuer",
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Library for handling version information and constraints",
+            "support": {
+                "issues": "https://github.com/phar-io/version/issues",
+                "source": "https://github.com/phar-io/version/tree/3.2.1"
+            },
+            "time": "2022-02-21T01:04:05+00:00"
+        },
+        {
+            "name": "phpunit/php-code-coverage",
+            "version": "10.1.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+                "reference": "7e308268858ed6baedc8704a304727d20bc07c77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7e308268858ed6baedc8704a304727d20bc07c77",
+                "reference": "7e308268858ed6baedc8704a304727d20bc07c77",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "ext-xmlwriter": "*",
+                "nikic/php-parser": "^4.19.1 || ^5.1.0",
+                "php": ">=8.1",
+                "phpunit/php-file-iterator": "^4.1.0",
+                "phpunit/php-text-template": "^3.0.1",
+                "sebastian/code-unit-reverse-lookup": "^3.0.0",
+                "sebastian/complexity": "^3.2.0",
+                "sebastian/environment": "^6.1.0",
+                "sebastian/lines-of-code": "^2.0.2",
+                "sebastian/version": "^4.0.1",
+                "theseer/tokenizer": "^1.2.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.1"
+            },
+            "suggest": {
+                "ext-pcov": "PHP extension that provides line coverage",
+                "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "10.1.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
+            "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
+            "keywords": [
+                "coverage",
+                "testing",
+                "xunit"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
+                "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.16"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-08-22T04:31:57+00:00"
+        },
+        {
+            "name": "phpunit/php-file-iterator",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
+                "reference": "a95037b6d9e608ba092da1b23931e537cadc3c3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/a95037b6d9e608ba092da1b23931e537cadc3c3c",
+                "reference": "a95037b6d9e608ba092da1b23931e537cadc3c3c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "FilterIterator implementation that filters files based on a list of suffixes.",
+            "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
+            "keywords": [
+                "filesystem",
+                "iterator"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
+                "security": "https://github.com/sebastianbergmann/php-file-iterator/security/policy",
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/4.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-08-31T06:24:48+00:00"
+        },
+        {
+            "name": "phpunit/php-invoker",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-invoker.git",
+                "reference": "f5e568ba02fa5ba0ddd0f618391d5a9ea50b06d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-invoker/zipball/f5e568ba02fa5ba0ddd0f618391d5a9ea50b06d7",
+                "reference": "f5e568ba02fa5ba0ddd0f618391d5a9ea50b06d7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "ext-pcntl": "*",
+                "phpunit/phpunit": "^10.0"
+            },
+            "suggest": {
+                "ext-pcntl": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Invoke callables with a timeout",
+            "homepage": "https://github.com/sebastianbergmann/php-invoker/",
+            "keywords": [
+                "process"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-invoker/issues",
+                "source": "https://github.com/sebastianbergmann/php-invoker/tree/4.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T06:56:09+00:00"
+        },
+        {
+            "name": "phpunit/php-text-template",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-text-template.git",
+                "reference": "0c7b06ff49e3d5072f057eb1fa59258bf287a748"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/0c7b06ff49e3d5072f057eb1fa59258bf287a748",
+                "reference": "0c7b06ff49e3d5072f057eb1fa59258bf287a748",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Simple template engine.",
+            "homepage": "https://github.com/sebastianbergmann/php-text-template/",
+            "keywords": [
+                "template"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-text-template/issues",
+                "security": "https://github.com/sebastianbergmann/php-text-template/security/policy",
+                "source": "https://github.com/sebastianbergmann/php-text-template/tree/3.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-08-31T14:07:24+00:00"
+        },
+        {
+            "name": "phpunit/php-timer",
+            "version": "6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-timer.git",
+                "reference": "e2a2d67966e740530f4a3343fe2e030ffdc1161d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/e2a2d67966e740530f4a3343fe2e030ffdc1161d",
+                "reference": "e2a2d67966e740530f4a3343fe2e030ffdc1161d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Utility class for timing",
+            "homepage": "https://github.com/sebastianbergmann/php-timer/",
+            "keywords": [
+                "timer"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-timer/issues",
+                "source": "https://github.com/sebastianbergmann/php-timer/tree/6.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T06:57:52+00:00"
+        },
+        {
+            "name": "phpunit/phpunit",
+            "version": "10.5.63",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "33198268dad71e926626b618f3ec3966661e4d90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/33198268dad71e926626b618f3ec3966661e4d90",
+                "reference": "33198268dad71e926626b618f3ec3966661e4d90",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "myclabs/deep-copy": "^1.13.4",
+                "phar-io/manifest": "^2.0.4",
+                "phar-io/version": "^3.2.1",
+                "php": ">=8.1",
+                "phpunit/php-code-coverage": "^10.1.16",
+                "phpunit/php-file-iterator": "^4.1.0",
+                "phpunit/php-invoker": "^4.0.0",
+                "phpunit/php-text-template": "^3.0.1",
+                "phpunit/php-timer": "^6.0.0",
+                "sebastian/cli-parser": "^2.0.1",
+                "sebastian/code-unit": "^2.0.0",
+                "sebastian/comparator": "^5.0.5",
+                "sebastian/diff": "^5.1.1",
+                "sebastian/environment": "^6.1.0",
+                "sebastian/exporter": "^5.1.4",
+                "sebastian/global-state": "^6.0.2",
+                "sebastian/object-enumerator": "^5.0.0",
+                "sebastian/recursion-context": "^5.0.1",
+                "sebastian/type": "^4.0.0",
+                "sebastian/version": "^4.0.1"
+            },
+            "suggest": {
+                "ext-soap": "To be able to generate mocks based on WSDL files"
+            },
+            "bin": [
+                "phpunit"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "10.5-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Framework/Assert/Functions.php"
+                ],
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "The PHP Unit Testing framework.",
+            "homepage": "https://phpunit.de/",
+            "keywords": [
+                "phpunit",
+                "testing",
+                "xunit"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/phpunit/issues",
+                "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.63"
+            },
+            "funding": [
+                {
+                    "url": "https://phpunit.de/sponsors.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpunit/phpunit",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-01-27T05:48:37+00:00"
+        },
+        {
+            "name": "sebastian/cli-parser",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/cli-parser.git",
+                "reference": "c34583b87e7b7a8055bf6c450c2c77ce32a24084"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/c34583b87e7b7a8055bf6c450c2c77ce32a24084",
+                "reference": "c34583b87e7b7a8055bf6c450c2c77ce32a24084",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library for parsing CLI options",
+            "homepage": "https://github.com/sebastianbergmann/cli-parser",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/cli-parser/issues",
+                "security": "https://github.com/sebastianbergmann/cli-parser/security/policy",
+                "source": "https://github.com/sebastianbergmann/cli-parser/tree/2.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-02T07:12:49+00:00"
+        },
+        {
+            "name": "sebastian/code-unit",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/code-unit.git",
+                "reference": "a81fee9eef0b7a76af11d121767abc44c104e503"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit/zipball/a81fee9eef0b7a76af11d121767abc44c104e503",
+                "reference": "a81fee9eef0b7a76af11d121767abc44c104e503",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Collection of value objects that represent the PHP code units",
+            "homepage": "https://github.com/sebastianbergmann/code-unit",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/code-unit/issues",
+                "source": "https://github.com/sebastianbergmann/code-unit/tree/2.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T06:58:43+00:00"
+        },
+        {
+            "name": "sebastian/code-unit-reverse-lookup",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/code-unit-reverse-lookup.git",
+                "reference": "5e3a687f7d8ae33fb362c5c0743794bbb2420a1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/5e3a687f7d8ae33fb362c5c0743794bbb2420a1d",
+                "reference": "5e3a687f7d8ae33fb362c5c0743794bbb2420a1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Looks up which function or method a line of code belongs to",
+            "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/issues",
+                "source": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/tree/3.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T06:59:15+00:00"
+        },
+        {
+            "name": "sebastian/comparator",
+            "version": "5.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/comparator.git",
+                "reference": "55dfef806eb7dfeb6e7a6935601fef866f8ca48d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/55dfef806eb7dfeb6e7a6935601fef866f8ca48d",
+                "reference": "55dfef806eb7dfeb6e7a6935601fef866f8ca48d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-mbstring": "*",
+                "php": ">=8.1",
+                "sebastian/diff": "^5.0",
+                "sebastian/exporter": "^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Jeff Welch",
+                    "email": "whatthejeff@gmail.com"
+                },
+                {
+                    "name": "Volker Dusch",
+                    "email": "github@wallbash.com"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@2bepublished.at"
+                }
+            ],
+            "description": "Provides the functionality to compare PHP values for equality",
+            "homepage": "https://github.com/sebastianbergmann/comparator",
+            "keywords": [
+                "comparator",
+                "compare",
+                "equality"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/comparator/issues",
+                "security": "https://github.com/sebastianbergmann/comparator/security/policy",
+                "source": "https://github.com/sebastianbergmann/comparator/tree/5.0.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/comparator",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-01-24T09:25:16+00:00"
+        },
+        {
+            "name": "sebastian/complexity",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/complexity.git",
+                "reference": "68ff824baeae169ec9f2137158ee529584553799"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/complexity/zipball/68ff824baeae169ec9f2137158ee529584553799",
+                "reference": "68ff824baeae169ec9f2137158ee529584553799",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^4.18 || ^5.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library for calculating the complexity of PHP code units",
+            "homepage": "https://github.com/sebastianbergmann/complexity",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/complexity/issues",
+                "security": "https://github.com/sebastianbergmann/complexity/security/policy",
+                "source": "https://github.com/sebastianbergmann/complexity/tree/3.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-21T08:37:17+00:00"
+        },
+        {
+            "name": "sebastian/diff",
+            "version": "5.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/diff.git",
+                "reference": "c41e007b4b62af48218231d6c2275e4c9b975b2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/c41e007b4b62af48218231d6c2275e4c9b975b2e",
+                "reference": "c41e007b4b62af48218231d6c2275e4c9b975b2e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0",
+                "symfony/process": "^6.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "5.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Kore Nordmann",
+                    "email": "mail@kore-nordmann.de"
+                }
+            ],
+            "description": "Diff implementation",
+            "homepage": "https://github.com/sebastianbergmann/diff",
+            "keywords": [
+                "diff",
+                "udiff",
+                "unidiff",
+                "unified diff"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/diff/issues",
+                "security": "https://github.com/sebastianbergmann/diff/security/policy",
+                "source": "https://github.com/sebastianbergmann/diff/tree/5.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-02T07:15:17+00:00"
+        },
+        {
+            "name": "sebastian/environment",
+            "version": "6.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/environment.git",
+                "reference": "8074dbcd93529b357029f5cc5058fd3e43666984"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/8074dbcd93529b357029f5cc5058fd3e43666984",
+                "reference": "8074dbcd93529b357029f5cc5058fd3e43666984",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "suggest": {
+                "ext-posix": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Provides functionality to handle HHVM/PHP environments",
+            "homepage": "https://github.com/sebastianbergmann/environment",
+            "keywords": [
+                "Xdebug",
+                "environment",
+                "hhvm"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/environment/issues",
+                "security": "https://github.com/sebastianbergmann/environment/security/policy",
+                "source": "https://github.com/sebastianbergmann/environment/tree/6.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-23T08:47:14+00:00"
+        },
+        {
+            "name": "sebastian/exporter",
+            "version": "5.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/exporter.git",
+                "reference": "0735b90f4da94969541dac1da743446e276defa6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/0735b90f4da94969541dac1da743446e276defa6",
+                "reference": "0735b90f4da94969541dac1da743446e276defa6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.1",
+                "sebastian/recursion-context": "^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "5.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Jeff Welch",
+                    "email": "whatthejeff@gmail.com"
+                },
+                {
+                    "name": "Volker Dusch",
+                    "email": "github@wallbash.com"
+                },
+                {
+                    "name": "Adam Harvey",
+                    "email": "aharvey@php.net"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "Provides the functionality to export PHP variables for visualization",
+            "homepage": "https://www.github.com/sebastianbergmann/exporter",
+            "keywords": [
+                "export",
+                "exporter"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/exporter/issues",
+                "security": "https://github.com/sebastianbergmann/exporter/security/policy",
+                "source": "https://github.com/sebastianbergmann/exporter/tree/5.1.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/exporter",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-09-24T06:09:11+00:00"
+        },
+        {
+            "name": "sebastian/global-state",
+            "version": "6.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/global-state.git",
+                "reference": "987bafff24ecc4c9ac418cab1145b96dd6e9cbd9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/987bafff24ecc4c9ac418cab1145b96dd6e9cbd9",
+                "reference": "987bafff24ecc4c9ac418cab1145b96dd6e9cbd9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "sebastian/object-reflector": "^3.0",
+                "sebastian/recursion-context": "^5.0"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Snapshotting of global state",
+            "homepage": "https://www.github.com/sebastianbergmann/global-state",
+            "keywords": [
+                "global state"
+            ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/global-state/issues",
+                "security": "https://github.com/sebastianbergmann/global-state/security/policy",
+                "source": "https://github.com/sebastianbergmann/global-state/tree/6.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-02T07:19:19+00:00"
+        },
+        {
+            "name": "sebastian/lines-of-code",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/lines-of-code.git",
+                "reference": "856e7f6a75a84e339195d48c556f23be2ebf75d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/lines-of-code/zipball/856e7f6a75a84e339195d48c556f23be2ebf75d0",
+                "reference": "856e7f6a75a84e339195d48c556f23be2ebf75d0",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^4.18 || ^5.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library for counting the lines of code in PHP source code",
+            "homepage": "https://github.com/sebastianbergmann/lines-of-code",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/lines-of-code/issues",
+                "security": "https://github.com/sebastianbergmann/lines-of-code/security/policy",
+                "source": "https://github.com/sebastianbergmann/lines-of-code/tree/2.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-21T08:38:20+00:00"
+        },
+        {
+            "name": "sebastian/object-enumerator",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/object-enumerator.git",
+                "reference": "202d0e344a580d7f7d04b3fafce6933e59dae906"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/object-enumerator/zipball/202d0e344a580d7f7d04b3fafce6933e59dae906",
+                "reference": "202d0e344a580d7f7d04b3fafce6933e59dae906",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "sebastian/object-reflector": "^3.0",
+                "sebastian/recursion-context": "^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Traverses array structures and object graphs to enumerate all referenced objects",
+            "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/object-enumerator/issues",
+                "source": "https://github.com/sebastianbergmann/object-enumerator/tree/5.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T07:08:32+00:00"
+        },
+        {
+            "name": "sebastian/object-reflector",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/object-reflector.git",
+                "reference": "24ed13d98130f0e7122df55d06c5c4942a577957"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/object-reflector/zipball/24ed13d98130f0e7122df55d06c5c4942a577957",
+                "reference": "24ed13d98130f0e7122df55d06c5c4942a577957",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Allows reflection of object attributes, including inherited and non-public ones",
+            "homepage": "https://github.com/sebastianbergmann/object-reflector/",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/object-reflector/issues",
+                "source": "https://github.com/sebastianbergmann/object-reflector/tree/3.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T07:06:18+00:00"
+        },
+        {
+            "name": "sebastian/recursion-context",
+            "version": "5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/recursion-context.git",
+                "reference": "47e34210757a2f37a97dcd207d032e1b01e64c7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/47e34210757a2f37a97dcd207d032e1b01e64c7a",
+                "reference": "47e34210757a2f37a97dcd207d032e1b01e64c7a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Jeff Welch",
+                    "email": "whatthejeff@gmail.com"
+                },
+                {
+                    "name": "Adam Harvey",
+                    "email": "aharvey@php.net"
+                }
+            ],
+            "description": "Provides functionality to recursively process PHP variables",
+            "homepage": "https://github.com/sebastianbergmann/recursion-context",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/recursion-context/issues",
+                "security": "https://github.com/sebastianbergmann/recursion-context/security/policy",
+                "source": "https://github.com/sebastianbergmann/recursion-context/tree/5.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/recursion-context",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-08-10T07:50:56+00:00"
+        },
+        {
+            "name": "sebastian/type",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/type.git",
+                "reference": "462699a16464c3944eefc02ebdd77882bd3925bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/462699a16464c3944eefc02ebdd77882bd3925bf",
+                "reference": "462699a16464c3944eefc02ebdd77882bd3925bf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Collection of value objects that represent the types of the PHP type system",
+            "homepage": "https://github.com/sebastianbergmann/type",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/type/issues",
+                "source": "https://github.com/sebastianbergmann/type/tree/4.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-03T07:10:45+00:00"
+        },
+        {
+            "name": "sebastian/version",
+            "version": "4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/version.git",
+                "reference": "c51fa83a5d8f43f1402e3f32a005e6262244ef17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/c51fa83a5d8f43f1402e3f32a005e6262244ef17",
+                "reference": "c51fa83a5d8f43f1402e3f32a005e6262244ef17",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library that helps with managing the version number of Git-hosted PHP projects",
+            "homepage": "https://github.com/sebastianbergmann/version",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/version/issues",
+                "source": "https://github.com/sebastianbergmann/version/tree/4.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-07T11:34:05+00:00"
+        },
+        {
+            "name": "theseer/tokenizer",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theseer/tokenizer.git",
+                "reference": "b7489ce515e168639d17feec34b8847c326b0b3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/b7489ce515e168639d17feec34b8847c326b0b3c",
+                "reference": "b7489ce515e168639d17feec34b8847c326b0b3c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
+            "support": {
+                "issues": "https://github.com/theseer/tokenizer/issues",
+                "source": "https://github.com/theseer/tokenizer/tree/1.3.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/theseer",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-11-17T20:03:58+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {},
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
+<?php
 
 namespace Syntaxx\PHPX\Demo;
 
@@ -44263,6 +45951,80 @@ class Element {
     }
 } <?php
 
+namespace Syntaxx\PHPX\Framework;
+
+/**
+ * Tells components which side they are rendering on and provides a location
+ * abstraction so the SAME component code runs natively on the server (SSR) and
+ * as WASM in the browser.
+ *
+ * The golden rule for isomorphic components: never touch \Vrzno (window/document)
+ * directly during render — guard with Environment::isServer() and read the URL
+ * via Environment::location(). DOM work belongs in effects, which never run on
+ * the server.
+ */
+final class Environment
+{
+    /** True while a server-side render (ServerRenderer) is in progress. */
+    public static bool $isServer = false;
+
+    /**
+     * A plain location stub used during SSR (e.g. ['pathname' => '/about',
+     * 'search' => '?q=1', 'href' => '...']). On the client this stays null and
+     * location() reads the real window.location.
+     *
+     * @var array<string,string>|null
+     */
+    public static ?array $ssrLocation = null;
+
+    public static function isServer(): bool
+    {
+        return self::$isServer;
+    }
+
+    /**
+     * Current location as an array with at least 'pathname' and 'search'.
+     * Server: returns the SSR stub. Client: reads window.location via VRZNO.
+     *
+     * @return array<string,string>
+     */
+    public static function location(): array
+    {
+        if (self::$isServer) {
+            return self::$ssrLocation ?? ['pathname' => '/', 'search' => ''];
+        }
+
+        // Once client-side routing is active, the router is the source of truth
+        // (it tracks pushState/popstate without a page reload).
+        if (Router::isActive()) {
+            return Router::current();
+        }
+
+        $loc = (new \Vrzno())->location;
+        return [
+            'pathname' => (string) $loc->pathname,
+            'search' => (string) $loc->search,
+            'href' => (string) $loc->href,
+        ];
+    }
+
+    /** Run $fn as a server render with the given location, restoring state after. */
+    public static function withServer(?array $location, callable $fn)
+    {
+        $prevServer = self::$isServer;
+        $prevLoc = self::$ssrLocation;
+        self::$isServer = true;
+        self::$ssrLocation = $location;
+        try {
+            return $fn();
+        } finally {
+            self::$isServer = $prevServer;
+            self::$ssrLocation = $prevLoc;
+        }
+    }
+}
+<?php
+
 namespace Syntaxx\PHPX\Framework\Events;
 
 /**
@@ -44386,6 +46148,11 @@ final class FiberNode
     /** When true the reconciler will not diff this host fiber's children
      *  after mount (used for contentEditable surfaces owned via a ref). */
     public bool $hostBoundary = false;
+
+    /** A <Suspense> boundary: renders its fallback while a child is suspended. */
+    public bool $isSuspense = false;
+    /** Whether this Suspense boundary is currently showing its fallback. */
+    public bool $showingFallback = false;
 
     /** @var array<string,mixed> */
     public array $props = [];
@@ -44532,6 +46299,39 @@ class Framework
 
 namespace Syntaxx\PHPX\Framework\Hooks;
 
+/**
+ * Server-side collector for useData(). During SSR, each useData(key, fetcher)
+ * call records its fetched value here; ServerRenderer flushes the collection
+ * into the seed blob after rendering, so the client hydrates with the data the
+ * server already fetched — no double fetch.
+ */
+final class DataRegistry
+{
+    /** @var array<string,mixed> */
+    private static array $collected = [];
+
+    public static function record(string $key, $value): void
+    {
+        self::$collected[$key] = $value;
+    }
+
+    /** Return and clear everything collected during the current render. */
+    public static function flush(): array
+    {
+        $collected = self::$collected;
+        self::$collected = [];
+        return $collected;
+    }
+
+    public static function reset(): void
+    {
+        self::$collected = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
 use Syntaxx\PHPX\Framework\Fiber\FiberNode;
 
 /**
@@ -44589,7 +46389,7 @@ final class HookManager
         return $fiber->hooks[$index];
     }
 
-    public static function useState($initialValue): array
+    public static function useState($initialValue, ?string $hydrationKey = null): array
     {
         $top = count(self::$stack) - 1;
         $fiber = self::$stack[$top]['fiber'];
@@ -44597,7 +46397,15 @@ final class HookManager
         $index = self::$stack[$top]['index']++;
 
         if (!array_key_exists($index, $fiber->hooks)) {
-            $fiber->hooks[$index] = ['state' => is_callable($initialValue) ? $initialValue() : $initialValue];
+            // Seed from server-provided hydration state when a key is given and
+            // present, so the client uses the server's value (no refetch, no
+            // mismatch). Falls back to the supplied initial value otherwise.
+            if ($hydrationKey !== null && HydrationState::has($hydrationKey)) {
+                $initial = HydrationState::get($hydrationKey);
+            } else {
+                $initial = is_callable($initialValue) ? $initialValue() : $initialValue;
+            }
+            $fiber->hooks[$index] = ['state' => $initial];
         }
 
         $value = $fiber->hooks[$index]['state'];
@@ -44615,6 +46423,110 @@ final class HookManager
         };
 
         return [$value, $setValue];
+    }
+
+    /**
+     * Isomorphic data hook. Returns [$data, $loading, $error].
+     *
+     * - Server: runs $fetcher synchronously, records the value (so it is
+     *   serialized into the seed blob), and returns it (no loading).
+     * - Client, key seeded by the server: returns the seeded value, no refetch.
+     * - Client, key NOT seeded (e.g. a route reached via client navigation):
+     *   returns loading, fetches once in an effect, caches the result, and
+     *   re-renders with the data.
+     *
+     * Hooks are called unconditionally (useState + useEffect every render) so the
+     * rules of hooks hold regardless of seeded/unseeded.
+     */
+    public static function useData(string $key, callable $fetcher): array
+    {
+        if (\Syntaxx\PHPX\Framework\Environment::isServer()) {
+            $value = $fetcher();
+            DataRegistry::record($key, $value);
+            return [$value, false, null];
+        }
+
+        $seeded = HydrationState::has($key);
+        [$entry, $setEntry] = self::useState(
+            $seeded
+                ? ['data' => HydrationState::get($key), 'loading' => false, 'error' => null]
+                : ['data' => null, 'loading' => true, 'error' => null]
+        );
+
+        self::useEffect(static function () use ($key, $fetcher, $setEntry, $seeded) {
+            if ($seeded) {
+                return; // server already provided the data
+            }
+            $resolve = static function ($data) use ($key, $setEntry) {
+                HydrationState::set($key, $data); // cache for other components/renders
+                $setEntry(['data' => $data, 'loading' => false, 'error' => null]);
+            };
+            $reject = static function ($error) use ($setEntry) {
+                $setEntry(['data' => null, 'loading' => false, 'error' => 'fetch failed']);
+            };
+            try {
+                $result = $fetcher();
+                // A thenable (e.g. a fetch() promise) resolves asynchronously and
+                // re-renders when it settles; a plain value resolves immediately.
+                if (is_object($result)) {
+                    $result->then($resolve, $reject);
+                } else {
+                    $resolve($result);
+                }
+            } catch (\Throwable $e) {
+                $reject($e->getMessage());
+            }
+        }, [$key]);
+
+        return [$entry['data'], $entry['loading'], $entry['error']];
+    }
+
+    /**
+     * Suspense-style data: returns the value, or throws a {@see Suspension} that
+     * the nearest <Suspense> boundary catches to show a fallback. The fetch is
+     * kicked off during render and the result cached, so the component itself
+     * carries no loading state.
+     *
+     * - Server: fetch synchronously, record for the seed blob, return the value.
+     * - Client, seeded/cached: return it.
+     * - Client, not cached: start the fetch (sync value resolves immediately;
+     *   a promise suspends until it settles).
+     */
+    public static function useSuspenseData(string $key, callable $fetcher)
+    {
+        if (\Syntaxx\PHPX\Framework\Environment::isServer()) {
+            $value = $fetcher();
+            DataRegistry::record($key, $value);
+            return $value;
+        }
+
+        if (HydrationState::has($key)) {
+            return HydrationState::get($key);
+        }
+        if (SuspenseCache::isPending($key)) {
+            throw new Suspension(SuspenseCache::promise($key), $key);
+        }
+
+        $result = $fetcher();
+        if (is_object($result)) {
+            // Async: cache on settle, then suspend until it does.
+            $result->then(
+                static function ($data) use ($key) {
+                    HydrationState::set($key, $data);
+                    SuspenseCache::clear($key);
+                },
+                static function ($error) use ($key) {
+                    HydrationState::set($key, null);
+                    SuspenseCache::clear($key);
+                }
+            );
+            SuspenseCache::setPending($key, $result);
+            throw new Suspension($result, $key);
+        }
+
+        // Synchronous value: no suspense needed.
+        HydrationState::set($key, $result);
+        return $result;
     }
 
     public static function useRef($initialValue): Ref
@@ -44689,6 +46601,13 @@ final class HookManager
     /** Run queued effects bottom-up (children before parents), with cleanups. */
     public static function flushEffects(): void
     {
+        // Effects never run during server-side rendering — only after a real
+        // (client) commit, including the hydrate pass.
+        if (\Syntaxx\PHPX\Framework\Environment::isServer()) {
+            self::$pendingEffects = [];
+            return;
+        }
+
         $effects = self::$pendingEffects;
         self::$pendingEffects = [];
         // Children are queued after parents during render; reverse => bottom-up.
@@ -44732,6 +46651,50 @@ final class HookManager
 namespace Syntaxx\PHPX\Framework\Hooks;
 
 /**
+ * Holds the seed state shared between server and client.
+ *
+ * The server serializes this into the page (ServerRenderer::stateScript); the
+ * client reads it once in hydrateRoot and seeds it here. useState($init, $key)
+ * then takes its initial value from here instead of refetching — so data is
+ * fetched once on the server and never again on the client.
+ */
+final class HydrationState
+{
+    /** @var array<string,mixed> */
+    private static array $state = [];
+
+    /** @param array<string,mixed> $state */
+    public static function seed(array $state): void
+    {
+        self::$state = $state;
+    }
+
+    public static function has(string $key): bool
+    {
+        return array_key_exists($key, self::$state);
+    }
+
+    public static function get(string $key, $default = null)
+    {
+        return self::$state[$key] ?? $default;
+    }
+
+    /** Cache a value (e.g. data fetched on the client) for later reads. */
+    public static function set(string $key, $value): void
+    {
+        self::$state[$key] = $value;
+    }
+
+    public static function reset(): void
+    {
+        self::$state = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
  * A stable mutable container returned by useRef(). Its identity is preserved
  * across renders so it can hold a reference to a live host node (e.g. the
  * contentEditable surface) or any mutable value that must not trigger renders.
@@ -44744,6 +46707,69 @@ final class Ref
     public function __construct($initial = null)
     {
         $this->current = $initial;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * Tracks in-flight useSuspenseData fetches so a key is fetched once even if the
+ * suspended component renders several times before the data arrives. Resolved
+ * values live in {@see HydrationState} (shared with useData); this only holds
+ * the pending promises.
+ */
+final class SuspenseCache
+{
+    /** @var array<string,mixed> key => pending promise */
+    private static array $pending = [];
+
+    public static function isPending(string $key): bool
+    {
+        return isset(self::$pending[$key]);
+    }
+
+    public static function promise(string $key)
+    {
+        return self::$pending[$key] ?? null;
+    }
+
+    public static function setPending(string $key, $promise): void
+    {
+        self::$pending[$key] = $promise;
+    }
+
+    public static function clear(string $key): void
+    {
+        unset(self::$pending[$key]);
+    }
+
+    public static function reset(): void
+    {
+        self::$pending = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * Thrown by useSuspenseData() when the data for a key is still in flight. The
+ * reconciler catches it at the nearest <Suspense> boundary, renders the
+ * fallback, and re-renders when $promise settles. Carries the in-flight promise
+ * (a thenable) and the data key.
+ */
+final class Suspension extends \Exception
+{
+    /** @var mixed a thenable that settles when the data is ready */
+    public $promise;
+    public string $key;
+
+    public function __construct($promise, string $key)
+    {
+        parent::__construct('suspended: ' . $key);
+        $this->promise = $promise;
+        $this->key = $key;
     }
 }
 <?php
@@ -44805,8 +46831,15 @@ final class ComponentResolver
             return self::$registry[$type];
         }
 
-        if (self::isHtmlElement($type)) {
-            return null;
+        // React convention: a Capitalized (or dotted) name is a component; a
+        // lowercase name is a host element. This means a component may be named
+        // like an HTML tag (e.g. <Nav>, <Header>, <Section>) without colliding
+        // with the lowercase element (<nav>, <header>, <section>).
+        $looksLikeComponent = $type !== ''
+            && (ctype_upper($type[0]) || strpos($type, '.') !== false);
+
+        if (!$looksLikeComponent) {
+            return null; // lowercase -> host element
         }
 
         $demo = "\\Syntaxx\\PHPX\\Demo\\{$type}";
@@ -44818,7 +46851,7 @@ final class ComponentResolver
             return $type;
         }
 
-        return null;
+        return null; // capitalized but undefined -> treated as a host element
     }
 }
 <?php
@@ -44974,6 +47007,30 @@ final class FakeDomBackend implements HostConfig
         $this->log[] = 'remove';
     }
 
+    public function removeNode($node): void
+    {
+        $this->detach($node);
+        $this->log[] = 'remove';
+    }
+
+    public function childNodesOf($parent): array
+    {
+        return $parent->children;
+    }
+
+    public function nodeMatches($node, \Syntaxx\PHPX\Framework\VirtualDOM\VNode $vnode): bool
+    {
+        if ($vnode->isText()) {
+            return $node->isText;
+        }
+        return !$node->isText && strtolower($node->tag) === strtolower($vnode->type);
+    }
+
+    public function textOf($node): string
+    {
+        return $node->text;
+    }
+
     private function detach(FakeNode $child): void
     {
         if ($child->parent !== null) {
@@ -45037,15 +47094,44 @@ interface HostConfig
 
     /** Detach $child from $parent. */
     public function removeChild($parent, $child): void;
+
+    /**
+     * Detach $node from whatever parent it currently has (a no-op if it has
+     * none). Safer than removeChild when the caller isn't certain of the parent
+     * (e.g. discarding a never-placed subtree).
+     */
+    public function removeNode($node): void;
+
+    // --- Hydration reads: used only when adopting a server-rendered DOM. ---
+
+    /**
+     * Ordered list of child node handles of $parent (elements and text nodes).
+     * Backends that never hydrate (e.g. SsrBackend) may return [].
+     *
+     * @return array<int,mixed>
+     */
+    public function childNodesOf($parent): array;
+
+    /**
+     * Whether an existing host node can be adopted for the given VNode
+     * (same tag for elements, text node for text). Used for adoption + self-heal.
+     */
+    public function nodeMatches($node, \Syntaxx\PHPX\Framework\VirtualDOM\VNode $vnode): bool;
+
+    /** Read the text content of a (text) node, for mismatch repair. */
+    public function textOf($node): string;
 }
 <?php
 
 namespace Syntaxx\PHPX\Framework\Reconciler;
 
 use Syntaxx\PHPX\Framework\Commit\DomProps;
+use Syntaxx\PHPX\Framework\Environment;
 use Syntaxx\PHPX\Framework\Fiber\FiberNode;
 use Syntaxx\PHPX\Framework\Hooks\HookManager;
 use Syntaxx\PHPX\Framework\Hooks\Ref;
+use Syntaxx\PHPX\Framework\Hooks\Suspension;
+use Syntaxx\PHPX\Framework\StreamContext;
 use Syntaxx\PHPX\Framework\VirtualDOM\VNode;
 
 /**
@@ -45077,6 +47163,11 @@ final class Reconciler
     private bool $rendering = false;
     private bool $dirty = false;
 
+    /** Hydration: adopt an existing (server-rendered) DOM instead of creating it. */
+    private bool $hydrating = false;
+    /** Per real-DOM-parent adoption cursors: id(parentNode) => {children,index,degraded}. */
+    private array $hydrationCursors = [];
+
     /** Optional hook invoked around the mutation phase (focus/caret preservation). */
     private $beforeCommit = null;
     private $afterCommit = null;
@@ -45106,6 +47197,35 @@ final class Reconciler
         $this->performWork();
     }
 
+    /**
+     * Adopt the server-rendered DOM already inside the container: bind fibers to
+     * existing nodes, wire event handlers (reusing server data-phpx-id), and only
+     * create/move nodes where the markup genuinely diverges (self-heal). After
+     * this single pass the reconciler behaves exactly like a normal render.
+     */
+    public function hydrate($element): void
+    {
+        $this->element = VNode::normalizeOne($element);
+        $this->hydrating = true;
+        $this->pushCursor($this->container);
+        try {
+            // Adoption pass only — do NOT flush effects here. An effect's
+            // setState would otherwise re-render while still in hydration mode,
+            // and the cursor logic would wrongly remove already-adopted nodes.
+            $this->performWork(true);
+        } finally {
+            $this->popCursor($this->container);
+            $this->hydrating = false;
+            $this->hydrationCursors = [];
+        }
+        // Now run effects + any updates they schedule as normal (non-hydrating) renders.
+        HookManager::flushEffects();
+        if ($this->dirty) {
+            $this->dirty = false;
+            $this->performWork();
+        }
+    }
+
     /** Schedule a re-render (called by setState). Synchronous with re-entrancy guard. */
     public function scheduleUpdate(): void
     {
@@ -45119,7 +47239,7 @@ final class Reconciler
         $this->performWork();
     }
 
-    private function performWork(): void
+    private function performWork(bool $hydratePass = false): void
     {
         if ($this->rootFiber === null) {
             $this->rootFiber = new FiberNode(FiberNode::ROOT);
@@ -45132,15 +47252,30 @@ final class Reconciler
             ($this->beforeCommit)();
         }
 
-        $this->reconcileChildren($this->rootFiber, [$this->element], $this->container);
-        $this->placeChildren($this->rootFiber, $this->container);
+        try {
+            $this->reconcileChildren($this->rootFiber, [$this->element], $this->container);
+            $this->placeChildren($this->rootFiber, $this->container);
+        } catch (Suspension $s) {
+            // A component suspended with no <Suspense> boundary above it. Re-render
+            // when it settles; until then, leave the existing DOM in place.
+            $self = $this;
+            $s->promise->then(static function () use ($self) {
+                $self->scheduleUpdate();
+            });
+        }
 
         if (is_callable($this->afterCommit)) {
             ($this->afterCommit)();
         }
-        HookManager::flushEffects();
         $this->rendering = false;
 
+        // The hydrate() entry handles effect flushing + scheduled updates itself,
+        // after leaving hydration mode, so a re-render never runs while adopting.
+        if ($hydratePass) {
+            return;
+        }
+
+        HookManager::flushEffects();
         if ($this->dirty) {
             $this->dirty = false;
             $this->performWork();
@@ -45205,7 +47340,7 @@ final class Reconciler
             if (!isset($used[spl_object_id($fiber)])) {
                 HookManager::runCleanups($fiber);
                 foreach ($fiber->collectHostNodes() as $node) {
-                    $this->host->removeChild($hostParent, $node);
+                    $this->host->removeNode($node);
                 }
             }
         }
@@ -45234,6 +47369,13 @@ final class Reconciler
             return $fiber;
         }
 
+        if ($vnode->type === 'Suspense') {
+            $fiber = new FiberNode('Suspense');
+            $fiber->isComponent = true; // host-less boundary, not an element
+            $fiber->isSuspense = true;
+            return $fiber;
+        }
+
         $fiber = new FiberNode($vnode->type);
         $callable = ComponentResolver::resolve($vnode->type);
         if ($callable !== null) {
@@ -45252,11 +47394,26 @@ final class Reconciler
     {
         if ($fiber->isText) {
             if ($fiber->stateNode === null) {
-                $fiber->stateNode = $this->host->createTextNode($vnode->text);
+                $adopted = $this->hydrating ? $this->adoptNextChild($hostParent, $vnode) : null;
+                if ($adopted !== null) {
+                    $fiber->stateNode = $adopted;
+                    $fiber->isNew = false; // already in place; don't move it
+                    if ($this->host->textOf($adopted) !== $vnode->text) {
+                        $this->host->setText($adopted, $vnode->text);
+                    }
+                } else {
+                    // fresh mount, or hydration self-heal (isNew stays true -> placed)
+                    $fiber->stateNode = $this->host->createTextNode($vnode->text);
+                }
             } elseif ($fiber->text !== $vnode->text) {
                 $this->host->setText($fiber->stateNode, $vnode->text);
             }
             $fiber->text = $vnode->text;
+            return;
+        }
+
+        if ($fiber->isSuspense) {
+            $this->buildSuspense($fiber, $vnode, $hostParent);
             return;
         }
 
@@ -45281,30 +47438,54 @@ final class Reconciler
 
         // Host element.
         $oldProps = $fiber->props;
+        $adopted = false;
         if ($fiber->stateNode === null) {
-            $fiber->stateNode = $this->host->createElement($fiber->type);
+            $existing = $this->hydrating ? $this->adoptNextChild($hostParent, $vnode) : null;
+            if ($existing !== null) {
+                $fiber->stateNode = $existing;
+                $fiber->isNew = false; // already in place; don't move it
+                $adopted = true;
+            } else {
+                // fresh mount, or hydration self-heal (isNew stays true -> placed)
+                $fiber->stateNode = $this->host->createElement($fiber->type);
+            }
             $oldProps = [];
         }
-        DomProps::apply($this->host, $fiber->stateNode, $oldProps, $vnode->props);
+
+        if ($adopted) {
+            // Trust the server markup; only wire handlers + live form state.
+            $this->applyHydrationProps($fiber->stateNode, $vnode->props);
+        } else {
+            DomProps::apply($this->host, $fiber->stateNode, $oldProps, $vnode->props);
+        }
         $fiber->props = $vnode->props;
 
-        // Wire up ref to the live node.
+        // Wire up ref to the live node (never on the server: stateNode is a string node).
         $ref = $vnode->props['ref'] ?? null;
-        if ($ref instanceof Ref) {
+        if ($ref instanceof Ref && !Environment::isServer()) {
             $ref->current = $fiber->stateNode;
         }
 
         // dangerouslySetInnerHTML marks an uncontrolled subtree (e.g. a
         // contentEditable surface): the reconciler does not diff its children;
-        // the owning component manages the inner DOM via its ref.
+        // the owning component manages the inner DOM via its ref. During
+        // hydration we must NOT rewrite it (would wipe the server content).
         $fiber->hostBoundary = array_key_exists('dangerouslySetInnerHTML', $vnode->props);
         if ($fiber->hostBoundary) {
             $fiber->children = [];
             return;
         }
 
-        $this->reconcileChildren($fiber, $vnode->children, $fiber->stateNode);
-        $this->placeChildren($fiber, $fiber->stateNode);
+        if ($this->hydrating) {
+            // Children adopt from THIS node's own existing children.
+            $this->pushCursor($fiber->stateNode);
+            $this->reconcileChildren($fiber, $vnode->children, $fiber->stateNode);
+            $this->placeChildren($fiber, $fiber->stateNode);
+            $this->popCursor($fiber->stateNode);
+        } else {
+            $this->reconcileChildren($fiber, $vnode->children, $fiber->stateNode);
+            $this->placeChildren($fiber, $fiber->stateNode);
+        }
     }
 
     /**
@@ -45362,6 +47543,395 @@ final class Reconciler
                 $this->flattenHostChildren($child, $out);
             }
         }
+    }
+
+    // ----- Suspense -----
+
+    /**
+     * Build a <Suspense> boundary: try to render its children; if a descendant
+     * suspends (throws a Suspension), discard the partial subtree, render the
+     * fallback instead, and re-render once the in-flight data settles. Like
+     * components, Suspense has no host node — its children/fallback flatten into
+     * the nearest host ancestor.
+     */
+    private function buildSuspense(FiberNode $fiber, VNode $vnode, $hostParent): void
+    {
+        $fallback = $vnode->props['fallback'] ?? null;
+
+        // A <Suspense> renders a stable wrapper element so the DOM structure is
+        // identical whether it shows children or fallback, and so streaming has a
+        // placeholder to reveal content into.
+        if (Environment::isServer() && StreamContext::isStreaming()) {
+            // Streaming SSR: render the fallback now, defer the children to a
+            // later chunk keyed by the wrapper id.
+            $id = StreamContext::nextId();
+            StreamContext::defer($id, $vnode->children);
+            $wrapper = new VNode('div', ['data-pxs' => (string) $id, 'class' => 'phpx-suspense'],
+                VNode::normalizeChildren($fallback));
+            $this->reconcileChildren($fiber, [$wrapper], $hostParent);
+            $fiber->showingFallback = true;
+            return;
+        }
+
+        $self = $this;
+        $retry = static function () use ($self) {
+            $self->scheduleUpdate();
+        };
+        $childWrapper = new VNode('div', ['class' => 'phpx-suspense'], $vnode->children);
+        try {
+            $this->reconcileChildren($fiber, [$childWrapper], $hostParent);
+            $fiber->showingFallback = false;
+        } catch (Suspension $s) {
+            $this->discardChildren($fiber, $hostParent);
+            $fallbackWrapper = new VNode('div', ['class' => 'phpx-suspense'], VNode::normalizeChildren($fallback));
+            $this->reconcileChildren($fiber, [$fallbackWrapper], $hostParent);
+            $fiber->showingFallback = true;
+            // Re-render (retry the children) once the data resolves or fails.
+            $s->promise->then($retry, $retry);
+        }
+    }
+
+    /** Tear down a fiber's children (cleanups + detach any host nodes). */
+    private function discardChildren(FiberNode $fiber, $hostParent): void
+    {
+        foreach ($fiber->children as $child) {
+            HookManager::runCleanups($child);
+            foreach ($child->collectHostNodes() as $node) {
+                $this->host->removeNode($node);
+            }
+        }
+        $fiber->children = [];
+    }
+
+    // ----- Hydration adoption -----
+
+    /** Snapshot the live children of a real DOM parent as an adoption cursor. */
+    private function pushCursor($parentDom): void
+    {
+        $this->hydrationCursors[spl_object_id($parentDom)] = [
+            'parent' => $parentDom,
+            'children' => $this->host->childNodesOf($parentDom),
+            'index' => 0,
+            'degraded' => false,
+        ];
+    }
+
+    /** Tear down a cursor, removing any server children the client didn't claim. */
+    private function popCursor($parentDom): void
+    {
+        $key = spl_object_id($parentDom);
+        if (!isset($this->hydrationCursors[$key])) {
+            return;
+        }
+        $cur = $this->hydrationCursors[$key];
+        $children = $cur['children'];
+        for ($i = $cur['index']; $i < count($children); $i++) {
+            $this->host->removeNode($children[$i]);
+        }
+        unset($this->hydrationCursors[$key]);
+    }
+
+    /**
+     * Claim the next existing child of $hostParent that matches $vnode. Returns
+     * null on miss (caller creates a fresh node — self-heal). A genuine tag/type
+     * mismatch degrades the cursor so the remaining children are recreated.
+     */
+    private function adoptNextChild($hostParent, VNode $vnode)
+    {
+        $key = spl_object_id($hostParent);
+        if (!isset($this->hydrationCursors[$key])) {
+            return null;
+        }
+        $cur = &$this->hydrationCursors[$key];
+        if ($cur['degraded']) {
+            return null;
+        }
+        $children = $cur['children'];
+        $n = count($children);
+        while ($cur['index'] < $n) {
+            $candidate = $children[$cur['index']];
+            if ($this->host->nodeMatches($candidate, $vnode)) {
+                $cur['index']++;
+                return $candidate;
+            }
+            // Defensive: skip whitespace-only text the engine didn't author.
+            if ($this->isInsignificantWhitespace($candidate)) {
+                $cur['index']++;
+                continue;
+            }
+            $cur['degraded'] = true; // recreate the rest of this parent
+            return null;
+        }
+        return null;
+    }
+
+    private function isInsignificantWhitespace($candidate): bool
+    {
+        static $textProbe = null;
+        if ($textProbe === null) {
+            $textProbe = VNode::text('');
+        }
+        if (!$this->host->nodeMatches($candidate, $textProbe)) {
+            return false;
+        }
+        return trim($this->host->textOf($candidate)) === '';
+    }
+
+    /**
+     * On adopt, trust the server's static markup: only (re)bind event handlers
+     * and set live form state. Never rewrite dangerouslySetInnerHTML.
+     */
+    private function applyHydrationProps($node, array $props): void
+    {
+        foreach ($props as $key => $value) {
+            if ($key === 'children' || $key === 'key' || $key === 'ref'
+                || $key === 'dangerouslySetInnerHTML') {
+                continue;
+            }
+            $isEvent = strncmp($key, 'on', 2) === 0 && ctype_upper($key[2] ?? 'x');
+            if ($isEvent || $key === 'value' || $key === 'checked') {
+                $this->host->setProp($node, $key, $value, null);
+            }
+            // other static attributes: trust the server-emitted markup
+        }
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+use Syntaxx\PHPX\Framework\VirtualDOM\VNode;
+
+/**
+ * Server-side {@see HostConfig}: runs the SAME reconciler natively (no \Vrzno)
+ * and accumulates an HTML string. Event handlers are not serialized; instead the
+ * element gets a stable data-phpx-id ("s{n}") so the browser can adopt the node
+ * and attach the real handler during hydration.
+ */
+final class SsrBackend implements HostConfig
+{
+    private int $idSeq = 0;
+
+    public function createElement(string $type)
+    {
+        return new SsrNode($type);
+    }
+
+    public function createTextNode(string $text)
+    {
+        $node = new SsrNode('#text', true);
+        $node->text = $text;
+        return $node;
+    }
+
+    public function setText($node, string $text): void
+    {
+        $node->text = $text;
+    }
+
+    public function setProp($node, string $key, $value, $prev = null): void
+    {
+        // Event handler: emit a server id so the client can adopt + bind.
+        if (strncmp($key, 'on', 2) === 0 && ctype_upper($key[2] ?? 'x')) {
+            if ($node->phpxId === null) {
+                $node->phpxId = 's' . ($this->idSeq++);
+            }
+            return;
+        }
+
+        switch ($key) {
+            case 'className':
+                $node->attrs['class'] = (string) $value;
+                return;
+            case 'style':
+                $node->attrs['style'] = $this->styleToString($value);
+                return;
+            case 'dangerouslySetInnerHTML':
+                $node->rawHtml = is_array($value) ? ($value['__html'] ?? '') : (string) $value;
+                return;
+            case 'checked':
+            case 'selected':
+            case 'disabled':
+            case 'readonly':
+            case 'required':
+                if ($value === true || $value === $key || $value === '') {
+                    $node->attrs[$key] = $key;
+                } elseif ($value === false || $value === null) {
+                    unset($node->attrs[$key]);
+                } else {
+                    $node->attrs[$key] = (string) $value;
+                }
+                return;
+        }
+
+        if ($value === true) {
+            $node->attrs[$key] = '';
+        } elseif ($value === false || $value === null) {
+            unset($node->attrs[$key]);
+        } else {
+            $node->attrs[$key] = (string) $value;
+        }
+    }
+
+    public function removeProp($node, string $key, $prev = null): void
+    {
+        $attr = $key === 'className' ? 'class' : $key;
+        unset($node->attrs[$attr]);
+    }
+
+    public function appendChild($parent, $child): void
+    {
+        $this->detach($child);
+        $child->parent = $parent;
+        $parent->children[] = $child;
+    }
+
+    public function insertBefore($parent, $child, $reference): void
+    {
+        if ($reference === null) {
+            $this->appendChild($parent, $child);
+            return;
+        }
+        $this->detach($child);
+        $child->parent = $parent;
+        $idx = array_search($reference, $parent->children, true);
+        if ($idx === false) {
+            $parent->children[] = $child;
+        } else {
+            array_splice($parent->children, $idx, 0, [$child]);
+        }
+    }
+
+    public function removeChild($parent, $child): void
+    {
+        $idx = array_search($child, $parent->children, true);
+        if ($idx !== false) {
+            array_splice($parent->children, $idx, 1);
+        }
+        $child->parent = null;
+    }
+
+    public function removeNode($node): void
+    {
+        $this->detach($node);
+    }
+
+    // Hydration reads are never used server-side.
+    public function childNodesOf($parent): array
+    {
+        return [];
+    }
+
+    public function nodeMatches($node, VNode $vnode): bool
+    {
+        return false;
+    }
+
+    public function textOf($node): string
+    {
+        return $node->text ?? '';
+    }
+
+    /** Serialize the children of a synthetic root container to an HTML string. */
+    public function rootHtml(SsrNode $container): string
+    {
+        $html = '';
+        foreach ($container->children as $child) {
+            $html .= $child->render();
+        }
+        return $html;
+    }
+
+    private function detach(SsrNode $child): void
+    {
+        if ($child->parent !== null) {
+            $this->removeChild($child->parent, $child);
+        }
+    }
+
+    private function styleToString($style): string
+    {
+        if (is_string($style)) {
+            return $style;
+        }
+        if (!is_array($style)) {
+            return '';
+        }
+        $out = '';
+        foreach ($style as $prop => $val) {
+            $kebab = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $prop));
+            $out .= $kebab . ':' . $val . ';';
+        }
+        return $out;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+/**
+ * A host node used only by {@see SsrBackend} to build an HTML string on the
+ * server. It mirrors the shape the reconciler expects (element/text + children)
+ * and serializes to HTML via render().
+ */
+final class SsrNode
+{
+    public string $tag;
+    public bool $isText;
+    public string $text = '';
+    /** @var array<string,string> rendered attributes (class, id, value, …); no on* */
+    public array $attrs = [];
+    /** Server-assigned id for elements carrying event handlers ("s{n}"). */
+    public ?string $phpxId = null;
+    /** Raw inner HTML from dangerouslySetInnerHTML (bypasses escaping). */
+    public ?string $rawHtml = null;
+    /** @var SsrNode[] */
+    public array $children = [];
+    public ?SsrNode $parent = null;
+
+    private const VOID = [
+        'area' => true, 'base' => true, 'br' => true, 'col' => true, 'embed' => true,
+        'hr' => true, 'img' => true, 'input' => true, 'link' => true, 'meta' => true,
+        'param' => true, 'source' => true, 'track' => true, 'wbr' => true,
+    ];
+
+    public function __construct(string $tag, bool $isText = false)
+    {
+        $this->tag = $tag;
+        $this->isText = $isText;
+    }
+
+    public function render(): string
+    {
+        if ($this->isText) {
+            return htmlspecialchars($this->text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        }
+
+        $attrs = '';
+        // Deterministic attribute order so server and client markup match.
+        ksort($this->attrs);
+        foreach ($this->attrs as $name => $value) {
+            $attrs .= ' ' . $name . '="'
+                . htmlspecialchars((string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8') . '"';
+        }
+        if ($this->phpxId !== null) {
+            $attrs .= ' data-phpx-id="' . $this->phpxId . '"';
+        }
+
+        if (isset(self::VOID[strtolower($this->tag)])) {
+            return "<{$this->tag}{$attrs}>";
+        }
+
+        if ($this->rawHtml !== null) {
+            return "<{$this->tag}{$attrs}>{$this->rawHtml}</{$this->tag}>";
+        }
+
+        // No insignificant whitespace between children: 1:1 with client fibers.
+        $inner = '';
+        foreach ($this->children as $child) {
+            $inner .= $child->render();
+        }
+        return "<{$this->tag}{$attrs}>{$inner}</{$this->tag}>";
     }
 }
 <?php
@@ -45490,6 +48060,37 @@ final class VrznoBackend implements HostConfig
         $parent->removeChild($child);
     }
 
+    public function removeNode($node): void
+    {
+        // ChildNode.remove(): detaches from its parent, no-op if it has none.
+        $node->remove();
+    }
+
+    public function childNodesOf($parent): array
+    {
+        $out = [];
+        $list = $parent->childNodes;
+        $len = (int) $list->length;
+        for ($i = 0; $i < $len; $i++) {
+            $out[] = $list->item($i);
+        }
+        return $out;
+    }
+
+    public function nodeMatches($node, \Syntaxx\PHPX\Framework\VirtualDOM\VNode $vnode): bool
+    {
+        $type = (int) $node->nodeType; // 1 = element, 3 = text
+        if ($vnode->isText()) {
+            return $type === 3;
+        }
+        return $type === 1 && strtolower((string) $node->nodeName) === strtolower($vnode->type);
+    }
+
+    public function textOf($node): string
+    {
+        return (string) $node->textContent;
+    }
+
     private function styleToString($style): string
     {
         if (is_string($style)) {
@@ -45511,9 +48112,140 @@ final class VrznoBackend implements HostConfig
 
 namespace Syntaxx\PHPX\Framework;
 
+/**
+ * Client-side router (browser only). After hydration, it intercepts internal
+ * link clicks and back/forward navigation, updates the History API, and asks
+ * the app to re-render — so navigating between routes does NOT reload the page
+ * (and, crucially for PHPX, does NOT re-boot the PHP-WASM runtime). Components
+ * stay isomorphic: they read the current path via {@see Environment::location()},
+ * which delegates here once the router is active.
+ */
+final class Router
+{
+    private static bool $started = false;
+    /** @var array<string,string> */
+    private static array $current = ['pathname' => '/', 'search' => ''];
+    /** @var callable|null invoked (no args) when the route changes */
+    private static $onChange = null;
+
+    public static function isActive(): bool
+    {
+        return self::$started;
+    }
+
+    /** @return array<string,string> */
+    public static function current(): array
+    {
+        return self::$current;
+    }
+
+    /**
+     * Begin client-side routing. $onChange is called after each navigation and
+     * should re-render the application root.
+     */
+    public static function start(callable $onChange): void
+    {
+        $window = new \Vrzno();
+        self::$onChange = $onChange;
+        self::syncFromWindow($window);
+        self::$started = true;
+
+        // Intercept internal link clicks (delegated at the document level).
+        $window->document->addEventListener('click', static function ($event) use ($window) {
+            if ($event->defaultPrevented) {
+                return;
+            }
+            // Let modified / non-primary / middle clicks fall through to the browser.
+            if ($event->metaKey || $event->ctrlKey || $event->shiftKey || $event->altKey) {
+                return;
+            }
+            if ((int) ($event->button ?? 0) !== 0) {
+                return;
+            }
+
+            // Find the nearest enclosing <a>.
+            $anchor = $event->target;
+            while ($anchor !== null && strtolower((string) ($anchor->tagName ?? '')) !== 'a') {
+                $anchor = $anchor->parentElement ?? null;
+            }
+            if ($anchor === null) {
+                return;
+            }
+
+            $target = (string) ($anchor->getAttribute('target') ?? '');
+            if ($target !== '' && $target !== '_self') {
+                return;
+            }
+            $href = (string) ($anchor->getAttribute('href') ?? '');
+            if ($href === '' || $href[0] === '#') {
+                return;
+            }
+
+            // Resolve to a same-origin path; let external links go to the browser.
+            if (strpos($href, '://') !== false) {
+                $origin = (string) $window->location->origin;
+                if ($origin === '' || strpos($href, $origin) !== 0) {
+                    return;
+                }
+                $href = substr($href, strlen($origin));
+            }
+            if ($href === '' || $href[0] !== '/') {
+                return; // not a root-relative internal path
+            }
+
+            $event->preventDefault();
+            self::navigate($href);
+        });
+
+        // Back/forward buttons.
+        $window->addEventListener('popstate', static function () use ($window) {
+            self::syncFromWindow($window);
+            if (self::$onChange !== null) {
+                (self::$onChange)();
+            }
+        });
+    }
+
+    /** Navigate to an internal path, pushing a history entry and re-rendering. */
+    public static function navigate(string $href): void
+    {
+        $window = new \Vrzno();
+        $parts = explode('?', $href, 2);
+        self::$current = [
+            'pathname' => ($parts[0] !== '' ? $parts[0] : '/'),
+            'search' => isset($parts[1]) ? '?' . $parts[1] : '',
+        ];
+        $window->history->pushState(null, '', $href);
+        if (self::$onChange !== null) {
+            (self::$onChange)();
+        }
+    }
+
+    private static function syncFromWindow($window): void
+    {
+        $loc = $window->location;
+        self::$current = [
+            'pathname' => ((string) $loc->pathname !== '' ? (string) $loc->pathname : '/'),
+            'search' => (string) $loc->search,
+        ];
+    }
+
+    /** Test helper. */
+    public static function reset(): void
+    {
+        self::$started = false;
+        self::$current = ['pathname' => '/', 'search' => ''];
+        self::$onChange = null;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
 use Syntaxx\PHPX\Framework\Commit\SelectionManager;
 use Syntaxx\PHPX\Framework\Events\EventDelegator;
 use Syntaxx\PHPX\Framework\Hooks\HookManager;
+use Syntaxx\PHPX\Framework\Hooks\HydrationState;
 use Syntaxx\PHPX\Framework\Reconciler\ComponentResolver;
 use Syntaxx\PHPX\Framework\Reconciler\Reconciler;
 use Syntaxx\PHPX\Framework\Reconciler\VrznoBackend;
@@ -45534,19 +48266,23 @@ use Syntaxx\PHPX\Framework\Reconciler\VrznoBackend;
 class Runtime
 {
     private Reconciler $reconciler;
+    /** True until the first render, which then performs hydration instead of mount. */
+    private bool $pendingHydrate = false;
 
     /** Kept for back-compat: previously the global current root. */
     private static ?Runtime $currentRoot = null;
 
-    private function __construct($containerElement)
+    private function __construct($containerElement, bool $hydrate = false)
     {
         $window = new \Vrzno();
         $document = $window->document;
 
-        // Clear any pre-render placeholder content in the container once, like
-        // ReactDOM.createRoot does. After this the fiber engine owns the subtree
-        // and never wipes it wholesale again.
-        $containerElement->innerHTML = '';
+        if (!$hydrate) {
+            // Fresh mount: clear any pre-render placeholder once, like
+            // ReactDOM.createRoot. After this the engine owns the subtree.
+            // Hydration must NOT clear — it adopts the server-rendered DOM.
+            $containerElement->innerHTML = '';
+        }
 
         $events = new EventDelegator($containerElement);
         $backend = new VrznoBackend($document, $events);
@@ -45573,10 +48309,50 @@ class Runtime
         return self::$currentRoot;
     }
 
+    /**
+     * Hydrate a server-rendered container: adopt the existing DOM instead of
+     * rebuilding it. Reads the server state blob (#__phpx_state__) so useState
+     * seeding works, then the first render() adopts; later renders are normal.
+     *
+     * @param mixed $containerElement a VRZNO DOM element (e.g. #root)
+     */
+    public static function hydrateRoot($containerElement): self
+    {
+        Environment::$isServer = false;
+        self::seedFromDocument();
+        $root = new self($containerElement, true);
+        $root->pendingHydrate = true;
+        self::$currentRoot = $root;
+        $GLOBALS['__PHPX_ROOT__'] = $root;
+        return $root;
+    }
+
+    /** Read the server-embedded JSON state blob and seed HydrationState. */
+    private static function seedFromDocument(): void
+    {
+        try {
+            $el = (new \Vrzno())->document->getElementById('__phpx_state__');
+            if ($el !== null) {
+                $json = (string) $el->textContent;
+                $data = json_decode($json, true);
+                if (is_array($data)) {
+                    HydrationState::seed($data);
+                }
+            }
+        } catch (\Throwable $e) {
+            // No/invalid blob: components fall back to their default initials.
+        }
+    }
+
     /** Mount or update the given element tree into the root. */
     public function render($component): void
     {
         $GLOBALS['__PHPX_COMPONENT__'] = $component;
+        if ($this->pendingHydrate) {
+            $this->pendingHydrate = false;
+            $this->reconciler->hydrate($component);
+            return;
+        }
         $this->reconciler->render($component);
     }
 
@@ -45587,9 +48363,222 @@ class Runtime
     }
 
     /** Back-compat static hook entry points; delegate to the per-instance HookManager. */
-    public static function useState($initialValue): array
+    public static function useState($initialValue, ?string $hydrationKey = null): array
     {
-        return HookManager::useState($initialValue);
+        return HookManager::useState($initialValue, $hydrationKey);
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
+use Syntaxx\PHPX\Framework\Hooks\DataRegistry;
+use Syntaxx\PHPX\Framework\Hooks\HydrationState;
+use Syntaxx\PHPX\Framework\Reconciler\Reconciler;
+use Syntaxx\PHPX\Framework\Reconciler\SsrBackend;
+use Syntaxx\PHPX\Framework\Reconciler\SsrNode;
+
+/**
+ * Server-side rendering entry. Runs the SAME fiber reconciler natively (no
+ * \Vrzno) with an {@see SsrBackend} and returns an HTML string.
+ *
+ * Both server and client seed their hydration state from the SAME $state array,
+ * so useState($init, 'key') yields identical initial values on both sides — the
+ * server emits markup that matches what the client will render, eliminating the
+ * hydration-mismatch class of bugs by construction.
+ */
+final class ServerRenderer
+{
+    /**
+     * Render $component to HTML.
+     *
+     * @param mixed                 $component a VNode/Component tree
+     * @param array<string,mixed>   $state     initial state shared with the client
+     * @param array<string,string>|null $location SSR location (pathname/search)
+     */
+    public static function renderToString($component, array $state = [], ?array $location = null): string
+    {
+        return self::render($component, $state, $location)['html'];
+    }
+
+    /**
+     * Render to HTML and return the full seed state (explicit $state merged with
+     * everything useData() fetched during the render). Emit ['html'] into #root
+     * and ServerRenderer::stateScript(['state']) so the client hydrates with the
+     * exact data the server used.
+     *
+     * @param array<string,mixed>       $state
+     * @param array<string,string>|null $location
+     * @return array{html:string,state:array<string,mixed>}
+     */
+    public static function render($component, array $state = [], ?array $location = null): array
+    {
+        return Environment::withServer($location, static function () use ($component, $state) {
+            DataRegistry::reset();
+            HydrationState::seed($state);
+            try {
+                $container = new SsrNode('#ssr-root');
+                $backend = new SsrBackend();
+                $reconciler = new Reconciler($backend, $container);
+                $reconciler->render($component);
+                $html = $backend->rootHtml($container);
+                // Explicit state plus everything useData() fetched this render.
+                $full = array_merge($state, DataRegistry::flush());
+                return ['html' => $html, 'state' => $full];
+            } finally {
+                HydrationState::reset();
+            }
+        });
+    }
+
+    /**
+     * A <script> tag carrying the seed state for the client. JSON is escaped so
+     * it is safe to embed directly inside <script>…</script>.
+     *
+     * @param array<string,mixed> $state
+     */
+    public static function stateScript(array $state): string
+    {
+        $json = json_encode(
+            $state,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
+        );
+        return '<script id="__phpx_state__" type="application/json">' . $json . '</script>';
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
+/**
+ * Coordinates streaming SSR. While streaming, a <Suspense> boundary renders its
+ * fallback into a stable wrapper (<div data-pxs="id">) and defers its children;
+ * StreamRenderer then renders each deferred boundary as a later chunk. The id
+ * counter persists across the shell render and all boundary-content renders so
+ * the placeholder and its streamed content share the same id.
+ */
+final class StreamContext
+{
+    private static bool $streaming = false;
+    private static int $counter = 0;
+    /** @var array<int,array{0:int,1:array}> queue of [id, childrenVNodes] */
+    private static array $deferred = [];
+
+    public static function begin(): void
+    {
+        self::$streaming = true;
+        self::$counter = 0;
+        self::$deferred = [];
+    }
+
+    public static function end(): void
+    {
+        self::$streaming = false;
+        self::$deferred = [];
+    }
+
+    public static function isStreaming(): bool
+    {
+        return self::$streaming;
+    }
+
+    public static function nextId(): int
+    {
+        return self::$counter++;
+    }
+
+    /** @param array $childrenVNodes the Suspense boundary's children VNodes */
+    public static function defer(int $id, array $childrenVNodes): void
+    {
+        self::$deferred[] = [$id, $childrenVNodes];
+    }
+
+    /** Drain the queue (nested boundaries discovered while rendering content
+     *  are added back and drained on the next call). */
+    public static function takeDeferred(): array
+    {
+        $deferred = self::$deferred;
+        self::$deferred = [];
+        return $deferred;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
+use Syntaxx\PHPX\Framework\Hooks\DataRegistry;
+use Syntaxx\PHPX\Framework\Hooks\HydrationState;
+use Syntaxx\PHPX\Framework\Reconciler\ComponentResolver;
+use Syntaxx\PHPX\Framework\Reconciler\Reconciler;
+use Syntaxx\PHPX\Framework\Reconciler\SsrBackend;
+use Syntaxx\PHPX\Framework\Reconciler\SsrNode;
+
+/**
+ * Streaming server-side rendering. It renders the shell immediately — with each
+ * <Suspense> boundary shown as its fallback inside a placeholder wrapper — then
+ * yields each boundary's real content as a later chunk. The caller flushes each
+ * chunk, so the browser shows the shell at once and content streams in as the
+ * server produces it (great TTFB). A tiny inline runtime reveals each chunk into
+ * its placeholder; the WASM client then hydrates the completed DOM.
+ *
+ * Yields associative chunks:
+ *   ['type' => 'shell',    'html'  => string]           // #root inner HTML (fallbacks)
+ *   ['type' => 'boundary', 'id' => int, 'html' => string] // content for one boundary
+ *   ['type' => 'close',    'state' => array]            // seed state for the client
+ */
+final class StreamRenderer
+{
+    public static function stream($component, array $state = [], ?array $location = null): \Generator
+    {
+        ComponentResolver::register('__StreamFragment', static fn ($props) => $props['children']);
+
+        $prevServer = Environment::$isServer;
+        $prevLoc = Environment::$ssrLocation;
+        Environment::$isServer = true;
+        Environment::$ssrLocation = $location;
+        DataRegistry::reset();
+        HydrationState::seed($state);
+        StreamContext::begin();
+
+        try {
+            // 1) Shell: full tree, Suspense boundaries rendered as fallbacks.
+            $container = new SsrNode('#ssr-root');
+            $backend = new SsrBackend();
+            (new Reconciler($backend, $container))->render($component);
+            yield ['type' => 'shell', 'html' => $backend->rootHtml($container)];
+
+            // 2) Each deferred boundary's content (nested boundaries are queued
+            //    as they render and drained on the next pass).
+            while (true) {
+                $deferred = StreamContext::takeDeferred();
+                if ($deferred === []) {
+                    break;
+                }
+                foreach ($deferred as [$id, $children]) {
+                    $c = new SsrNode('#boundary');
+                    $b = new SsrBackend();
+                    (new Reconciler($b, $c))->render(Component::create('__StreamFragment', [], $children));
+                    yield ['type' => 'boundary', 'id' => $id, 'html' => $b->rootHtml($c)];
+                }
+            }
+
+            // 3) Seed state (explicit + everything useSuspenseData/useData fetched).
+            yield ['type' => 'close', 'state' => array_merge($state, DataRegistry::flush())];
+        } finally {
+            StreamContext::end();
+            HydrationState::reset();
+            Environment::$isServer = $prevServer;
+            Environment::$ssrLocation = $prevLoc;
+        }
+    }
+
+    /** Inline JS that swaps a streamed <template> into its placeholder wrapper. */
+    public static function revealRuntime(): string
+    {
+        return 'window.__pxReveal=function(id){'
+            . 'var t=document.querySelector(\'template[data-pxc="\'+id+\'"]\'),'
+            . 'd=document.querySelector(\'[data-pxs="\'+id+\'"]\');'
+            . 'if(t&&d){d.replaceChildren(t.content.cloneNode(true));t.remove();}};';
     }
 }
 <?php
@@ -45757,9 +48746,9 @@ use Syntaxx\PHPX\Framework\Hooks\Ref;
 /**
  * React-style state hook. Backward-compatible signature: [$value, $setValue].
  */
-function useState($initialValue): array
+function useState($initialValue, ?string $hydrationKey = null): array
 {
-    return HookManager::useState($initialValue);
+    return HookManager::useState($initialValue, $hydrationKey);
 }
 
 /**
@@ -45789,6 +48778,29 @@ function useMemo(callable $factory, array $deps)
 function useCallback(callable $callback, array $deps): callable
 {
     return HookManager::useCallback($callback, $deps);
+}
+
+/**
+ * Isomorphic data hook. Returns [$data, $loading, $error]. The server fetches
+ * once and seeds the result into the page; the client reads the seed (no
+ * refetch) and only fetches for routes reached via client-side navigation that
+ * the server never rendered. See {@see HookManager::useData()}.
+ */
+function useData(string $key, callable $fetcher): array
+{
+    return HookManager::useData($key, $fetcher);
+}
+
+/**
+ * Suspense data hook. Returns the value or throws a Suspension that the nearest
+ * <Suspense fallback={…}> boundary renders a fallback for — so the component
+ * carries no loading state. See {@see HookManager::useSuspenseData()}.
+ *
+ * @return mixed
+ */
+function useSuspenseData(string $key, callable $fetcher)
+{
+    return HookManager::useSuspenseData($key, $fetcher);
 }
 # CLAUDE.md
 
