@@ -4,8 +4,12 @@ test.describe('TaskBoard - Card Operations', () => {
   test('adds a new card to To Do column', async ({ page }) => {
     await page.goto('/');
 
+    // Wait for the WASM app to render the seed cards before counting (otherwise
+    // the initial count is taken on the empty pre-render DOM and reads 0).
+    await page.waitForSelector('[data-testid="column-todo"] .card');
+
     // Count initial cards in To Do
-    const initialCardCount = await page.locator('[data-testid="column-todo"] [data-testid^="card-"]').count();
+    const initialCardCount = await page.locator('[data-testid="column-todo"] .card').count();
 
     // Click add card button
     await page.click('[data-testid="add-card-todo"]');
@@ -26,7 +30,7 @@ test.describe('TaskBoard - Card Operations', () => {
     await expect(page.locator('text=New Test Task')).toBeVisible();
 
     // Card count should increase by 1
-    const newCardCount = await page.locator('[data-testid="column-todo"] [data-testid^="card-"]').count();
+    const newCardCount = await page.locator('[data-testid="column-todo"] .card').count();
     expect(newCardCount).toBe(initialCardCount + 1);
   });
 
