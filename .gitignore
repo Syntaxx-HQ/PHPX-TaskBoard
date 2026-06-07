@@ -3,3 +3,6 @@
 /node_modules/
 /playwright-report/
 /test-results/
+
+# framework is the live sibling repo (symlinked), not a committed copy
+/vendor/syntaxx/phpx-framework

@@ -11,7 +11,7 @@
     ],
     "require": {
         "syntaxx/wasm-php-runtime-vrzno": "8.3.0",
-        "syntaxx/phpx-framework": "^0.1.0"
+        "syntaxx/phpx-framework": "^0.2.0"
     },
     "require-dev": {
         "syntaxx/phpx-build-tools": "^0.1.0",

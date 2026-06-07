@@ -87,7 +87,7 @@ function Card($props) {
                         type="text"
                         className="inline-edit-input"
                         value={$editTitle}
-                        onChange={fn($e) => $setEditTitle($e->target->value)}
+                        onInput={fn($e) => $setEditTitle($e->target->value)}
                         onKeyPress={fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null}
                         onKeyDown={fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null}
                         onBlur={$handleSaveEdit}
@@ -96,7 +96,11 @@ function Card($props) {
                         onClick={fn($e) => $e->stopPropagation()}
                     />
                 ) : (
-                    <div className="card-title" onDoubleClick={$handleTitleDoubleClick}>
+                    <div
+                        className="card-title"
+                        onClick={fn($e) => $e->stopPropagation()}
+                        onDoubleClick={$handleTitleDoubleClick}
+                    >
                         {$card['title']}
                     </div>
                 )}
@@ -115,11 +119,8 @@ function Card($props) {
                 >
                     ×
                 </button>
-        </div>
-    );
 
-    // TODO: Handle modals separately
-    /*{$showDeleteConfirm ? (
+                {$showDeleteConfirm ? (
                 <div className="confirm-dialog">
                     <div className="confirm-content">
                         <p>Are you sure you want to delete this card?</p>
@@ -195,5 +196,7 @@ function Card($props) {
                         </div>
                     </div>
                 </div>
-            ) : null}*/
+            ) : null}
+        </div>
+    );
 }

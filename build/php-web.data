@@ -804,85 +804,7 @@ function Card($props)
         'low' => 'Low',
         default => 'Medium',
     };
-    return Component::create("div", ["className" => "card", "data-testid" => $card['id'], "draggable" => "true", "onDragStart" => $onDragStart, "onDragEnd" => $onDragEnd, "onClick" => $handleCardClick], [$isEditing ? Component::create("input", ["type" => "text", "className" => "inline-edit-input", "value" => $editTitle, "onChange" => fn($e) => $setEditTitle($e->target->value), "onKeyPress" => fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null, "onKeyDown" => fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null, "onBlur" => $handleSaveEdit, "data-testid" => "inline-edit-input", "autoFocus" => true, "onClick" => fn($e) => $e->stopPropagation()], []) : Component::create("div", ["className" => "card-title", "onDoubleClick" => $handleTitleDoubleClick], [$card['title']]), Component::create("div", ["className" => "card-meta"], [Component::create("span", ["className" => "card-priority " . $getPriorityClass($card['priority'] ?? 'medium')], [$getPriorityLabel($card['priority'] ?? 'medium')])]), Component::create("button", ["className" => "delete-card-btn", "onClick" => $handleDeleteClick, "data-testid" => "delete-card-btn", "title" => "Delete card"], [" × "])]);
-    // TODO: Handle modals separately
-    /*{$showDeleteConfirm ? (
-                    <div className="confirm-dialog">
-                        <div className="confirm-content">
-                            <p>Are you sure you want to delete this card?</p>
-                            <div className="form-actions">
-                                <button
-                                    className="btn btn-secondary"
-                                    onClick={$handleCancelDelete}
-                                    data-testid="cancel-delete-btn"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={$handleConfirmDelete}
-                                    data-testid="confirm-delete-btn"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                ) : null}
-    
-                {$isModalOpen ? (
-                    <div className="card-modal active" data-testid="card-modal">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h2 data-testid="modal-card-title">{$card['title']}</h2>
-                                <button
-                                    className="modal-close-btn"
-                                    onClick={fn() => $setIsModalOpen(false)}
-                                    data-testid="modal-close-btn"
-                                >
-                                    ×
-                                </button>
-                            </div>
-    
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label>Priority</label>
-                                    <select
-                                        value={$card['priority'] ?? 'medium'}
-                                        onChange={fn($e) => $onUpdate(['priority' => $e->target->value])}
-                                    >
-                                        <option value="low">Low</option>
-                                        <option value="medium">Medium</option>
-                                        <option value="high">High</option>
-                                    </select>
-                                </div>
-    
-                                <div className="form-group">
-                                    <label>Description</label>
-                                    <textarea
-                                        placeholder="Add a description..."
-                                        value={$card['description'] ?? ''}
-                                        onChange={fn($e) => $onUpdate(['description' => $e->target->value])}
-                                    />
-                                </div>
-    
-                                <div className="form-group">
-                                    <label>Card ID</label>
-                                    <div className="card-id">{$card['id']}</div>
-                                </div>
-                            </div>
-    
-                            <div className="modal-footer">
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={$handleConfirmDelete}
-                                >
-                                    Delete Card
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                ) : null}*/
+    return Component::create("div", ["className" => "card", "data-testid" => $card['id'], "draggable" => "true", "onDragStart" => $onDragStart, "onDragEnd" => $onDragEnd, "onClick" => $handleCardClick], [$isEditing ? Component::create("input", ["type" => "text", "className" => "inline-edit-input", "value" => $editTitle, "onInput" => fn($e) => $setEditTitle($e->target->value), "onKeyPress" => fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null, "onKeyDown" => fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null, "onBlur" => $handleSaveEdit, "data-testid" => "inline-edit-input", "autoFocus" => true, "onClick" => fn($e) => $e->stopPropagation()], []) : Component::create("div", ["className" => "card-title", "onClick" => fn($e) => $e->stopPropagation(), "onDoubleClick" => $handleTitleDoubleClick], [$card['title']]), Component::create("div", ["className" => "card-meta"], [Component::create("span", ["className" => "card-priority " . $getPriorityClass($card['priority'] ?? 'medium')], [$getPriorityLabel($card['priority'] ?? 'medium')])]), Component::create("button", ["className" => "delete-card-btn", "onClick" => $handleDeleteClick, "data-testid" => "delete-card-btn", "title" => "Delete card"], [" × "]), $showDeleteConfirm ? Component::create("div", ["className" => "confirm-dialog"], [Component::create("div", ["className" => "confirm-content"], [Component::create("p", [], ["Are you sure you want to delete this card?"]), Component::create("div", ["className" => "form-actions"], [Component::create("button", ["className" => "btn btn-secondary", "onClick" => $handleCancelDelete, "data-testid" => "cancel-delete-btn"], [" Cancel "]), Component::create("button", ["className" => "btn btn-danger", "onClick" => $handleConfirmDelete, "data-testid" => "confirm-delete-btn"], [" Delete "])])])]) : null, $isModalOpen ? Component::create("div", ["className" => "card-modal active", "data-testid" => "card-modal"], [Component::create("div", ["className" => "modal-content"], [Component::create("div", ["className" => "modal-header"], [Component::create("h2", ["data-testid" => "modal-card-title"], [$card['title']]), Component::create("button", ["className" => "modal-close-btn", "onClick" => fn() => $setIsModalOpen(false), "data-testid" => "modal-close-btn"], [" × "])]), Component::create("div", ["className" => "modal-body"], [Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Priority"]), Component::create("select", ["value" => $card['priority'] ?? 'medium', "onChange" => fn($e) => $onUpdate(['priority' => $e->target->value])], [Component::create("option", ["value" => "low"], ["Low"]), Component::create("option", ["value" => "medium"], ["Medium"]), Component::create("option", ["value" => "high"], ["High"])])]), Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Description"]), Component::create("textarea", ["placeholder" => "Add a description...", "value" => $card['description'] ?? '', "onChange" => fn($e) => $onUpdate(['description' => $e->target->value])], [])]), Component::create("div", ["className" => "form-group"], [Component::create("label", [], ["Card ID"]), Component::create("div", ["className" => "card-id"], [$card['id']])])]), Component::create("div", ["className" => "modal-footer"], [Component::create("button", ["className" => "btn btn-danger", "onClick" => $handleConfirmDelete], [" Delete Card "])])])]) : null]);
 }<?php
 
 use Syntaxx\PHPX\Framework\Component;
@@ -972,7 +894,7 @@ function Card($props) {
                         type="text"
                         className="inline-edit-input"
                         value={$editTitle}
-                        onChange={fn($e) => $setEditTitle($e->target->value)}
+                        onInput={fn($e) => $setEditTitle($e->target->value)}
                         onKeyPress={fn($e) => $e->key === 'Enter' ? $handleSaveEdit() : null}
                         onKeyDown={fn($e) => $e->key === 'Escape' ? $handleCancelEdit() : null}
                         onBlur={$handleSaveEdit}
@@ -981,7 +903,11 @@ function Card($props) {
                         onClick={fn($e) => $e->stopPropagation()}
                     />
                 ) : (
-                    <div className="card-title" onDoubleClick={$handleTitleDoubleClick}>
+                    <div
+                        className="card-title"
+                        onClick={fn($e) => $e->stopPropagation()}
+                        onDoubleClick={$handleTitleDoubleClick}
+                    >
                         {$card['title']}
                     </div>
                 )}
@@ -1000,11 +926,8 @@ function Card($props) {
                 >
                     ×
                 </button>
-        </div>
-    );
 
-    // TODO: Handle modals separately
-    /*{$showDeleteConfirm ? (
+                {$showDeleteConfirm ? (
                 <div className="confirm-dialog">
                     <div className="confirm-content">
                         <p>Are you sure you want to delete this card?</p>
@@ -1080,7 +1003,9 @@ function Card($props) {
                         </div>
                     </div>
                 </div>
-            ) : null}*/
+            ) : null}
+        </div>
+    );
 }<?php
 use Syntaxx\PHPX\Framework\Component;
 use Syntaxx\PHPX\Framework\Runtime;
@@ -31689,7 +31614,7 @@ class ComposerStaticInit2bfece6a1e2d3f67cee2e8a9ebf31c72
         'name' => 'syntaxx/phpx-sample-task-board',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5dbc90639b0ec790390ee5619bb00f0066dfb7ad',
+        'reference' => 'f1001a59c1574be7c273a9eb72bb2f5c0af7818c',
         'type' => 'project',
         'install_path' => '/home/kambo/workspace/Syntaxx/PHPX-TaskBoard',
         'aliases' => array(),
@@ -31708,7 +31633,7 @@ class ComposerStaticInit2bfece6a1e2d3f67cee2e8a9ebf31c72
         'syntaxx/phpx-sample-task-board' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5dbc90639b0ec790390ee5619bb00f0066dfb7ad',
+            'reference' => 'f1001a59c1574be7c273a9eb72bb2f5c0af7818c',
             'type' => 'project',
             'install_path' => '/home/kambo/workspace/Syntaxx/PHPX-TaskBoard',
             'aliases' => array(),
@@ -31780,6 +31705,172 @@ $root->render(
         <env name="APP_ENV" value="testing"/>
     </php>
 </phpunit> <?php
+
+namespace Syntaxx\PHPX\Framework\Commit;
+
+use Syntaxx\PHPX\Framework\Reconciler\HostConfig;
+
+/**
+ * Diffs two prop sets and applies only the changes to a host node through the
+ * {@see HostConfig}. This is what makes updates surgical: unchanged attributes
+ * are never touched, so the live node — and its focus/selection — is preserved.
+ */
+final class DomProps
+{
+    /** Props that are structural/meta and never written to the host as attributes. */
+    private const RESERVED = ['children' => true, 'key' => true, 'ref' => true];
+
+    /**
+     * @param array<string,mixed> $oldProps
+     * @param array<string,mixed> $newProps
+     */
+    public static function apply(HostConfig $host, $node, array $oldProps, array $newProps): void
+    {
+        // Remove props that disappeared.
+        foreach ($oldProps as $key => $prev) {
+            if (isset(self::RESERVED[$key])) {
+                continue;
+            }
+            if (!array_key_exists($key, $newProps)) {
+                $host->removeProp($node, $key, $prev);
+            }
+        }
+
+        // Set new/changed props.
+        foreach ($newProps as $key => $value) {
+            if (isset(self::RESERVED[$key])) {
+                continue;
+            }
+            $prev = $oldProps[$key] ?? null;
+
+            // dangerouslySetInnerHTML arrives as a fresh ['__html' => ...] array
+            // each render, so a plain !== would re-write innerHTML every time and
+            // destroy the caret of an uncontrolled (contentEditable) subtree.
+            // Compare by the inner HTML string and only write when it changed.
+            if ($key === 'dangerouslySetInnerHTML') {
+                $prevHtml = is_array($prev) ? ($prev['__html'] ?? null) : null;
+                $newHtml = is_array($value) ? ($value['__html'] ?? null) : null;
+                if ($prevHtml !== $newHtml) {
+                    $host->setProp($node, $key, $value, $prev);
+                }
+                continue;
+            }
+
+            if (!array_key_exists($key, $oldProps) || $prev !== $value) {
+                $host->setProp($node, $key, $value, $prev);
+            }
+        }
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Commit;
+
+/**
+ * Saves and restores focus and caret/selection around a commit.
+ *
+ * Surgical patching already preserves focus in the common case (the focused
+ * node is never recreated). This is the safety net for the cases where the
+ * focused node still gets moved by a reordering: we re-focus the same live node
+ * and restore its caret afterwards. Handles two caret models:
+ *   - <input>/<textarea>: selectionStart/selectionEnd
+ *   - contentEditable: a window.getSelection() Range (anchor/focus node+offset)
+ *
+ * When a component deliberately rewrites its own contentEditable content (a new
+ * dangerouslySetInnerHTML), the saved nodes are stale; the editor component is
+ * then responsible for restoring its own caret from its model.
+ */
+final class SelectionManager
+{
+    /** VRZNO window object. */
+    private $window;
+    /** VRZNO document object. */
+    private $document;
+    /** @var array|null */
+    private $saved = null;
+
+    public function __construct($window)
+    {
+        $this->window = $window;
+        $this->document = $window->document;
+    }
+
+    public function save(): void
+    {
+        $this->saved = null;
+        $active = $this->document->activeElement;
+        if ($active === null) {
+            return;
+        }
+
+        $tag = strtolower((string) ($active->tagName ?? ''));
+        if ($tag === 'input' || $tag === 'textarea') {
+            $this->saved = [
+                'kind' => 'input',
+                'node' => $active,
+                'start' => $active->selectionStart,
+                'end' => $active->selectionEnd,
+            ];
+            return;
+        }
+
+        if ((bool) ($active->isContentEditable ?? false)) {
+            $sel = $this->window->getSelection();
+            if ($sel !== null && (int) ($sel->rangeCount ?? 0) > 0) {
+                $this->saved = [
+                    'kind' => 'ce',
+                    'node' => $active,
+                    'anchorNode' => $sel->anchorNode,
+                    'anchorOffset' => $sel->anchorOffset,
+                    'focusNode' => $sel->focusNode,
+                    'focusOffset' => $sel->focusOffset,
+                ];
+            } else {
+                $this->saved = ['kind' => 'focus', 'node' => $active];
+            }
+        }
+    }
+
+    public function restore(): void
+    {
+        if ($this->saved === null) {
+            return;
+        }
+        $s = $this->saved;
+        $this->saved = null;
+
+        $node = $s['node'];
+        if (!(bool) ($node->isConnected ?? true)) {
+            return;
+        }
+
+        $node->focus();
+
+        if ($s['kind'] === 'input') {
+            if ($s['start'] !== null) {
+                $node->setSelectionRange($s['start'], $s['end']);
+            }
+            return;
+        }
+
+        if ($s['kind'] === 'ce') {
+            try {
+                $sel = $this->window->getSelection();
+                if ($sel !== null) {
+                    $sel->setBaseAndExtent(
+                        $s['anchorNode'],
+                        $s['anchorOffset'],
+                        $s['focusNode'],
+                        $s['focusOffset']
+                    );
+                }
+            } catch (\Throwable $e) {
+                // Stale range (content was rewritten); editor restores its own caret.
+            }
+        }
+    }
+}
+<?php
 
 namespace Syntaxx\PHPX\Framework;
 
@@ -31953,6 +32044,265 @@ class Element {
 
 namespace Syntaxx\PHPX\Framework;
 
+/**
+ * Tells components which side they are rendering on and provides a location
+ * abstraction so the SAME component code runs natively on the server (SSR) and
+ * as WASM in the browser.
+ *
+ * The golden rule for isomorphic components: never touch \Vrzno (window/document)
+ * directly during render — guard with Environment::isServer() and read the URL
+ * via Environment::location(). DOM work belongs in effects, which never run on
+ * the server.
+ */
+final class Environment
+{
+    /** True while a server-side render (ServerRenderer) is in progress. */
+    public static bool $isServer = false;
+
+    /**
+     * A plain location stub used during SSR (e.g. ['pathname' => '/about',
+     * 'search' => '?q=1', 'href' => '...']). On the client this stays null and
+     * location() reads the real window.location.
+     *
+     * @var array<string,string>|null
+     */
+    public static ?array $ssrLocation = null;
+
+    public static function isServer(): bool
+    {
+        return self::$isServer;
+    }
+
+    /**
+     * Current location as an array with at least 'pathname' and 'search'.
+     * Server: returns the SSR stub. Client: reads window.location via VRZNO.
+     *
+     * @return array<string,string>
+     */
+    public static function location(): array
+    {
+        if (self::$isServer) {
+            return self::$ssrLocation ?? ['pathname' => '/', 'search' => ''];
+        }
+
+        // Once client-side routing is active, the router is the source of truth
+        // (it tracks pushState/popstate without a page reload).
+        if (Router::isActive()) {
+            return Router::current();
+        }
+
+        $loc = (new \Vrzno())->location;
+        return [
+            'pathname' => (string) $loc->pathname,
+            'search' => (string) $loc->search,
+            'href' => (string) $loc->href,
+        ];
+    }
+
+    /** Run $fn as a server render with the given location, restoring state after. */
+    public static function withServer(?array $location, callable $fn)
+    {
+        $prevServer = self::$isServer;
+        $prevLoc = self::$ssrLocation;
+        self::$isServer = true;
+        self::$ssrLocation = $location;
+        try {
+            return $fn();
+        } finally {
+            self::$isServer = $prevServer;
+            self::$ssrLocation = $prevLoc;
+        }
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Events;
+
+/**
+ * Delegated event system. Instead of attaching/detaching listeners on every
+ * node each render (the old model, which tore handlers down and lost bindings),
+ * this attaches exactly one listener per event type to the root container and
+ * dispatches by walking up from event.target to the nearest node carrying a
+ * registered handler id. Handlers therefore survive re-renders untouched.
+ */
+final class EventDelegator
+{
+    /** The root container VRZNO node. */
+    private $root;
+    private static int $idSeq = 0;
+
+    /** @var array<string,array<string,callable>> handlers[phpxId][eventType] = callable */
+    private array $handlers = [];
+    /** @var array<string,bool> event types that already have a root listener */
+    private array $rootListeners = [];
+
+    public function __construct($root)
+    {
+        $this->root = $root;
+    }
+
+    /** Register a handler for ($node, $eventType), wiring a root listener once. */
+    public function bind($node, string $eventType, callable $handler): void
+    {
+        $id = $this->ensureId($node);
+        $this->handlers[$id][$eventType] = $handler;
+        $this->ensureRootListener($eventType);
+    }
+
+    public function unbind($node, string $eventType): void
+    {
+        $id = $this->idOf($node);
+        if ($id !== null) {
+            unset($this->handlers[$id][$eventType]);
+        }
+    }
+
+    private function ensureId($node): string
+    {
+        $id = $this->idOf($node);
+        if ($id === null || $id === '') {
+            $id = 'h' . (self::$idSeq++);
+            $node->setAttribute('data-phpx-id', $id);
+        }
+        return $id;
+    }
+
+    private function idOf($node): ?string
+    {
+        $id = $node->getAttribute('data-phpx-id');
+        return ($id === null || $id === '') ? null : $id;
+    }
+
+    private function ensureRootListener(string $eventType): void
+    {
+        if (isset($this->rootListeners[$eventType])) {
+            return;
+        }
+        $this->rootListeners[$eventType] = true;
+        $self = $this;
+        $this->root->addEventListener($eventType, static function ($event) use ($self, $eventType) {
+            $self->dispatch($eventType, $event);
+        });
+    }
+
+    /** Walk up from the event target to find and invoke the nearest handler. */
+    private function dispatch(string $eventType, $event): void
+    {
+        $target = $event->target;
+        while ($target !== null) {
+            $id = null;
+            // Text nodes have no getAttribute; guard defensively.
+            if (method_exists($target, 'getAttribute') || isset($target->getAttribute)) {
+                $id = @$target->getAttribute('data-phpx-id');
+            }
+            if ($id !== null && $id !== '' && isset($this->handlers[$id][$eventType])) {
+                try {
+                    ($this->handlers[$id][$eventType])($event);
+                } catch (\Throwable $e) {
+                    error_log('[phpx] event handler error: ' . $e->getMessage());
+                }
+                return;
+            }
+            $target = $target->parentElement ?? null;
+        }
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Fiber;
+
+/**
+ * A persistent unit of work / component-or-host instance.
+ *
+ * Unlike React's double-buffered fibers, these nodes persist in place across
+ * renders. Persistence is what gives us the two properties we care about most:
+ *   - host nodes ($stateNode) survive re-renders, so focus/caret/scroll survive;
+ *   - hook state ($hooks) is attached to the instance, not to a function name,
+ *     so two instances of the same component have independent state.
+ *
+ * Engine invariant: a fiber resolves to a *sequence* of host nodes
+ * (collectHostNodes). Host/text fibers resolve to exactly one; component/root
+ * fibers resolve to the concatenation of their children's host nodes
+ * (so component pass-through and fragments work).
+ */
+final class FiberNode
+{
+    public const ROOT = '#root';
+
+    public string $type;
+    /** @var string|int|null */
+    public $key = null;
+
+    public bool $isRoot = false;
+    public bool $isText = false;
+    public bool $isComponent = false;
+    /** When true the reconciler will not diff this host fiber's children
+     *  after mount (used for contentEditable surfaces owned via a ref). */
+    public bool $hostBoundary = false;
+
+    /** A <Suspense> boundary: renders its fallback while a child is suspended. */
+    public bool $isSuspense = false;
+    /** Whether this Suspense boundary is currently showing its fallback. */
+    public bool $showingFallback = false;
+
+    /** @var array<string,mixed> */
+    public array $props = [];
+    public string $text = '';
+
+    /** Host node handle (element/text), or the container for the root. Null for components. */
+    public $stateNode = null;
+
+    public ?FiberNode $parent = null;
+    /** @var FiberNode[] */
+    public array $children = [];
+
+    /** Resolved component callable (component fibers only). */
+    public $renderFn = null;
+
+    /** Per-instance hook state (see HookManager). */
+    public array $hooks = [];
+
+    /** Transient: set when the host node was just created this pass (forces insertion). */
+    public bool $isNew = false;
+    /** Transient: this host/text fiber's previous index within its DOM parent's
+     *  flattened child list, used for move detection. */
+    public int $prevFlatIndex = -1;
+
+    public function __construct(string $type)
+    {
+        $this->type = $type;
+    }
+
+    public function isHost(): bool
+    {
+        return !$this->isRoot && !$this->isText && !$this->isComponent;
+    }
+
+    /**
+     * Flatten this fiber to the ordered list of real host nodes it owns,
+     * descending through components/root (which have no host node of their own).
+     *
+     * @return array<int,mixed> host node handles
+     */
+    public function collectHostNodes(): array
+    {
+        if ($this->isText || $this->isHost()) {
+            return $this->stateNode === null ? [] : [$this->stateNode];
+        }
+
+        $out = [];
+        foreach ($this->children as $child) {
+            foreach ($child->collectHostNodes() as $node) {
+                $out[] = $node;
+            }
+        }
+        return $out;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
 class Framework
 {
     private static array $states = [];
@@ -32038,293 +32388,2297 @@ class Framework
     }
 } <?php
 
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * Server-side collector for useData(). During SSR, each useData(key, fetcher)
+ * call records its fetched value here; ServerRenderer flushes the collection
+ * into the seed blob after rendering, so the client hydrates with the data the
+ * server already fetched — no double fetch.
+ */
+final class DataRegistry
+{
+    /** @var array<string,mixed> */
+    private static array $collected = [];
+
+    public static function record(string $key, $value): void
+    {
+        self::$collected[$key] = $value;
+    }
+
+    /** Return and clear everything collected during the current render. */
+    public static function flush(): array
+    {
+        $collected = self::$collected;
+        self::$collected = [];
+        return $collected;
+    }
+
+    public static function reset(): void
+    {
+        self::$collected = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+use Syntaxx\PHPX\Framework\Fiber\FiberNode;
+
+/**
+ * Implements React-style hooks with per-instance state.
+ *
+ * Hook state lives on the {@see FiberNode} (the component instance), indexed by
+ * call order. This is the fix for the original engine's shared-state bug, where
+ * state was keyed by component *function name* and therefore shared between all
+ * instances of the same component.
+ *
+ * Rendering is synchronous and non-nested (a component's render fn fully returns
+ * before any child component renders), but we keep a context stack for safety.
+ */
+final class HookManager
+{
+    /** @var array<int,array{fiber:FiberNode,scheduler:callable,index:int}> */
+    private static array $stack = [];
+
+    /** Effects queued during the current commit, flushed bottom-up afterwards. */
+    private static array $pendingEffects = [];
+
+    /**
+     * Begin collecting hooks for $fiber. $scheduler is invoked (no args) when a
+     * hook (e.g. setState) requests a re-render of the owning root.
+     */
+    public static function begin(FiberNode $fiber, callable $scheduler): void
+    {
+        self::$stack[] = ['fiber' => $fiber, 'scheduler' => $scheduler, 'index' => 0];
+    }
+
+    public static function end(): void
+    {
+        array_pop(self::$stack);
+    }
+
+    private static function ctx(): array
+    {
+        if (empty(self::$stack)) {
+            throw new \RuntimeException('Hooks can only be called during component render.');
+        }
+        return self::$stack[count(self::$stack) - 1];
+    }
+
+    private static function &slot(): array
+    {
+        $top = count(self::$stack) - 1;
+        if ($top < 0) {
+            throw new \RuntimeException('Hooks can only be called during component render.');
+        }
+        $fiber = self::$stack[$top]['fiber'];
+        $index = self::$stack[$top]['index']++;
+        if (!array_key_exists($index, $fiber->hooks)) {
+            $fiber->hooks[$index] = [];
+        }
+        return $fiber->hooks[$index];
+    }
+
+    public static function useState($initialValue, ?string $hydrationKey = null): array
+    {
+        $top = count(self::$stack) - 1;
+        $fiber = self::$stack[$top]['fiber'];
+        $scheduler = self::$stack[$top]['scheduler'];
+        $index = self::$stack[$top]['index']++;
+
+        if (!array_key_exists($index, $fiber->hooks)) {
+            // Seed from server-provided hydration state when a key is given and
+            // present, so the client uses the server's value (no refetch, no
+            // mismatch). Falls back to the supplied initial value otherwise.
+            if ($hydrationKey !== null && HydrationState::has($hydrationKey)) {
+                $initial = HydrationState::get($hydrationKey);
+            } else {
+                $initial = is_callable($initialValue) ? $initialValue() : $initialValue;
+            }
+            $fiber->hooks[$index] = ['state' => $initial];
+        }
+
+        $value = $fiber->hooks[$index]['state'];
+
+        $setValue = static function ($newValue) use ($fiber, $index, $scheduler) {
+            $current = $fiber->hooks[$index]['state'];
+            if (is_callable($newValue)) {
+                $newValue = $newValue($current);
+            }
+            if ($newValue === $current) {
+                return; // bail out: no change, no re-render
+            }
+            $fiber->hooks[$index]['state'] = $newValue;
+            $scheduler();
+        };
+
+        return [$value, $setValue];
+    }
+
+    /**
+     * Isomorphic data hook. Returns [$data, $loading, $error].
+     *
+     * - Server: runs $fetcher synchronously, records the value (so it is
+     *   serialized into the seed blob), and returns it (no loading).
+     * - Client, key seeded by the server: returns the seeded value, no refetch.
+     * - Client, key NOT seeded (e.g. a route reached via client navigation):
+     *   returns loading, fetches once in an effect, caches the result, and
+     *   re-renders with the data.
+     *
+     * Hooks are called unconditionally (useState + useEffect every render) so the
+     * rules of hooks hold regardless of seeded/unseeded.
+     */
+    public static function useData(string $key, callable $fetcher): array
+    {
+        if (\Syntaxx\PHPX\Framework\Environment::isServer()) {
+            $value = $fetcher();
+            DataRegistry::record($key, $value);
+            return [$value, false, null];
+        }
+
+        $seeded = HydrationState::has($key);
+        [$entry, $setEntry] = self::useState(
+            $seeded
+                ? ['data' => HydrationState::get($key), 'loading' => false, 'error' => null]
+                : ['data' => null, 'loading' => true, 'error' => null]
+        );
+
+        self::useEffect(static function () use ($key, $fetcher, $setEntry, $seeded) {
+            if ($seeded) {
+                return; // server already provided the data
+            }
+            $resolve = static function ($data) use ($key, $setEntry) {
+                HydrationState::set($key, $data); // cache for other components/renders
+                $setEntry(['data' => $data, 'loading' => false, 'error' => null]);
+            };
+            $reject = static function ($error) use ($setEntry) {
+                $setEntry(['data' => null, 'loading' => false, 'error' => 'fetch failed']);
+            };
+            try {
+                $result = $fetcher();
+                // A thenable (e.g. a fetch() promise) resolves asynchronously and
+                // re-renders when it settles; a plain value resolves immediately.
+                if (is_object($result)) {
+                    $result->then($resolve, $reject);
+                } else {
+                    $resolve($result);
+                }
+            } catch (\Throwable $e) {
+                $reject($e->getMessage());
+            }
+        }, [$key]);
+
+        return [$entry['data'], $entry['loading'], $entry['error']];
+    }
+
+    /**
+     * Suspense-style data: returns the value, or throws a {@see Suspension} that
+     * the nearest <Suspense> boundary catches to show a fallback. The fetch is
+     * kicked off during render and the result cached, so the component itself
+     * carries no loading state.
+     *
+     * - Server: fetch synchronously, record for the seed blob, return the value.
+     * - Client, seeded/cached: return it.
+     * - Client, not cached: start the fetch (sync value resolves immediately;
+     *   a promise suspends until it settles).
+     */
+    public static function useSuspenseData(string $key, callable $fetcher)
+    {
+        if (\Syntaxx\PHPX\Framework\Environment::isServer()) {
+            $value = $fetcher();
+            DataRegistry::record($key, $value);
+            return $value;
+        }
+
+        if (HydrationState::has($key)) {
+            return HydrationState::get($key);
+        }
+        if (SuspenseCache::isPending($key)) {
+            throw new Suspension(SuspenseCache::promise($key), $key);
+        }
+
+        $result = $fetcher();
+        if (is_object($result)) {
+            // Async: cache on settle, then suspend until it does.
+            $result->then(
+                static function ($data) use ($key) {
+                    HydrationState::set($key, $data);
+                    SuspenseCache::clear($key);
+                },
+                static function ($error) use ($key) {
+                    HydrationState::set($key, null);
+                    SuspenseCache::clear($key);
+                }
+            );
+            SuspenseCache::setPending($key, $result);
+            throw new Suspension($result, $key);
+        }
+
+        // Synchronous value: no suspense needed.
+        HydrationState::set($key, $result);
+        return $result;
+    }
+
+    public static function useRef($initialValue): Ref
+    {
+        $slot = &self::slot();
+        if (!isset($slot['ref'])) {
+            $slot['ref'] = new Ref($initialValue);
+        }
+        return $slot['ref'];
+    }
+
+    public static function useMemo(callable $factory, array $deps)
+    {
+        $slot = &self::slot();
+        if (!array_key_exists('deps', $slot) || self::depsChanged($slot['deps'], $deps)) {
+            $slot['deps'] = $deps;
+            $slot['value'] = $factory();
+        }
+        return $slot['value'];
+    }
+
+    public static function useCallback(callable $callback, array $deps): callable
+    {
+        return self::useMemo(static fn () => $callback, $deps);
+    }
+
+    /**
+     * Register an effect. The effect runs after commit when $deps change
+     * (always on first mount). $effect may return a callable cleanup, run before
+     * the next invocation and on unmount.
+     *
+     * @param array|null $deps null = run after every render
+     */
+    public static function useEffect(callable $effect, ?array $deps = null): void
+    {
+        $top = count(self::$stack) - 1;
+        $fiber = self::$stack[$top]['fiber'];
+        $index = self::$stack[$top]['index']++;
+
+        $prev = $fiber->hooks[$index] ?? null;
+        $shouldRun = $prev === null
+            || $deps === null
+            || self::depsChanged($prev['deps'] ?? null, $deps);
+
+        $fiber->hooks[$index] = [
+            'deps' => $deps,
+            'cleanup' => $prev['cleanup'] ?? null,
+            'effect' => $effect,
+        ];
+
+        if ($shouldRun) {
+            self::$pendingEffects[] = $index === null ? null : ['fiber' => $fiber, 'index' => $index];
+        }
+    }
+
+    private static function depsChanged(?array $oldDeps, ?array $newDeps): bool
+    {
+        if ($oldDeps === null || $newDeps === null) {
+            return true;
+        }
+        if (count($oldDeps) !== count($newDeps)) {
+            return true;
+        }
+        foreach ($newDeps as $i => $dep) {
+            if (($oldDeps[$i] ?? null) !== $dep) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Run queued effects bottom-up (children before parents), with cleanups. */
+    public static function flushEffects(): void
+    {
+        // Effects never run during server-side rendering — only after a real
+        // (client) commit, including the hydrate pass.
+        if (\Syntaxx\PHPX\Framework\Environment::isServer()) {
+            self::$pendingEffects = [];
+            return;
+        }
+
+        $effects = self::$pendingEffects;
+        self::$pendingEffects = [];
+        // Children are queued after parents during render; reverse => bottom-up.
+        foreach (array_reverse($effects) as $entry) {
+            if ($entry === null) {
+                continue;
+            }
+            $slot = &$entry['fiber']->hooks[$entry['index']];
+            if (is_callable($slot['cleanup'] ?? null)) {
+                ($slot['cleanup'])();
+            }
+            $cleanup = ($slot['effect'])();
+            $slot['cleanup'] = is_callable($cleanup) ? $cleanup : null;
+            unset($slot);
+        }
+    }
+
+    /** Run all cleanups for a fiber being unmounted. */
+    public static function runCleanups(FiberNode $fiber): void
+    {
+        foreach ($fiber->hooks as &$slot) {
+            if (is_array($slot) && is_callable($slot['cleanup'] ?? null)) {
+                ($slot['cleanup'])();
+                $slot['cleanup'] = null;
+            }
+        }
+        unset($slot);
+        foreach ($fiber->children as $child) {
+            self::runCleanups($child);
+        }
+    }
+
+    public static function resetForTests(): void
+    {
+        self::$stack = [];
+        self::$pendingEffects = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * Holds the seed state shared between server and client.
+ *
+ * The server serializes this into the page (ServerRenderer::stateScript); the
+ * client reads it once in hydrateRoot and seeds it here. useState($init, $key)
+ * then takes its initial value from here instead of refetching — so data is
+ * fetched once on the server and never again on the client.
+ */
+final class HydrationState
+{
+    /** @var array<string,mixed> */
+    private static array $state = [];
+
+    /** @param array<string,mixed> $state */
+    public static function seed(array $state): void
+    {
+        self::$state = $state;
+    }
+
+    public static function has(string $key): bool
+    {
+        return array_key_exists($key, self::$state);
+    }
+
+    public static function get(string $key, $default = null)
+    {
+        return self::$state[$key] ?? $default;
+    }
+
+    /** Cache a value (e.g. data fetched on the client) for later reads. */
+    public static function set(string $key, $value): void
+    {
+        self::$state[$key] = $value;
+    }
+
+    public static function reset(): void
+    {
+        self::$state = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * A stable mutable container returned by useRef(). Its identity is preserved
+ * across renders so it can hold a reference to a live host node (e.g. the
+ * contentEditable surface) or any mutable value that must not trigger renders.
+ */
+final class Ref
+{
+    /** @var mixed */
+    public $current;
+
+    public function __construct($initial = null)
+    {
+        $this->current = $initial;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * Tracks in-flight useSuspenseData fetches so a key is fetched once even if the
+ * suspended component renders several times before the data arrives. Resolved
+ * values live in {@see HydrationState} (shared with useData); this only holds
+ * the pending promises.
+ */
+final class SuspenseCache
+{
+    /** @var array<string,mixed> key => pending promise */
+    private static array $pending = [];
+
+    public static function isPending(string $key): bool
+    {
+        return isset(self::$pending[$key]);
+    }
+
+    public static function promise(string $key)
+    {
+        return self::$pending[$key] ?? null;
+    }
+
+    public static function setPending(string $key, $promise): void
+    {
+        self::$pending[$key] = $promise;
+    }
+
+    public static function clear(string $key): void
+    {
+        unset(self::$pending[$key]);
+    }
+
+    public static function reset(): void
+    {
+        self::$pending = [];
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Hooks;
+
+/**
+ * Thrown by useSuspenseData() when the data for a key is still in flight. The
+ * reconciler catches it at the nearest <Suspense> boundary, renders the
+ * fallback, and re-renders when $promise settles. Carries the in-flight promise
+ * (a thenable) and the data key.
+ */
+final class Suspension extends \Exception
+{
+    /** @var mixed a thenable that settles when the data is ready */
+    public $promise;
+    public string $key;
+
+    public function __construct($promise, string $key)
+    {
+        parent::__construct('suspended: ' . $key);
+        $this->promise = $promise;
+        $this->key = $key;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+/**
+ * Decides whether a VNode type is a custom component (resolvable to a callable)
+ * or a plain host element, and resolves the callable.
+ *
+ * Resolution order is preserved from the original Runtime so existing apps keep
+ * working unchanged:
+ *   1. explicit registry (Runtime::registerComponent)
+ *   2. the \Syntaxx\PHPX\Demo\{Name} namespace (the demo/app convention)
+ *   3. a global function of that name
+ * A type that matches a known HTML tag is always treated as a host element,
+ * even if a same-named function exists.
+ */
+final class ComponentResolver
+{
+    /** @var array<string,callable> */
+    private static array $registry = [];
+
+    private const HTML_ELEMENTS = [
+        'html', 'head', 'body', 'header', 'footer', 'main', 'nav', 'section',
+        'article', 'aside', 'time', 'button', 'input', 'textarea', 'select',
+        'option', 'label', 'form', 'fieldset', 'legend', 'div', 'span', 'a',
+        'p', 'pre', 'code', 'blockquote', 'hr', 'br', 'strong', 'em', 'b', 'i',
+        'u', 's', 'mark', 'small', 'sub', 'sup', 'h1', 'h2', 'h3', 'h4', 'h5',
+        'h6', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'thead', 'tbody',
+        'tfoot', 'tr', 'td', 'th', 'caption', 'col', 'colgroup', 'img', 'figure',
+        'figcaption', 'picture', 'source', 'video', 'audio', 'track', 'canvas',
+        'svg', 'path', 'g', 'circle', 'rect', 'line', 'polyline', 'polygon',
+        'ellipse', 'text', 'iframe', 'details', 'summary', 'dialog', 'menu',
+        'template', 'slot', 'style', 'script', 'link', 'meta', 'title',
+    ];
+
+    public static function register(string $name, callable $component): void
+    {
+        self::$registry[$name] = $component;
+    }
+
+    public static function reset(): void
+    {
+        self::$registry = [];
+    }
+
+    public static function isHtmlElement(string $type): bool
+    {
+        return in_array(strtolower($type), self::HTML_ELEMENTS, true);
+    }
+
+    /**
+     * @return callable|null the component callable, or null if $type is a host element
+     */
+    public static function resolve(string $type): ?callable
+    {
+        if (isset(self::$registry[$type])) {
+            return self::$registry[$type];
+        }
+
+        // React convention: a Capitalized (or dotted) name is a component; a
+        // lowercase name is a host element. This means a component may be named
+        // like an HTML tag (e.g. <Nav>, <Header>, <Section>) without colliding
+        // with the lowercase element (<nav>, <header>, <section>).
+        $looksLikeComponent = $type !== ''
+            && (ctype_upper($type[0]) || strpos($type, '.') !== false);
+
+        if (!$looksLikeComponent) {
+            return null; // lowercase -> host element
+        }
+
+        $demo = "\\Syntaxx\\PHPX\\Demo\\{$type}";
+        if (function_exists($demo)) {
+            return $demo;
+        }
+
+        if (function_exists($type)) {
+            return $type;
+        }
+
+        return null; // capitalized but undefined -> treated as a host element
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+/**
+ * An in-memory host node used only by {@see FakeDomBackend} for tests.
+ *
+ * Holds enough state to (a) assert the rendered tree via serialization and
+ * (b) prove node identity is preserved across re-renders (the proxy for "the
+ * real DOM node survived, so focus/caret survived").
+ */
+final class FakeNode
+{
+    public string $tag;
+    public bool $isText;
+    public string $text = '';
+    /** @var array<string,mixed> */
+    public array $props = [];
+    /** @var FakeNode[] */
+    public array $children = [];
+    public ?FakeNode $parent = null;
+
+    public function __construct(string $tag, bool $isText = false)
+    {
+        $this->tag = $tag;
+        $this->isText = $isText;
+    }
+
+    /** Stable per-instance id, used in tests to assert node reuse vs recreation. */
+    public function id(): int
+    {
+        return spl_object_id($this);
+    }
+
+    /** Serialize to a compact, deterministic HTML-ish string for assertions. */
+    public function toHtml(): string
+    {
+        if ($this->isText) {
+            return $this->text;
+        }
+
+        $attrs = '';
+        ksort($this->props);
+        foreach ($this->props as $k => $v) {
+            if (strpos($k, 'on') === 0) {
+                // Event handlers are not serialized as attributes.
+                continue;
+            }
+            if ($k === 'dangerouslySetInnerHTML') {
+                continue;
+            }
+            $attrs .= ' ' . $k . '="' . (is_scalar($v) ? (string) $v : '') . '"';
+        }
+
+        if (isset($this->props['dangerouslySetInnerHTML'])) {
+            $raw = $this->props['dangerouslySetInnerHTML']['__html'] ?? '';
+            return "<{$this->tag}{$attrs}>{$raw}</{$this->tag}>";
+        }
+
+        $inner = '';
+        foreach ($this->children as $child) {
+            $inner .= $child->toHtml();
+        }
+
+        return "<{$this->tag}{$attrs}>{$inner}</{$this->tag}>";
+    }
+}
+
+/**
+ * In-memory {@see HostConfig} for headless PHPUnit tests.
+ *
+ * Mirrors the mutation semantics of a real DOM (append / insertBefore / move /
+ * remove and prop set/remove) without a browser, so the reconciler and commit
+ * logic can be exercised and asserted fast. className→class mapping mirrors the
+ * VRZNO backend so serialized output matches what ships.
+ */
+final class FakeDomBackend implements HostConfig
+{
+    /** Mutation log for assertions about minimal patching. */
+    public array $log = [];
+
+    public function createElement(string $type)
+    {
+        $this->log[] = "create:$type";
+        return new FakeNode($type);
+    }
+
+    public function createTextNode(string $text)
+    {
+        $node = new FakeNode('#text', true);
+        $node->text = $text;
+        return $node;
+    }
+
+    public function setText($node, string $text): void
+    {
+        $this->log[] = "setText:{$text}";
+        $node->text = $text;
+    }
+
+    public function setProp($node, string $key, $value, $prev = null): void
+    {
+        if (strpos($key, 'on') === 0) {
+            $node->props[$key] = $value;
+            return;
+        }
+        $attr = $key === 'className' ? 'class' : $key;
+        $this->log[] = "setProp:{$attr}";
+        $node->props[$attr] = $value;
+    }
+
+    public function removeProp($node, string $key, $prev = null): void
+    {
+        $attr = $key === 'className' ? 'class' : $key;
+        $this->log[] = "removeProp:{$attr}";
+        unset($node->props[$attr]);
+    }
+
+    public function appendChild($parent, $child): void
+    {
+        $this->detach($child);
+        $child->parent = $parent;
+        $parent->children[] = $child;
+        $this->log[] = 'append';
+    }
+
+    public function insertBefore($parent, $child, $reference): void
+    {
+        if ($reference === null) {
+            $this->appendChild($parent, $child);
+            return;
+        }
+        $this->detach($child);
+        $child->parent = $parent;
+        $idx = array_search($reference, $parent->children, true);
+        if ($idx === false) {
+            $parent->children[] = $child;
+        } else {
+            array_splice($parent->children, $idx, 0, [$child]);
+        }
+        $this->log[] = 'insertBefore';
+    }
+
+    public function removeChild($parent, $child): void
+    {
+        $idx = array_search($child, $parent->children, true);
+        if ($idx !== false) {
+            array_splice($parent->children, $idx, 1);
+        }
+        $child->parent = null;
+        $this->log[] = 'remove';
+    }
+
+    public function removeNode($node): void
+    {
+        $this->detach($node);
+        $this->log[] = 'remove';
+    }
+
+    public function childNodesOf($parent): array
+    {
+        return $parent->children;
+    }
+
+    public function nodeMatches($node, \Syntaxx\PHPX\Framework\VirtualDOM\VNode $vnode): bool
+    {
+        if ($vnode->isText()) {
+            return $node->isText;
+        }
+        return !$node->isText && strtolower($node->tag) === strtolower($vnode->type);
+    }
+
+    public function textOf($node): string
+    {
+        return $node->text;
+    }
+
+    private function detach(FakeNode $child): void
+    {
+        if ($child->parent !== null) {
+            $p = $child->parent;
+            $idx = array_search($child, $p->children, true);
+            if ($idx !== false) {
+                array_splice($p->children, $idx, 1);
+            }
+            $child->parent = null;
+        }
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+/**
+ * The set of host (DOM) operations the reconciler depends on.
+ *
+ * This is the seam that decouples the fiber engine from VRZNO. The browser
+ * implementation ({@see \Syntaxx\PHPX\Framework\Reconciler\VrznoBackend})
+ * drives real DOM nodes; the in-memory implementation
+ * ({@see FakeDomBackend}) lets the reconciler/commit logic be unit-tested under
+ * PHPUnit with no browser. The reconciler MUST only touch the host through this
+ * interface — never call VRZNO directly.
+ *
+ * A "host node" handle is opaque to the engine: an object for VRZNO/Fake.
+ */
+interface HostConfig
+{
+    /** Create a host element of the given tag. */
+    public function createElement(string $type);
+
+    /** Create a host text node. */
+    public function createTextNode(string $text);
+
+    /** Update the text content of a text node. */
+    public function setText($node, string $text): void;
+
+    /**
+     * Apply a single prop to an element. Implementations own the semantics of
+     * special props (className→class, value, checked, style,
+     * dangerouslySetInnerHTML, on*-event handlers).
+     *
+     * @param mixed $value    new value
+     * @param mixed $prev     previous value (null on first set)
+     */
+    public function setProp($node, string $key, $value, $prev = null): void;
+
+    /** Remove a previously-set prop from an element. */
+    public function removeProp($node, string $key, $prev = null): void;
+
+    /** Append $child as the last child of $parent. */
+    public function appendChild($parent, $child): void;
+
+    /**
+     * Insert $child into $parent before $reference. When $reference is null,
+     * this is equivalent to appendChild (insert at end).
+     */
+    public function insertBefore($parent, $child, $reference): void;
+
+    /** Detach $child from $parent. */
+    public function removeChild($parent, $child): void;
+
+    /**
+     * Detach $node from whatever parent it currently has (a no-op if it has
+     * none). Safer than removeChild when the caller isn't certain of the parent
+     * (e.g. discarding a never-placed subtree).
+     */
+    public function removeNode($node): void;
+
+    // --- Hydration reads: used only when adopting a server-rendered DOM. ---
+
+    /**
+     * Ordered list of child node handles of $parent (elements and text nodes).
+     * Backends that never hydrate (e.g. SsrBackend) may return [].
+     *
+     * @return array<int,mixed>
+     */
+    public function childNodesOf($parent): array;
+
+    /**
+     * Whether an existing host node can be adopted for the given VNode
+     * (same tag for elements, text node for text). Used for adoption + self-heal.
+     */
+    public function nodeMatches($node, \Syntaxx\PHPX\Framework\VirtualDOM\VNode $vnode): bool;
+
+    /** Read the text content of a (text) node, for mismatch repair. */
+    public function textOf($node): string;
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+use Syntaxx\PHPX\Framework\Commit\DomProps;
+use Syntaxx\PHPX\Framework\Environment;
+use Syntaxx\PHPX\Framework\Fiber\FiberNode;
+use Syntaxx\PHPX\Framework\Hooks\HookManager;
+use Syntaxx\PHPX\Framework\Hooks\Ref;
+use Syntaxx\PHPX\Framework\Hooks\Suspension;
+use Syntaxx\PHPX\Framework\StreamContext;
+use Syntaxx\PHPX\Framework\VirtualDOM\VNode;
+
+/**
+ * The persistent-fiber reconciler: it diffs a freshly-rendered VNode tree
+ * against the live fiber tree and applies the minimal set of host mutations
+ * through a {@see HostConfig}.
+ *
+ * Design (see /home/kambo/.claude/plans/twinkly-herding-crab.md):
+ *   - Fibers persist across renders, so host nodes and hook state survive.
+ *   - Each render rebuilds the subtree (build phase: create/update nodes,
+ *     reconcile children, append within fresh subtrees), then a placement pass
+ *     per host parent inserts/moves only the nodes whose flattened position
+ *     changed. Unchanged nodes are never touched -> focus/caret preserved.
+ *   - Components have no host node; their produced nodes are flattened into the
+ *     nearest host ancestor, so placement is owned solely by host/root fibers.
+ *
+ * Rendering is synchronous; a SelectionManager (browser only) wraps commits to
+ * save/restore focus and caret around the mutation phase as a safety net.
+ */
+final class Reconciler
+{
+    private HostConfig $host;
+    /** The host container node the root renders into. */
+    private $container;
+    private ?FiberNode $rootFiber = null;
+    private ?VNode $element = null;
+
+    /** Re-entrancy / batching guards. */
+    private bool $rendering = false;
+    private bool $dirty = false;
+
+    /** Hydration: adopt an existing (server-rendered) DOM instead of creating it. */
+    private bool $hydrating = false;
+    /** Per real-DOM-parent adoption cursors: id(parentNode) => {children,index,degraded}. */
+    private array $hydrationCursors = [];
+
+    /** Optional hook invoked around the mutation phase (focus/caret preservation). */
+    private $beforeCommit = null;
+    private $afterCommit = null;
+
+    public function __construct(HostConfig $host, $container)
+    {
+        $this->host = $host;
+        $this->container = $container;
+    }
+
+    /** Browser backends register selection save/restore around commits. */
+    public function setCommitHooks(?callable $before, ?callable $after): void
+    {
+        $this->beforeCommit = $before;
+        $this->afterCommit = $after;
+    }
+
+    public function getHost(): HostConfig
+    {
+        return $this->host;
+    }
+
+    /** Mount or update the tree from the given top-level element. */
+    public function render($element): void
+    {
+        $this->element = VNode::normalizeOne($element);
+        $this->performWork();
+    }
+
+    /**
+     * Adopt the server-rendered DOM already inside the container: bind fibers to
+     * existing nodes, wire event handlers (reusing server data-phpx-id), and only
+     * create/move nodes where the markup genuinely diverges (self-heal). After
+     * this single pass the reconciler behaves exactly like a normal render.
+     */
+    public function hydrate($element): void
+    {
+        $this->element = VNode::normalizeOne($element);
+        $this->hydrating = true;
+        $this->pushCursor($this->container);
+        try {
+            // Adoption pass only — do NOT flush effects here. An effect's
+            // setState would otherwise re-render while still in hydration mode,
+            // and the cursor logic would wrongly remove already-adopted nodes.
+            $this->performWork(true);
+        } finally {
+            $this->popCursor($this->container);
+            $this->hydrating = false;
+            $this->hydrationCursors = [];
+        }
+        // Now run effects + any updates they schedule as normal (non-hydrating) renders.
+        HookManager::flushEffects();
+        if ($this->dirty) {
+            $this->dirty = false;
+            $this->performWork();
+        }
+    }
+
+    /** Schedule a re-render (called by setState). Synchronous with re-entrancy guard. */
+    public function scheduleUpdate(): void
+    {
+        if ($this->element === null) {
+            return;
+        }
+        if ($this->rendering) {
+            $this->dirty = true; // a render triggered another update; run once more after
+            return;
+        }
+        $this->performWork();
+    }
+
+    private function performWork(bool $hydratePass = false): void
+    {
+        if ($this->rootFiber === null) {
+            $this->rootFiber = new FiberNode(FiberNode::ROOT);
+            $this->rootFiber->isRoot = true;
+            $this->rootFiber->stateNode = $this->container;
+        }
+
+        $this->rendering = true;
+        if (is_callable($this->beforeCommit)) {
+            ($this->beforeCommit)();
+        }
+
+        try {
+            $this->reconcileChildren($this->rootFiber, [$this->element], $this->container);
+            $this->placeChildren($this->rootFiber, $this->container);
+        } catch (Suspension $s) {
+            // A component suspended with no <Suspense> boundary above it. Re-render
+            // when it settles; until then, leave the existing DOM in place.
+            $self = $this;
+            $s->promise->then(static function () use ($self) {
+                $self->scheduleUpdate();
+            });
+        }
+
+        if (is_callable($this->afterCommit)) {
+            ($this->afterCommit)();
+        }
+        $this->rendering = false;
+
+        // The hydrate() entry handles effect flushing + scheduled updates itself,
+        // after leaving hydration mode, so a re-render never runs while adopting.
+        if ($hydratePass) {
+            return;
+        }
+
+        HookManager::flushEffects();
+        if ($this->dirty) {
+            $this->dirty = false;
+            $this->performWork();
+        }
+    }
+
+    /**
+     * Diff $parentFiber's children against $newVnodes, update fiber.children,
+     * delete dropped nodes from $hostParent, and recursively build each child.
+     * Placement (insert/move) is NOT done here — see placeChildren().
+     *
+     * @param VNode[] $newVnodes
+     */
+    private function reconcileChildren(FiberNode $parentFiber, array $newVnodes, $hostParent): void
+    {
+        $old = $parentFiber->children;
+
+        // Index reusable old fibers: keyed by explicit key, plus an ordered pool
+        // of keyless fibers for positional reuse.
+        $keyed = [];
+        $keylessPool = [];
+        foreach ($old as $fiber) {
+            if ($fiber->key !== null) {
+                $keyed[$fiber->key] = $fiber;
+            } else {
+                $keylessPool[] = $fiber;
+            }
+        }
+
+        $newChildren = [];
+        $used = [];
+        foreach ($newVnodes as $vnode) {
+            $match = null;
+            if ($vnode->key !== null) {
+                $cand = $keyed[$vnode->key] ?? null;
+                if ($cand !== null && $this->typeMatches($cand, $vnode)) {
+                    $match = $cand;
+                    unset($keyed[$vnode->key]);
+                }
+            } else {
+                foreach ($keylessPool as $i => $cand) {
+                    if ($this->typeMatches($cand, $vnode)) {
+                        $match = $cand;
+                        unset($keylessPool[$i]);
+                        break;
+                    }
+                }
+            }
+
+            if ($match === null) {
+                $match = $this->createFiber($vnode);
+                $match->isNew = true; // host node (if any) created during build
+            }
+            $match->parent = $parentFiber;
+            $match->key = $vnode->key;
+            $newChildren[] = $match;
+            $used[spl_object_id($match)] = true;
+        }
+
+        // Delete old fibers not reused.
+        foreach ($old as $fiber) {
+            if (!isset($used[spl_object_id($fiber)])) {
+                HookManager::runCleanups($fiber);
+                foreach ($fiber->collectHostNodes() as $node) {
+                    $this->host->removeNode($node);
+                }
+            }
+        }
+
+        $parentFiber->children = $newChildren;
+
+        // Build each child subtree (no placement into $hostParent yet).
+        foreach ($newChildren as $i => $childFiber) {
+            $this->buildSubtree($childFiber, $newVnodes[$i], $hostParent);
+        }
+    }
+
+    private function typeMatches(FiberNode $fiber, VNode $vnode): bool
+    {
+        if ($vnode->isText()) {
+            return $fiber->isText;
+        }
+        return !$fiber->isText && $fiber->type === $vnode->type;
+    }
+
+    private function createFiber(VNode $vnode): FiberNode
+    {
+        if ($vnode->isText()) {
+            $fiber = new FiberNode(VNode::TEXT);
+            $fiber->isText = true;
+            return $fiber;
+        }
+
+        if ($vnode->type === 'Suspense') {
+            $fiber = new FiberNode('Suspense');
+            $fiber->isComponent = true; // host-less boundary, not an element
+            $fiber->isSuspense = true;
+            return $fiber;
+        }
+
+        $fiber = new FiberNode($vnode->type);
+        $callable = ComponentResolver::resolve($vnode->type);
+        if ($callable !== null) {
+            $fiber->isComponent = true;
+            $fiber->renderFn = $callable;
+        }
+        return $fiber;
+    }
+
+    /**
+     * Create/update the fiber's own host node and recurse into its children.
+     * For component fibers, children are reconciled against the same $hostParent
+     * (pass-through), so their produced nodes land in the nearest host ancestor.
+     */
+    private function buildSubtree(FiberNode $fiber, VNode $vnode, $hostParent): void
+    {
+        if ($fiber->isText) {
+            if ($fiber->stateNode === null) {
+                $adopted = $this->hydrating ? $this->adoptNextChild($hostParent, $vnode) : null;
+                if ($adopted !== null) {
+                    $fiber->stateNode = $adopted;
+                    $fiber->isNew = false; // already in place; don't move it
+                    if ($this->host->textOf($adopted) !== $vnode->text) {
+                        $this->host->setText($adopted, $vnode->text);
+                    }
+                } else {
+                    // fresh mount, or hydration self-heal (isNew stays true -> placed)
+                    $fiber->stateNode = $this->host->createTextNode($vnode->text);
+                }
+            } elseif ($fiber->text !== $vnode->text) {
+                $this->host->setText($fiber->stateNode, $vnode->text);
+            }
+            $fiber->text = $vnode->text;
+            return;
+        }
+
+        if ($fiber->isSuspense) {
+            $this->buildSuspense($fiber, $vnode, $hostParent);
+            return;
+        }
+
+        if ($fiber->isComponent) {
+            $self = $this;
+            HookManager::begin($fiber, static function () use ($self) {
+                $self->scheduleUpdate();
+            });
+            try {
+                $props = $vnode->props;
+                // Pass children as authored (Component objects/scalars) so apps
+                // that introspect them (e.g. `$child instanceof Component`) work.
+                $props['children'] = $vnode->rawChildren;
+                $result = ($fiber->renderFn)($props);
+            } finally {
+                HookManager::end();
+            }
+            $fiber->props = $vnode->props;
+            $this->reconcileChildren($fiber, VNode::normalizeChildren($result), $hostParent);
+            return;
+        }
+
+        // Host element.
+        $oldProps = $fiber->props;
+        $adopted = false;
+        if ($fiber->stateNode === null) {
+            $existing = $this->hydrating ? $this->adoptNextChild($hostParent, $vnode) : null;
+            if ($existing !== null) {
+                $fiber->stateNode = $existing;
+                $fiber->isNew = false; // already in place; don't move it
+                $adopted = true;
+            } else {
+                // fresh mount, or hydration self-heal (isNew stays true -> placed)
+                $fiber->stateNode = $this->host->createElement($fiber->type);
+            }
+            $oldProps = [];
+        }
+
+        if ($adopted) {
+            // Trust the server markup; only wire handlers + live form state.
+            $this->applyHydrationProps($fiber->stateNode, $vnode->props);
+        } else {
+            DomProps::apply($this->host, $fiber->stateNode, $oldProps, $vnode->props);
+        }
+        $fiber->props = $vnode->props;
+
+        // Wire up ref to the live node (never on the server: stateNode is a string node).
+        $ref = $vnode->props['ref'] ?? null;
+        if ($ref instanceof Ref && !Environment::isServer()) {
+            $ref->current = $fiber->stateNode;
+        }
+
+        // dangerouslySetInnerHTML marks an uncontrolled subtree (e.g. a
+        // contentEditable surface): the reconciler does not diff its children;
+        // the owning component manages the inner DOM via its ref. During
+        // hydration we must NOT rewrite it (would wipe the server content).
+        $fiber->hostBoundary = array_key_exists('dangerouslySetInnerHTML', $vnode->props);
+        if ($fiber->hostBoundary) {
+            $fiber->children = [];
+            return;
+        }
+
+        if ($this->hydrating) {
+            // Children adopt from THIS node's own existing children.
+            $this->pushCursor($fiber->stateNode);
+            $this->reconcileChildren($fiber, $vnode->children, $fiber->stateNode);
+            $this->placeChildren($fiber, $fiber->stateNode);
+            $this->popCursor($fiber->stateNode);
+        } else {
+            $this->reconcileChildren($fiber, $vnode->children, $fiber->stateNode);
+            $this->placeChildren($fiber, $fiber->stateNode);
+        }
+    }
+
+    /**
+     * Insert/move only the host nodes whose position within $hostParent's
+     * flattened child list changed. Right-to-left so each insertion's reference
+     * (the next sibling node) is already finalized.
+     */
+    private function placeChildren(FiberNode $ownerFiber, $hostParent): void
+    {
+        $flat = [];
+        $this->flattenHostChildren($ownerFiber, $flat);
+
+        // Decide which entries must be (re)inserted: new nodes, or reused nodes
+        // whose previous flat index regressed below the high-water mark (moved).
+        $needsInsert = [];
+        $lastPlaced = -1;
+        foreach ($flat as $i => $fiber) {
+            if ($fiber->isNew) {
+                $needsInsert[$i] = true;
+            } elseif ($fiber->prevFlatIndex < $lastPlaced) {
+                $needsInsert[$i] = true;
+            } else {
+                $lastPlaced = $fiber->prevFlatIndex;
+            }
+        }
+
+        $reference = null;
+        for ($i = count($flat) - 1; $i >= 0; $i--) {
+            $fiber = $flat[$i];
+            if (!empty($needsInsert[$i])) {
+                $this->host->insertBefore($hostParent, $fiber->stateNode, $reference);
+            }
+            $reference = $fiber->stateNode;
+        }
+
+        foreach ($flat as $i => $fiber) {
+            $fiber->prevFlatIndex = $i;
+            $fiber->isNew = false;
+        }
+    }
+
+    /**
+     * Collect the host/text fibers that are DOM children of $fiber, descending
+     * through component/root fibers (which contribute no host node of their own)
+     * but stopping at host/text fibers (their nodes are nested, not siblings).
+     *
+     * @param FiberNode[] $out
+     */
+    private function flattenHostChildren(FiberNode $fiber, array &$out): void
+    {
+        foreach ($fiber->children as $child) {
+            if ($child->isText || $child->isHost()) {
+                $out[] = $child;
+            } else {
+                $this->flattenHostChildren($child, $out);
+            }
+        }
+    }
+
+    // ----- Suspense -----
+
+    /**
+     * Build a <Suspense> boundary: try to render its children; if a descendant
+     * suspends (throws a Suspension), discard the partial subtree, render the
+     * fallback instead, and re-render once the in-flight data settles. Like
+     * components, Suspense has no host node — its children/fallback flatten into
+     * the nearest host ancestor.
+     */
+    private function buildSuspense(FiberNode $fiber, VNode $vnode, $hostParent): void
+    {
+        $fallback = $vnode->props['fallback'] ?? null;
+
+        // A <Suspense> renders a stable wrapper element so the DOM structure is
+        // identical whether it shows children or fallback, and so streaming has a
+        // placeholder to reveal content into.
+        if (Environment::isServer() && StreamContext::isStreaming()) {
+            // Streaming SSR: render the fallback now, defer the children to a
+            // later chunk keyed by the wrapper id.
+            $id = StreamContext::nextId();
+            StreamContext::defer($id, $vnode->children);
+            $wrapper = new VNode('div', ['data-pxs' => (string) $id, 'class' => 'phpx-suspense'],
+                VNode::normalizeChildren($fallback));
+            $this->reconcileChildren($fiber, [$wrapper], $hostParent);
+            $fiber->showingFallback = true;
+            return;
+        }
+
+        $self = $this;
+        $retry = static function () use ($self) {
+            $self->scheduleUpdate();
+        };
+        $childWrapper = new VNode('div', ['class' => 'phpx-suspense'], $vnode->children);
+        try {
+            $this->reconcileChildren($fiber, [$childWrapper], $hostParent);
+            $fiber->showingFallback = false;
+        } catch (Suspension $s) {
+            $this->discardChildren($fiber, $hostParent);
+            $fallbackWrapper = new VNode('div', ['class' => 'phpx-suspense'], VNode::normalizeChildren($fallback));
+            $this->reconcileChildren($fiber, [$fallbackWrapper], $hostParent);
+            $fiber->showingFallback = true;
+            // Re-render (retry the children) once the data resolves or fails.
+            $s->promise->then($retry, $retry);
+        }
+    }
+
+    /** Tear down a fiber's children (cleanups + detach any host nodes). */
+    private function discardChildren(FiberNode $fiber, $hostParent): void
+    {
+        foreach ($fiber->children as $child) {
+            HookManager::runCleanups($child);
+            foreach ($child->collectHostNodes() as $node) {
+                $this->host->removeNode($node);
+            }
+        }
+        $fiber->children = [];
+    }
+
+    // ----- Hydration adoption -----
+
+    /** Snapshot the live children of a real DOM parent as an adoption cursor. */
+    private function pushCursor($parentDom): void
+    {
+        $this->hydrationCursors[spl_object_id($parentDom)] = [
+            'parent' => $parentDom,
+            'children' => $this->host->childNodesOf($parentDom),
+            'index' => 0,
+            'degraded' => false,
+        ];
+    }
+
+    /** Tear down a cursor, removing any server children the client didn't claim. */
+    private function popCursor($parentDom): void
+    {
+        $key = spl_object_id($parentDom);
+        if (!isset($this->hydrationCursors[$key])) {
+            return;
+        }
+        $cur = $this->hydrationCursors[$key];
+        $children = $cur['children'];
+        for ($i = $cur['index']; $i < count($children); $i++) {
+            $this->host->removeNode($children[$i]);
+        }
+        unset($this->hydrationCursors[$key]);
+    }
+
+    /**
+     * Claim the next existing child of $hostParent that matches $vnode. Returns
+     * null on miss (caller creates a fresh node — self-heal). A genuine tag/type
+     * mismatch degrades the cursor so the remaining children are recreated.
+     */
+    private function adoptNextChild($hostParent, VNode $vnode)
+    {
+        $key = spl_object_id($hostParent);
+        if (!isset($this->hydrationCursors[$key])) {
+            return null;
+        }
+        $cur = &$this->hydrationCursors[$key];
+        if ($cur['degraded']) {
+            return null;
+        }
+        $children = $cur['children'];
+        $n = count($children);
+        while ($cur['index'] < $n) {
+            $candidate = $children[$cur['index']];
+            if ($this->host->nodeMatches($candidate, $vnode)) {
+                $cur['index']++;
+                return $candidate;
+            }
+            // Defensive: skip whitespace-only text the engine didn't author.
+            if ($this->isInsignificantWhitespace($candidate)) {
+                $cur['index']++;
+                continue;
+            }
+            $cur['degraded'] = true; // recreate the rest of this parent
+            return null;
+        }
+        return null;
+    }
+
+    private function isInsignificantWhitespace($candidate): bool
+    {
+        static $textProbe = null;
+        if ($textProbe === null) {
+            $textProbe = VNode::text('');
+        }
+        if (!$this->host->nodeMatches($candidate, $textProbe)) {
+            return false;
+        }
+        return trim($this->host->textOf($candidate)) === '';
+    }
+
+    /**
+     * On adopt, trust the server's static markup: only (re)bind event handlers
+     * and set live form state. Never rewrite dangerouslySetInnerHTML.
+     */
+    private function applyHydrationProps($node, array $props): void
+    {
+        foreach ($props as $key => $value) {
+            if ($key === 'children' || $key === 'key' || $key === 'ref'
+                || $key === 'dangerouslySetInnerHTML') {
+                continue;
+            }
+            $isEvent = strncmp($key, 'on', 2) === 0 && ctype_upper($key[2] ?? 'x');
+            if ($isEvent || $key === 'value' || $key === 'checked') {
+                $this->host->setProp($node, $key, $value, null);
+            }
+            // other static attributes: trust the server-emitted markup
+        }
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+use Syntaxx\PHPX\Framework\VirtualDOM\VNode;
+
+/**
+ * Server-side {@see HostConfig}: runs the SAME reconciler natively (no \Vrzno)
+ * and accumulates an HTML string. Event handlers are not serialized; instead the
+ * element gets a stable data-phpx-id ("s{n}") so the browser can adopt the node
+ * and attach the real handler during hydration.
+ */
+final class SsrBackend implements HostConfig
+{
+    private int $idSeq = 0;
+
+    public function createElement(string $type)
+    {
+        return new SsrNode($type);
+    }
+
+    public function createTextNode(string $text)
+    {
+        $node = new SsrNode('#text', true);
+        $node->text = $text;
+        return $node;
+    }
+
+    public function setText($node, string $text): void
+    {
+        $node->text = $text;
+    }
+
+    public function setProp($node, string $key, $value, $prev = null): void
+    {
+        // Event handler: emit a server id so the client can adopt + bind.
+        if (strncmp($key, 'on', 2) === 0 && ctype_upper($key[2] ?? 'x')) {
+            if ($node->phpxId === null) {
+                $node->phpxId = 's' . ($this->idSeq++);
+            }
+            return;
+        }
+
+        switch ($key) {
+            case 'className':
+                $node->attrs['class'] = (string) $value;
+                return;
+            case 'style':
+                $node->attrs['style'] = $this->styleToString($value);
+                return;
+            case 'dangerouslySetInnerHTML':
+                $node->rawHtml = is_array($value) ? ($value['__html'] ?? '') : (string) $value;
+                return;
+            case 'checked':
+            case 'selected':
+            case 'disabled':
+            case 'readonly':
+            case 'required':
+                if ($value === true || $value === $key || $value === '') {
+                    $node->attrs[$key] = $key;
+                } elseif ($value === false || $value === null) {
+                    unset($node->attrs[$key]);
+                } else {
+                    $node->attrs[$key] = (string) $value;
+                }
+                return;
+        }
+
+        if ($value === true) {
+            $node->attrs[$key] = '';
+        } elseif ($value === false || $value === null) {
+            unset($node->attrs[$key]);
+        } else {
+            $node->attrs[$key] = (string) $value;
+        }
+    }
+
+    public function removeProp($node, string $key, $prev = null): void
+    {
+        $attr = $key === 'className' ? 'class' : $key;
+        unset($node->attrs[$attr]);
+    }
+
+    public function appendChild($parent, $child): void
+    {
+        $this->detach($child);
+        $child->parent = $parent;
+        $parent->children[] = $child;
+    }
+
+    public function insertBefore($parent, $child, $reference): void
+    {
+        if ($reference === null) {
+            $this->appendChild($parent, $child);
+            return;
+        }
+        $this->detach($child);
+        $child->parent = $parent;
+        $idx = array_search($reference, $parent->children, true);
+        if ($idx === false) {
+            $parent->children[] = $child;
+        } else {
+            array_splice($parent->children, $idx, 0, [$child]);
+        }
+    }
+
+    public function removeChild($parent, $child): void
+    {
+        $idx = array_search($child, $parent->children, true);
+        if ($idx !== false) {
+            array_splice($parent->children, $idx, 1);
+        }
+        $child->parent = null;
+    }
+
+    public function removeNode($node): void
+    {
+        $this->detach($node);
+    }
+
+    // Hydration reads are never used server-side.
+    public function childNodesOf($parent): array
+    {
+        return [];
+    }
+
+    public function nodeMatches($node, VNode $vnode): bool
+    {
+        return false;
+    }
+
+    public function textOf($node): string
+    {
+        return $node->text ?? '';
+    }
+
+    /** Serialize the children of a synthetic root container to an HTML string. */
+    public function rootHtml(SsrNode $container): string
+    {
+        $html = '';
+        foreach ($container->children as $child) {
+            $html .= $child->render();
+        }
+        return $html;
+    }
+
+    private function detach(SsrNode $child): void
+    {
+        if ($child->parent !== null) {
+            $this->removeChild($child->parent, $child);
+        }
+    }
+
+    private function styleToString($style): string
+    {
+        if (is_string($style)) {
+            return $style;
+        }
+        if (!is_array($style)) {
+            return '';
+        }
+        $out = '';
+        foreach ($style as $prop => $val) {
+            $kebab = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $prop));
+            $out .= $kebab . ':' . $val . ';';
+        }
+        return $out;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+/**
+ * A host node used only by {@see SsrBackend} to build an HTML string on the
+ * server. It mirrors the shape the reconciler expects (element/text + children)
+ * and serializes to HTML via render().
+ */
+final class SsrNode
+{
+    public string $tag;
+    public bool $isText;
+    public string $text = '';
+    /** @var array<string,string> rendered attributes (class, id, value, …); no on* */
+    public array $attrs = [];
+    /** Server-assigned id for elements carrying event handlers ("s{n}"). */
+    public ?string $phpxId = null;
+    /** Raw inner HTML from dangerouslySetInnerHTML (bypasses escaping). */
+    public ?string $rawHtml = null;
+    /** @var SsrNode[] */
+    public array $children = [];
+    public ?SsrNode $parent = null;
+
+    private const VOID = [
+        'area' => true, 'base' => true, 'br' => true, 'col' => true, 'embed' => true,
+        'hr' => true, 'img' => true, 'input' => true, 'link' => true, 'meta' => true,
+        'param' => true, 'source' => true, 'track' => true, 'wbr' => true,
+    ];
+
+    public function __construct(string $tag, bool $isText = false)
+    {
+        $this->tag = $tag;
+        $this->isText = $isText;
+    }
+
+    public function render(): string
+    {
+        if ($this->isText) {
+            return htmlspecialchars($this->text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        }
+
+        $attrs = '';
+        // Deterministic attribute order so server and client markup match.
+        ksort($this->attrs);
+        foreach ($this->attrs as $name => $value) {
+            $attrs .= ' ' . $name . '="'
+                . htmlspecialchars((string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8') . '"';
+        }
+        if ($this->phpxId !== null) {
+            $attrs .= ' data-phpx-id="' . $this->phpxId . '"';
+        }
+
+        if (isset(self::VOID[strtolower($this->tag)])) {
+            return "<{$this->tag}{$attrs}>";
+        }
+
+        if ($this->rawHtml !== null) {
+            return "<{$this->tag}{$attrs}>{$this->rawHtml}</{$this->tag}>";
+        }
+
+        // No insignificant whitespace between children: 1:1 with client fibers.
+        $inner = '';
+        foreach ($this->children as $child) {
+            $inner .= $child->render();
+        }
+        return "<{$this->tag}{$attrs}>{$inner}</{$this->tag}>";
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework\Reconciler;
+
+use Syntaxx\PHPX\Framework\Events\EventDelegator;
+
+/**
+ * Production {@see HostConfig}: drives the real browser DOM through VRZNO's
+ * native object bridge (no innerHTML string-blasting, no vrzno_eval for normal
+ * ops). Because the engine only ever mutates the specific nodes that changed,
+ * live nodes — and their focus/caret — survive re-renders.
+ *
+ * Event props (on*) are not written as attributes; they are registered with the
+ * {@see EventDelegator}, which keeps a single delegated listener per event type
+ * on the root so handlers are never torn down on re-render.
+ */
+final class VrznoBackend implements HostConfig
+{
+    /** The VRZNO document object. */
+    private $document;
+    private EventDelegator $events;
+
+    public function __construct($document, EventDelegator $events)
+    {
+        $this->document = $document;
+        $this->events = $events;
+    }
+
+    public function createElement(string $type)
+    {
+        return $this->document->createElement($type);
+    }
+
+    public function createTextNode(string $text)
+    {
+        return $this->document->createTextNode($text);
+    }
+
+    public function setText($node, string $text): void
+    {
+        $node->textContent = $text;
+    }
+
+    /** Props whose lowercased name differs from the real DOM event name. */
+    private const EVENT_NAME_MAP = [
+        'doubleclick' => 'dblclick',
+    ];
+
+    /** Map an on* prop to its DOM event name (onClick -> click, onDoubleClick -> dblclick). */
+    public static function eventName(string $key): string
+    {
+        $name = strtolower(substr($key, 2));
+        return self::EVENT_NAME_MAP[$name] ?? $name;
+    }
+
+    public function setProp($node, string $key, $value, $prev = null): void
+    {
+        if (strncmp($key, 'on', 2) === 0 && ctype_upper($key[2] ?? 'x')) {
+            $this->events->bind($node, self::eventName($key), $value);
+            return;
+        }
+
+        switch ($key) {
+            case 'className':
+                $node->className = (string) $value;
+                return;
+            case 'value':
+                // Only write when it actually differs from the live DOM value,
+                // so we never disturb the caret of a focused input.
+                if ($node->value !== $value) {
+                    $node->value = $value;
+                }
+                return;
+            case 'checked':
+                $node->checked = (bool) $value;
+                return;
+            case 'style':
+                $node->setAttribute('style', $this->styleToString($value));
+                return;
+            case 'dangerouslySetInnerHTML':
+                $html = is_array($value) ? ($value['__html'] ?? '') : (string) $value;
+                $node->innerHTML = $html;
+                return;
+        }
+
+        if ($value === true) {
+            $node->setAttribute($key, '');
+        } elseif ($value === false || $value === null) {
+            $node->removeAttribute($key);
+        } else {
+            $node->setAttribute($key, (string) $value);
+        }
+    }
+
+    public function removeProp($node, string $key, $prev = null): void
+    {
+        if (strncmp($key, 'on', 2) === 0 && ctype_upper($key[2] ?? 'x')) {
+            $this->events->unbind($node, self::eventName($key));
+            return;
+        }
+
+        switch ($key) {
+            case 'className':
+                $node->className = '';
+                return;
+            case 'value':
+                $node->value = '';
+                return;
+            case 'checked':
+                $node->checked = false;
+                return;
+        }
+
+        $node->removeAttribute($key);
+    }
+
+    public function appendChild($parent, $child): void
+    {
+        $parent->appendChild($child);
+    }
+
+    public function insertBefore($parent, $child, $reference): void
+    {
+        if ($reference === null) {
+            $parent->appendChild($child);
+            return;
+        }
+        $parent->insertBefore($child, $reference);
+    }
+
+    public function removeChild($parent, $child): void
+    {
+        $parent->removeChild($child);
+    }
+
+    public function removeNode($node): void
+    {
+        // ChildNode.remove(): detaches from its parent, no-op if it has none.
+        $node->remove();
+    }
+
+    public function childNodesOf($parent): array
+    {
+        $out = [];
+        $list = $parent->childNodes;
+        $len = (int) $list->length;
+        for ($i = 0; $i < $len; $i++) {
+            $out[] = $list->item($i);
+        }
+        return $out;
+    }
+
+    public function nodeMatches($node, \Syntaxx\PHPX\Framework\VirtualDOM\VNode $vnode): bool
+    {
+        $type = (int) $node->nodeType; // 1 = element, 3 = text
+        if ($vnode->isText()) {
+            return $type === 3;
+        }
+        return $type === 1 && strtolower((string) $node->nodeName) === strtolower($vnode->type);
+    }
+
+    public function textOf($node): string
+    {
+        return (string) $node->textContent;
+    }
+
+    private function styleToString($style): string
+    {
+        if (is_string($style)) {
+            return $style;
+        }
+        if (!is_array($style)) {
+            return '';
+        }
+        $out = '';
+        foreach ($style as $prop => $val) {
+            // camelCase -> kebab-case (backgroundColor -> background-color)
+            $kebab = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $prop));
+            $out .= $kebab . ':' . $val . ';';
+        }
+        return $out;
+    }
+}
+<?php
+
 namespace Syntaxx\PHPX\Framework;
 
+/**
+ * Client-side router (browser only). After hydration, it intercepts internal
+ * link clicks and back/forward navigation, updates the History API, and asks
+ * the app to re-render — so navigating between routes does NOT reload the page
+ * (and, crucially for PHPX, does NOT re-boot the PHP-WASM runtime). Components
+ * stay isomorphic: they read the current path via {@see Environment::location()},
+ * which delegates here once the router is active.
+ */
+final class Router
+{
+    private static bool $started = false;
+    /** @var array<string,string> */
+    private static array $current = ['pathname' => '/', 'search' => ''];
+    /** @var callable|null invoked (no args) when the route changes */
+    private static $onChange = null;
+
+    public static function isActive(): bool
+    {
+        return self::$started;
+    }
+
+    /** @return array<string,string> */
+    public static function current(): array
+    {
+        return self::$current;
+    }
+
+    /**
+     * Begin client-side routing. $onChange is called after each navigation and
+     * should re-render the application root.
+     */
+    public static function start(callable $onChange): void
+    {
+        $window = new \Vrzno();
+        self::$onChange = $onChange;
+        self::syncFromWindow($window);
+        self::$started = true;
+
+        // Intercept internal link clicks (delegated at the document level).
+        $window->document->addEventListener('click', static function ($event) use ($window) {
+            if ($event->defaultPrevented) {
+                return;
+            }
+            // Let modified / non-primary / middle clicks fall through to the browser.
+            if ($event->metaKey || $event->ctrlKey || $event->shiftKey || $event->altKey) {
+                return;
+            }
+            if ((int) ($event->button ?? 0) !== 0) {
+                return;
+            }
+
+            // Find the nearest enclosing <a>.
+            $anchor = $event->target;
+            while ($anchor !== null && strtolower((string) ($anchor->tagName ?? '')) !== 'a') {
+                $anchor = $anchor->parentElement ?? null;
+            }
+            if ($anchor === null) {
+                return;
+            }
+
+            $target = (string) ($anchor->getAttribute('target') ?? '');
+            if ($target !== '' && $target !== '_self') {
+                return;
+            }
+            $href = (string) ($anchor->getAttribute('href') ?? '');
+            if ($href === '' || $href[0] === '#') {
+                return;
+            }
+
+            // Resolve to a same-origin path; let external links go to the browser.
+            if (strpos($href, '://') !== false) {
+                $origin = (string) $window->location->origin;
+                if ($origin === '' || strpos($href, $origin) !== 0) {
+                    return;
+                }
+                $href = substr($href, strlen($origin));
+            }
+            if ($href === '' || $href[0] !== '/') {
+                return; // not a root-relative internal path
+            }
+
+            $event->preventDefault();
+            self::navigate($href);
+        });
+
+        // Back/forward buttons.
+        $window->addEventListener('popstate', static function () use ($window) {
+            self::syncFromWindow($window);
+            if (self::$onChange !== null) {
+                (self::$onChange)();
+            }
+        });
+    }
+
+    /** Navigate to an internal path, pushing a history entry and re-rendering. */
+    public static function navigate(string $href): void
+    {
+        $window = new \Vrzno();
+        $parts = explode('?', $href, 2);
+        self::$current = [
+            'pathname' => ($parts[0] !== '' ? $parts[0] : '/'),
+            'search' => isset($parts[1]) ? '?' . $parts[1] : '',
+        ];
+        $window->history->pushState(null, '', $href);
+        if (self::$onChange !== null) {
+            (self::$onChange)();
+        }
+    }
+
+    private static function syncFromWindow($window): void
+    {
+        $loc = $window->location;
+        self::$current = [
+            'pathname' => ((string) $loc->pathname !== '' ? (string) $loc->pathname : '/'),
+            'search' => (string) $loc->search,
+        ];
+    }
+
+    /** Test helper. */
+    public static function reset(): void
+    {
+        self::$started = false;
+        self::$current = ['pathname' => '/', 'search' => ''];
+        self::$onChange = null;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
+use Syntaxx\PHPX\Framework\Commit\SelectionManager;
+use Syntaxx\PHPX\Framework\Events\EventDelegator;
+use Syntaxx\PHPX\Framework\Hooks\HookManager;
+use Syntaxx\PHPX\Framework\Hooks\HydrationState;
+use Syntaxx\PHPX\Framework\Reconciler\ComponentResolver;
+use Syntaxx\PHPX\Framework\Reconciler\Reconciler;
+use Syntaxx\PHPX\Framework\Reconciler\VrznoBackend;
+
+/**
+ * Public entry point and backward-compatible facade over the fiber engine.
+ *
+ * The historical surface is preserved exactly so existing apps run unchanged:
+ *   - Runtime::createRoot($node)->render($component)
+ *   - Runtime::registerComponent($name, $callable)
+ *   - Runtime::useState($initial)  and the global useState() function
+ *
+ * Internally this now wires a {@see Reconciler} backed by {@see VrznoBackend}
+ * with delegated events and focus/caret preservation — instead of the old
+ * innerHTML re-render loop. The big behavioural win: re-renders mutate only the
+ * DOM that changed, so input focus and caret survive (the historical pain).
+ */
 class Runtime
 {
-    private $rootElement;
-    private static $stateHooks = [];
-    private static $hookIndex = 0;
-    private static $currentRoot = null;
-    private static $currentComponent = null;
-    private static $componentRegistry = [];
-    private static $componentStates = [];
-    private static $currentComponentId = null;
-    private static $currentComponentFunction = null;
-    private static $handlerMappings = [];
+    private Reconciler $reconciler;
+    /** True until the first render, which then performs hydration instead of mount. */
+    private bool $pendingHydrate = false;
 
-    public static function createRoot($element): self
+    /** Kept for back-compat: previously the global current root. */
+    private static ?Runtime $currentRoot = null;
+
+    private function __construct($containerElement, bool $hydrate = false)
     {
-        self::$currentRoot = new self($element);
+        $window = new \Vrzno();
+        $document = $window->document;
+
+        if (!$hydrate) {
+            // Fresh mount: clear any pre-render placeholder once, like
+            // ReactDOM.createRoot. After this the engine owns the subtree.
+            // Hydration must NOT clear — it adopts the server-rendered DOM.
+            $containerElement->innerHTML = '';
+        }
+
+        $events = new EventDelegator($containerElement);
+        $backend = new VrznoBackend($document, $events);
+        $this->reconciler = new Reconciler($backend, $containerElement);
+
+        $selection = new SelectionManager($window);
+        $this->reconciler->setCommitHooks(
+            static function () use ($selection) {
+                $selection->save();
+            },
+            static function () use ($selection) {
+                $selection->restore();
+            }
+        );
+    }
+
+    /**
+     * @param mixed $containerElement a VRZNO DOM element (e.g. #root)
+     */
+    public static function createRoot($containerElement): self
+    {
+        self::$currentRoot = new self($containerElement);
         $GLOBALS['__PHPX_ROOT__'] = self::$currentRoot;
         return self::$currentRoot;
     }
 
-    private function __construct($element)
+    /**
+     * Hydrate a server-rendered container: adopt the existing DOM instead of
+     * rebuilding it. Reads the server state blob (#__phpx_state__) so useState
+     * seeding works, then the first render() adopts; later renders are normal.
+     *
+     * @param mixed $containerElement a VRZNO DOM element (e.g. #root)
+     */
+    public static function hydrateRoot($containerElement): self
     {
-        $this->rootElement = $element;
+        Environment::$isServer = false;
+        self::seedFromDocument();
+        $root = new self($containerElement, true);
+        $root->pendingHydrate = true;
+        self::$currentRoot = $root;
+        $GLOBALS['__PHPX_ROOT__'] = $root;
+        return $root;
     }
 
-    public function render($component)
+    /** Read the server-embedded JSON state blob and seed HydrationState. */
+    private static function seedFromDocument(): void
     {
-        self::$currentComponent = $component;
+        try {
+            $el = (new \Vrzno())->document->getElementById('__phpx_state__');
+            if ($el !== null) {
+                $json = (string) $el->textContent;
+                $data = json_decode($json, true);
+                if (is_array($data)) {
+                    HydrationState::seed($data);
+                }
+            }
+        } catch (\Throwable $e) {
+            // No/invalid blob: components fall back to their default initials.
+        }
+    }
+
+    /** Mount or update the given element tree into the root. */
+    public function render($component): void
+    {
         $GLOBALS['__PHPX_COMPONENT__'] = $component;
-        self::$hookIndex = 0; // Reset hook index for new render
-        self::$currentComponentId = spl_object_hash($component);
-        
-        // Debug: Log the component being rendered
-        //var_dump("Rendering component:", $component);
-        
-        // Clear the root element
-        $this->rootElement->innerHTML = '';
-
-        // Render the component tree
-        $html = $this->renderComponentToString($component);
-
-        // Update the DOM using vrzno_eval
-        $escapedHtml = json_encode($html);
-        $elementId = $this->rootElement->id;
-        $jsCode = "document.getElementById('{$elementId}').innerHTML = {$escapedHtml};";
-        vrzno_eval($jsCode);
-
-        // Bind event handlers
-        $this->bindEventHandlers();
-    }
-
-    private function bindEventHandlers()
-    {
-        // Find all elements with data-handler-id
-        $nodeList = Document::document()->querySelectorAll('[data-handler-id]');
-
-        // Get the length of the NodeList
-        $length = $nodeList->length;
-
-        // Iterate through the NodeList
-        for ($i = 0; $i < $length; $i++) {
-            $element = $nodeList->item($i);
-            $handlerId = $element->getAttribute('data-handler-id');
-            $self = $this;
-
-            // Get the handler mapping to determine event type
-            if (isset(self::$handlerMappings[$handlerId])) {
-                $mapping = self::$handlerMappings[$handlerId];
-                $eventType = $mapping['eventType'] ?? 'click';
-
-                // Create a new event handler that will be recreated on each render
-                $element->addEventListener($eventType, function($event) use ($handlerId, $self) {
-                    // Get the handler mapping
-                    if (isset(self::$handlerMappings[$handlerId])) {
-                        $mapping = self::$handlerMappings[$handlerId];
-                        $handler = $mapping['handler'];
-
-                        try {
-                            // Execute the handler with the event object
-                            $handler($event);
-                            // Force a re-render
-                            if (isset($GLOBALS['__PHPX_ROOT__'])) {
-                                $GLOBALS['__PHPX_ROOT__']->render($GLOBALS['__PHPX_COMPONENT__']);
-                            }
-                        } catch (\Exception $e) {
-                            var_dump("Error executing handler:", $e->getMessage());
-                        }
-                    }
-                });
-            }
+        if ($this->pendingHydrate) {
+            $this->pendingHydrate = false;
+            $this->reconciler->hydrate($component);
+            return;
         }
+        $this->reconciler->render($component);
     }
 
-    private function renderComponentToString($component): string
-    {
-        if (is_string($component)) {
-            return htmlspecialchars($component);
-        }
-
-        if ($component instanceof Component) {
-            // Debug: Log the component being processed
-            //var_dump("Processing component:", $component->type);
-            //var_dump("Component props:", $component->props);
-            
-            // Check if this is a custom component
-            $componentName = $component->type;
-            
-            // First check in component registry
-            if (isset(self::$componentRegistry[$componentName])) {
-                // Store the current component function
-                self::$currentComponentFunction = self::$componentRegistry[$componentName];
-                //var_dump("Found component in registry:", $componentName);
-                
-                // It's a registered component, call it with props including children
-                $propsWithChildren = $component->props;
-                $propsWithChildren['children'] = $component->children;
-                $nestedComponent = self::$componentRegistry[$componentName]($propsWithChildren);
-                // Clear the current component function
-                self::$currentComponentFunction = null;
-                // Debug: Log the result of component function
-                //var_dump("Component function result:", $nestedComponent);
-                return $this->renderComponentToString($nestedComponent);
-            }
-            
-            // Then check in App namespace
-            $appComponentName = "\\Syntaxx\\PHPX\\Demo\\{$componentName}";
-            if (function_exists($appComponentName)) {
-                // Store the current component function
-                self::$currentComponentFunction = $appComponentName;
-                //var_dump("Found component in App namespace:", $appComponentName);
-                
-                // Make useState available in the component's namespace
-                if (!function_exists("\\Syntaxx\\PHPX\\Demo\\useState")) {
-                    eval('namespace Syntaxx\\PHPX\\Demo; function useState($initialValue) { return \\Syntaxx\\PHPX\\Framework\\Runtime::useState($initialValue); }');
-                }
-                
-                // It's a function component, call it with props including children
-                $propsWithChildren = $component->props;
-                $propsWithChildren['children'] = $component->children;
-                $nestedComponent = $appComponentName($propsWithChildren);
-                // Clear the current component function
-                self::$currentComponentFunction = null;
-                // Debug: Log the result of component function
-                //var_dump("Component function result:", $nestedComponent);
-                return $this->renderComponentToString($nestedComponent);
-            }
-            
-            // Check if function exists in global namespace (but skip HTML elements)
-            $htmlElements = ['header', 'footer', 'main', 'nav', 'section', 'article', 'aside', 'time', 
-                           'button', 'input', 'form', 'div', 'span', 'a', 'p', 'h1', 'h2', 'h3', 
-                           'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'table', 'tr', 'td', 'th', 'img',
-                           'video', 'audio', 'canvas', 'svg', 'path', 'g', 'circle', 'rect'];
-            if (function_exists($componentName) && !in_array(strtolower($componentName), $htmlElements)) {
-                // Store the current component function
-                self::$currentComponentFunction = $componentName;
-                
-                // It's a function component, call it with props including children
-                $propsWithChildren = $component->props;
-                $propsWithChildren['children'] = $component->children;
-                $nestedComponent = $componentName($propsWithChildren);
-                // Clear the current component function
-                self::$currentComponentFunction = null;
-                return $this->renderComponentToString($nestedComponent);
-            }
-            
-            // Before treating as HTML element, check if the component name starts with uppercase
-            if (ctype_upper($componentName[0]) && !in_array(strtolower($componentName), $htmlElements)) {
-                // Component not found but looks like it should be a component
-            }
-
-            // Regular HTML element
-            $attributes = '';
-            $eventHandlers = [];
-            foreach ($component->props as $key => $value) {
-                if (strpos($key, 'on') === 0) {
-                    // Store event handlers for later binding
-                    $eventHandlers[$key] = $value;
-                    // Generate a unique ID for the element
-                    $handlerId = uniqid('handler_');
-                    //var_dump("Generated handler ID:", $handlerId, "for {$key} handler:", $value);
-                    // Store the handler mapping with event type
-                    $eventType = strtolower(substr($key, 2)); // onClick -> click, onChange -> change
-                    self::$handlerMappings[$handlerId] = [
-                        'handler' => $value,
-                        'props' => $component->props,
-                        'eventType' => $eventType
-                    ];
-                    $attributes .= " data-handler-id=\"{$handlerId}\" data-event-{$eventType}=\"{$handlerId}\"";
-                } else {
-                    // Convert className to class for HTML
-                    $attrName = $key === 'className' ? 'class' : $key;
-                    $attributes .= " {$attrName}=\"{$value}\"";
-                }
-            }
-
-            $childrenHtml = '';
-            foreach ($component->children as $child) {
-                if ($child instanceof Component) {
-                    // Don't propagate props to child components - each component should have its own props
-                    $childrenHtml .= $this->renderComponentToString($child);
-                } elseif (is_array($child)) {
-                    // Handle array of children (e.g., from array_map)
-                    foreach ($child as $nestedChild) {
-                        if ($nestedChild instanceof Component) {
-                            $childrenHtml .= $this->renderComponentToString($nestedChild);
-                        } else {
-                            $childrenHtml .= htmlspecialchars((string)$nestedChild);
-                        }
-                    }
-                } else {
-                    $childrenHtml .= htmlspecialchars((string)$child);
-                }
-            }
-
-            return "<{$component->type}{$attributes}>{$childrenHtml}</{$component->type}>";
-        }
-
-        return '';
-    }
-
-    public static function getCurrentComponentFunction()
-    {
-        return self::$currentComponentFunction;
-    }
-
+    /** Register a named component (resolved before namespace/global lookup). */
     public static function registerComponent(string $name, callable $component): void
     {
-        self::$componentRegistry[$name] = $component;
+        ComponentResolver::register($name, $component);
     }
 
-    public static function useState($initialValue)
+    /** Back-compat static hook entry points; delegate to the per-instance HookManager. */
+    public static function useState($initialValue, ?string $hydrationKey = null): array
     {
-        $componentFunction = self::getCurrentComponentFunction();
-        if (!$componentFunction) {
-            throw new \RuntimeException("useState must be called within a component");
-        }
+        return HookManager::useState($initialValue, $hydrationKey);
+    }
+}
+<?php
 
-        // Initialize component state if not exists
-        if (!isset(self::$componentStates[$componentFunction])) {
-            self::$componentStates[$componentFunction] = [];
-        }
+namespace Syntaxx\PHPX\Framework;
 
-        $index = self::$hookIndex;
-        
-        // Initialize state if not exists
-        if (!isset(self::$componentStates[$componentFunction][$index])) {
-            self::$componentStates[$componentFunction][$index] = $initialValue;
-        }
+use Syntaxx\PHPX\Framework\Hooks\DataRegistry;
+use Syntaxx\PHPX\Framework\Hooks\HydrationState;
+use Syntaxx\PHPX\Framework\Reconciler\Reconciler;
+use Syntaxx\PHPX\Framework\Reconciler\SsrBackend;
+use Syntaxx\PHPX\Framework\Reconciler\SsrNode;
 
-        $value = self::$componentStates[$componentFunction][$index];
-        
-        // Create setState function
-        $setValue = function($newValue) use ($componentFunction, $index) {
-            // If newValue is a function, call it with current state
-            if (is_callable($newValue)) {
-                $newValue = $newValue(self::$componentStates[$componentFunction][$index]);
-            }
-
-            // Update state
-            self::$componentStates[$componentFunction][$index] = $newValue;
-            
-            // Debug: Log state update
-            //var_dump("State updated for component {$componentFunction}:", $index, $newValue);
-            
-            // Trigger re-render
-            if (isset($GLOBALS['__PHPX_ROOT__'])) {
-                $GLOBALS['__PHPX_ROOT__']->render($GLOBALS['__PHPX_COMPONENT__']);
-            }
-        };
-
-        self::$hookIndex++;
-        return [$value, $setValue];
+/**
+ * Server-side rendering entry. Runs the SAME fiber reconciler natively (no
+ * \Vrzno) with an {@see SsrBackend} and returns an HTML string.
+ *
+ * Both server and client seed their hydration state from the SAME $state array,
+ * so useState($init, 'key') yields identical initial values on both sides — the
+ * server emits markup that matches what the client will render, eliminating the
+ * hydration-mismatch class of bugs by construction.
+ */
+final class ServerRenderer
+{
+    /**
+     * Render $component to HTML.
+     *
+     * @param mixed                 $component a VNode/Component tree
+     * @param array<string,mixed>   $state     initial state shared with the client
+     * @param array<string,string>|null $location SSR location (pathname/search)
+     */
+    public static function renderToString($component, array $state = [], ?array $location = null): string
+    {
+        return self::render($component, $state, $location)['html'];
     }
 
-    public static function handleStateUpdate($index, $value)
+    /**
+     * Render to HTML and return the full seed state (explicit $state merged with
+     * everything useData() fetched during the render). Emit ['html'] into #root
+     * and ServerRenderer::stateScript(['state']) so the client hydrates with the
+     * exact data the server used.
+     *
+     * @param array<string,mixed>       $state
+     * @param array<string,string>|null $location
+     * @return array{html:string,state:array<string,mixed>}
+     */
+    public static function render($component, array $state = [], ?array $location = null): array
     {
-        if (!isset(self::$stateHooks[$index])) {
-            throw new \RuntimeException("State hook at index {$index} does not exist");
+        return Environment::withServer($location, static function () use ($component, $state) {
+            DataRegistry::reset();
+            HydrationState::seed($state);
+            try {
+                $container = new SsrNode('#ssr-root');
+                $backend = new SsrBackend();
+                $reconciler = new Reconciler($backend, $container);
+                $reconciler->render($component);
+                $html = $backend->rootHtml($container);
+                // Explicit state plus everything useData() fetched this render.
+                $full = array_merge($state, DataRegistry::flush());
+                return ['html' => $html, 'state' => $full];
+            } finally {
+                HydrationState::reset();
+            }
+        });
+    }
+
+    /**
+     * A <script> tag carrying the seed state for the client. JSON is escaped so
+     * it is safe to embed directly inside <script>…</script>.
+     *
+     * @param array<string,mixed> $state
+     */
+    public static function stateScript(array $state): string
+    {
+        $json = json_encode(
+            $state,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
+        );
+        return '<script id="__phpx_state__" type="application/json">' . $json . '</script>';
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
+/**
+ * Coordinates streaming SSR. While streaming, a <Suspense> boundary renders its
+ * fallback into a stable wrapper (<div data-pxs="id">) and defers its children;
+ * StreamRenderer then renders each deferred boundary as a later chunk. The id
+ * counter persists across the shell render and all boundary-content renders so
+ * the placeholder and its streamed content share the same id.
+ */
+final class StreamContext
+{
+    private static bool $streaming = false;
+    private static int $counter = 0;
+    /** @var array<int,array{0:int,1:array}> queue of [id, childrenVNodes] */
+    private static array $deferred = [];
+
+    public static function begin(): void
+    {
+        self::$streaming = true;
+        self::$counter = 0;
+        self::$deferred = [];
+    }
+
+    public static function end(): void
+    {
+        self::$streaming = false;
+        self::$deferred = [];
+    }
+
+    public static function isStreaming(): bool
+    {
+        return self::$streaming;
+    }
+
+    public static function nextId(): int
+    {
+        return self::$counter++;
+    }
+
+    /** @param array $childrenVNodes the Suspense boundary's children VNodes */
+    public static function defer(int $id, array $childrenVNodes): void
+    {
+        self::$deferred[] = [$id, $childrenVNodes];
+    }
+
+    /** Drain the queue (nested boundaries discovered while rendering content
+     *  are added back and drained on the next call). */
+    public static function takeDeferred(): array
+    {
+        $deferred = self::$deferred;
+        self::$deferred = [];
+        return $deferred;
+    }
+}
+<?php
+
+namespace Syntaxx\PHPX\Framework;
+
+use Syntaxx\PHPX\Framework\Hooks\DataRegistry;
+use Syntaxx\PHPX\Framework\Hooks\HydrationState;
+use Syntaxx\PHPX\Framework\Reconciler\ComponentResolver;
+use Syntaxx\PHPX\Framework\Reconciler\Reconciler;
+use Syntaxx\PHPX\Framework\Reconciler\SsrBackend;
+use Syntaxx\PHPX\Framework\Reconciler\SsrNode;
+
+/**
+ * Streaming server-side rendering. It renders the shell immediately — with each
+ * <Suspense> boundary shown as its fallback inside a placeholder wrapper — then
+ * yields each boundary's real content as a later chunk. The caller flushes each
+ * chunk, so the browser shows the shell at once and content streams in as the
+ * server produces it (great TTFB). A tiny inline runtime reveals each chunk into
+ * its placeholder; the WASM client then hydrates the completed DOM.
+ *
+ * Yields associative chunks:
+ *   ['type' => 'shell',    'html'  => string]           // #root inner HTML (fallbacks)
+ *   ['type' => 'boundary', 'id' => int, 'html' => string] // content for one boundary
+ *   ['type' => 'close',    'state' => array]            // seed state for the client
+ */
+final class StreamRenderer
+{
+    public static function stream($component, array $state = [], ?array $location = null): \Generator
+    {
+        ComponentResolver::register('__StreamFragment', static fn ($props) => $props['children']);
+
+        $prevServer = Environment::$isServer;
+        $prevLoc = Environment::$ssrLocation;
+        Environment::$isServer = true;
+        Environment::$ssrLocation = $location;
+        DataRegistry::reset();
+        HydrationState::seed($state);
+        StreamContext::begin();
+
+        try {
+            // 1) Shell: full tree, Suspense boundaries rendered as fallbacks.
+            $container = new SsrNode('#ssr-root');
+            $backend = new SsrBackend();
+            (new Reconciler($backend, $container))->render($component);
+            yield ['type' => 'shell', 'html' => $backend->rootHtml($container)];
+
+            // 2) Each deferred boundary's content (nested boundaries are queued
+            //    as they render and drained on the next pass).
+            while (true) {
+                $deferred = StreamContext::takeDeferred();
+                if ($deferred === []) {
+                    break;
+                }
+                foreach ($deferred as [$id, $children]) {
+                    $c = new SsrNode('#boundary');
+                    $b = new SsrBackend();
+                    (new Reconciler($b, $c))->render(Component::create('__StreamFragment', [], $children));
+                    yield ['type' => 'boundary', 'id' => $id, 'html' => $b->rootHtml($c)];
+                }
+            }
+
+            // 3) Seed state (explicit + everything useSuspenseData/useData fetched).
+            yield ['type' => 'close', 'state' => array_merge($state, DataRegistry::flush())];
+        } finally {
+            StreamContext::end();
+            HydrationState::reset();
+            Environment::$isServer = $prevServer;
+            Environment::$ssrLocation = $prevLoc;
         }
-        
-        self::$stateHooks[$index] = $value;
-        
-        if (self::$currentRoot && self::$currentComponent) {
-            self::$currentRoot->render(self::$currentComponent);
-        }
+    }
+
+    /** Inline JS that swaps a streamed <template> into its placeholder wrapper. */
+    public static function revealRuntime(): string
+    {
+        return 'window.__pxReveal=function(id){'
+            . 'var t=document.querySelector(\'template[data-pxc="\'+id+\'"]\'),'
+            . 'd=document.querySelector(\'[data-pxs="\'+id+\'"]\');'
+            . 'if(t&&d){d.replaceChildren(t.content.cloneNode(true));t.remove();}};';
     }
 }
 <?php
@@ -32343,11 +34697,210 @@ class TextNode {
     }
 } <?php
 
+namespace Syntaxx\PHPX\Framework\VirtualDOM;
+
+use Syntaxx\PHPX\Framework\Component;
+
+/**
+ * Canonical virtual-DOM node used internally by the reconciler.
+ *
+ * The public API (and the PHPX compiler) produces {@see Component} objects via
+ * Component::create(). VNode::normalize() converts those — plus raw scalars,
+ * arrays and nulls — into a flat, predictable node shape the fiber engine can
+ * diff. Keeping this separate from Component preserves backward compatibility:
+ * existing apps keep calling Component::create(), and we adapt at the boundary.
+ *
+ * Engine constraint (v1): every VNode resolves to exactly one host node (an
+ * element or a text node). Components therefore render to a single root node.
+ * Fragments / array returns are flattened where they appear in a children list.
+ */
+final class VNode
+{
+    public const TEXT = '#text';
+
+    /** @var string Element tag, component name, or VNode::TEXT. */
+    public string $type;
+
+    /** @var array<string,mixed> */
+    public array $props;
+
+    /** @var VNode[] Already-normalized child nodes (used to render host elements). */
+    public array $children;
+
+    /**
+     * The children exactly as authored (Component objects, scalars, arrays),
+     * before normalization. Passed verbatim as $props['children'] to component
+     * functions so introspection like `$child instanceof Component` keeps
+     * working — this is required for backward compatibility with existing apps.
+     *
+     * @var array<int,mixed>
+     */
+    public array $rawChildren = [];
+
+    /** @var string|int|null Stable identity hint for keyed reconciliation. */
+    public $key;
+
+    /** Text payload when $type === self::TEXT. */
+    public string $text = '';
+
+    /**
+     * @param array<string,mixed> $props
+     * @param VNode[]             $children
+     */
+    public function __construct(string $type, array $props = [], array $children = [], $key = null)
+    {
+        $this->type = $type;
+        $this->props = $props;
+        $this->children = $children;
+        $this->key = $key;
+    }
+
+    public static function text(string $value): self
+    {
+        $node = new self(self::TEXT);
+        $node->text = $value;
+        return $node;
+    }
+
+    public function isText(): bool
+    {
+        return $this->type === self::TEXT;
+    }
+
+    /**
+     * Normalize an arbitrary render result into a list of VNodes.
+     *
+     * Accepts: VNode, Component, scalar (string/int/float/bool), array (flattened
+     * recursively), or null (dropped). This is the single funnel through which
+     * all node shapes enter the engine.
+     *
+     * @return VNode[]
+     */
+    public static function normalizeChildren($input): array
+    {
+        if ($input === null || $input === false || $input === '') {
+            return [];
+        }
+
+        if (is_array($input)) {
+            $out = [];
+            foreach ($input as $item) {
+                foreach (self::normalizeChildren($item) as $node) {
+                    $out[] = $node;
+                }
+            }
+            return $out;
+        }
+
+        return [self::normalizeOne($input)];
+    }
+
+    /**
+     * Normalize a single non-list value into one VNode.
+     */
+    public static function normalizeOne($input): self
+    {
+        if ($input instanceof self) {
+            return $input;
+        }
+
+        if ($input instanceof Component) {
+            $props = $input->props;
+            $key = $props['key'] ?? null;
+            unset($props['key']);
+
+            $children = [];
+            foreach ($input->children as $child) {
+                foreach (self::normalizeChildren($child) as $node) {
+                    $children[] = $node;
+                }
+            }
+
+            $vnode = new self($input->type, $props, $children, $key);
+            $vnode->rawChildren = $input->children;
+            return $vnode;
+        }
+
+        // Scalars become text nodes.
+        return self::text((string) $input);
+    }
+}
+<?php
+
 namespace Syntaxx\PHPX\Framework;
 
-function useState($initialValue)
+use Syntaxx\PHPX\Framework\Hooks\HookManager;
+use Syntaxx\PHPX\Framework\Hooks\Ref;
+
+/**
+ * Global hook functions, mirroring React. Each must be called during a
+ * component's render and delegates to {@see HookManager}, which keeps hook
+ * state on the rendering component's fiber instance (per-instance, not keyed by
+ * function name as the old engine did).
+ *
+ * All hooks live in this single file because it is the one registered in the
+ * framework's composer "files" autoload, so it loads reliably in every host —
+ * including the WASM bundle.
+ */
+
+/**
+ * React-style state hook. Backward-compatible signature: [$value, $setValue].
+ */
+function useState($initialValue, ?string $hydrationKey = null): array
 {
-    return Runtime::useState($initialValue);
+    return HookManager::useState($initialValue, $hydrationKey);
+}
+
+/**
+ * Run a side effect after commit when $deps change (always on first mount).
+ * $effect may return a cleanup callable, run before re-running and on unmount.
+ *
+ * @param array|null $deps null => run after every render
+ */
+function useEffect(callable $effect, ?array $deps = null): void
+{
+    HookManager::useEffect($effect, $deps);
+}
+
+/** Stable mutable container preserved across renders (e.g. to hold a DOM node). */
+function useRef($initialValue = null): Ref
+{
+    return HookManager::useRef($initialValue);
+}
+
+/** Memoize a value; recomputed only when $deps change. */
+function useMemo(callable $factory, array $deps)
+{
+    return HookManager::useMemo($factory, $deps);
+}
+
+/** Memoize a callback's identity across renders unless $deps change. */
+function useCallback(callable $callback, array $deps): callable
+{
+    return HookManager::useCallback($callback, $deps);
+}
+
+/**
+ * Isomorphic data hook. Returns [$data, $loading, $error]. The server fetches
+ * once and seeds the result into the page; the client reads the seed (no
+ * refetch) and only fetches for routes reached via client-side navigation that
+ * the server never rendered. See {@see HookManager::useData()}.
+ */
+function useData(string $key, callable $fetcher): array
+{
+    return HookManager::useData($key, $fetcher);
+}
+
+/**
+ * Suspense data hook. Returns the value or throws a Suspension that the nearest
+ * <Suspense fallback={…}> boundary renders a fallback for — so the component
+ * carries no loading state. See {@see HookManager::useSuspenseData()}.
+ *
+ * @return mixed
+ */
+function useSuspenseData(string $key, callable $fetcher)
+{
+    return HookManager::useSuspenseData($key, $fetcher);
 }
 <?php
 
