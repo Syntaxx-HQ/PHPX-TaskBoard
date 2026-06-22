@@ -15,7 +15,6 @@ runtime cannot do.
   (focus and caret are preserved while you type).
 - **Card detail modal** — click a card to open it; edit priority and description.
 - **Drag and drop** cards between columns.
-- **VRZNO benchmark** — a built-in performance benchmark component.
 - **Reconciler** — surgical DOM patching; no focus loss on state changes.
 
 ## Prerequisites
@@ -68,8 +67,7 @@ PHPX-TaskBoard/
 │   └── Components/
 │       ├── Board.phpx        # Board state + card operations
 │       ├── Column.phpx       # Column + add-card form + drag/drop
-│       ├── Card.phpx         # Card: inline edit, modal, delete-confirm
-│       └── BenchmarkApp.phpx # VRZNO performance benchmark
+│       └── Card.phpx         # Card: inline edit, modal, delete-confirm
 ├── tests/e2e/                # Playwright tests
 ├── .github/workflows/        # CI
 ├── composer.json
