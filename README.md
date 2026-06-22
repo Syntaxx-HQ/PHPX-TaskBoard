@@ -1,7 +1,7 @@
 # PHPX TaskBoard
 
 A Trello-style Kanban board built entirely with PHPX, running in the browser as
-WebAssembly. It's a real-world demonstration (and test bed) of the PHPX fiber
+WebAssembly. It's a real-world demonstration (and test bed) of the PHPX
 reconciler: state updates patch only the DOM nodes that changed, so input focus
 and the editing caret survive re-renders — the thing a full innerHTML-replacement
 runtime cannot do.
@@ -16,11 +16,11 @@ runtime cannot do.
 - **Card detail modal** — click a card to open it; edit priority and description.
 - **Drag and drop** cards between columns.
 - **VRZNO benchmark** — a built-in performance benchmark component.
-- **Fiber engine** — surgical DOM patching; no focus loss on state changes.
+- **Reconciler** — surgical DOM patching; no focus loss on state changes.
 
 ## Prerequisites
 
-- PHP 8.3 or higher
+- PHP 8.4 or higher
 - Composer
 - Node.js 18+ (for the Playwright test suite)
 - A modern browser with WebAssembly support
@@ -101,8 +101,8 @@ npm test
 1. PHPX components (JSX-in-PHP) are compiled to plain PHP and packed into a
    WebAssembly data bundle.
 2. The browser boots the PHP-WASM runtime; main.phpx mounts the board to #root.
-3. Card/column interactions update component state via hooks; the fiber
-   reconciler diffs the tree and patches only the affected DOM nodes — so an
+3. Card/column interactions update component state via hooks; the reconciler
+   diffs the tree and patches only the affected DOM nodes — so an
    inline edit keeps its caret across re-renders.
 4. DOM access (drag events, selection) goes through the Vrzno JavaScript bridge.
 ```
