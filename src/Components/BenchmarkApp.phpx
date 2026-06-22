@@ -1,5 +1,6 @@
 <?php
 
+use Syntaxx\PHPX\Framework\Browser;
 use Syntaxx\PHPX\Framework\Component;
 use function Syntaxx\PHPX\Framework\useState;
 
@@ -11,9 +12,8 @@ function BenchmarkApp() {
         $setIsRunning(true);
         $setResults([]);
 
-        // Get VRZNO window and document
-        $window = new \Vrzno;
-        $document = $window->document;
+        // Access the DOM via the framework's Browser seam (no direct Vrzno).
+        $document = Browser::document();
 
         // Create test container
         $container = $document->getElementById('benchmark-container');
