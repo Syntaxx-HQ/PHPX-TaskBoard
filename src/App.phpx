@@ -1,26 +1,13 @@
 <?php
 
 use Syntaxx\PHPX\Framework\Component;
-use function Syntaxx\PHPX\Framework\useState;
 
 require_once "Components/Board.php";
-require_once "Components/BenchmarkApp.php";
 
 function App() {
-    [$showBenchmark, $setShowBenchmark] = useState(false);
-
     return (
         <div>
-            <div style="padding: 20px; text-align: center; background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-                <button
-                    onClick={fn() => $setShowBenchmark(!$showBenchmark)}
-                    style="padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px;"
-                >
-                    {$showBenchmark ? 'Show Task Board' : 'Show VRZNO Benchmark'}
-                </button>
-            </div>
-
-            {$showBenchmark ? <BenchmarkApp /> : <Board />}
+            <Board />
         </div>
     );
 }
